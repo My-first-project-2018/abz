@@ -15,20 +15,18 @@ $(document).ready(() => {
 
 //dich
 
-    let departments = $('.departments__item');
-    let closeDepartment = $('.close_department');
-    let loginWindow = $('.login_window');
-    let isOpened = false;
-    let leftPos, topPos;
+    let departments = $('.departments__item'),
+        departmentContent = $('.departments__content'),
+        closeDepartment = $('.close_department'),
+        loginWindow = $('.login_window'),
+        isOpened = false,
+        leftPos, topPos;
 
     $('body').click((e) => {
-        // if(!$(e.target).closest('.login').length) loginWindow.removeClass('login_window_active');
-        if(!$(e.target).closest('.login').length) loginWindow.slideUp();
-
+        if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
     });
 
     $('.login').click(() => {
-        // loginWindow.toggleClass('login_window_active');
         loginWindow.slideToggle();
     });
 
@@ -36,6 +34,7 @@ $(document).ready(() => {
         if(isOpened) {
             return;
         }
+
         leftPos = $(this).offset().left;
         topPos = $(this).offset().top;
         $(this).css({'left':`${leftPos - 20}px`});
@@ -52,11 +51,13 @@ $(document).ready(() => {
 
         setTimeout(() => {
             $(this).find('.close_department').addClass('close_department_active');
-        },300);
+            departmentContent.addClass('departments__content_active');
+        },400);
 
     });
 
     closeDepartment.on('click', function () {
+        departmentContent.removeClass('departments__content_active');
         let departmentItem = $(this).parent();
         $(this).removeClass('close_department_active');
         departmentItem
