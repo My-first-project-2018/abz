@@ -21,8 +21,15 @@ $(document).ready(() => {
     let isOpened = false;
     let leftPos, topPos;
 
+    $('body').click((e) => {
+        // if(!$(e.target).closest('.login').length) loginWindow.removeClass('login_window_active');
+        if(!$(e.target).closest('.login').length) loginWindow.slideUp();
+
+    });
+
     $('.login').click(() => {
-        loginWindow.toggleClass('login_window_active');
+        // loginWindow.toggleClass('login_window_active');
+        loginWindow.slideToggle();
     });
 
     departments.on('click',function () {
@@ -45,7 +52,7 @@ $(document).ready(() => {
 
         setTimeout(() => {
             $(this).find('.close_department').addClass('close_department_active');
-        },600);
+        },300);
 
     });
 
@@ -71,7 +78,7 @@ $(document).ready(() => {
                 }
             });
             isOpened = false;
-        },800);
+        },400);
     });
 
 });

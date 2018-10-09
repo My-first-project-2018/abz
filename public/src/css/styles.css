@@ -6,6 +6,7 @@
 
 body {
     background: #151212;
+    min-height: 100vh;
 }
 
 .modal {
@@ -86,7 +87,7 @@ header button:hover::before {
 
 .login_window {
     position: absolute;
-    display: flex;
+    /*display: flex;*/
     justify-content: space-around;
     flex-direction: column;
     padding: 20px;
@@ -99,12 +100,7 @@ header button:hover::before {
     border-radius: 0 0 10px 10px;
     box-shadow: 0 3px 5px 1px #4000ff;
     transform-origin: top;
-    transition: .3s;
-    transform: scaleY(0);
-}
-
-.login_window_active {
-    transform: scaleY(1);
+    display: none;
 }
 
 .login_window input {
@@ -112,6 +108,14 @@ header button:hover::before {
     background: transparent;
     border: 1px solid #ff00cb;
     color: #fff;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.login_window button{
+    display: block;
+    margin: 0 auto;
+    width: 40%;
 }
 
 h1.company {
@@ -138,7 +142,7 @@ h1.company:hover {
     text-align: center;
     cursor: pointer;
     transform: translateY(0);
-    transition: .8s ease-out;
+    transition: .4s ease-out;
     height: 70px;
     background: #9829ab !important;
     box-shadow: 0 2px 10px #00f7ff;
