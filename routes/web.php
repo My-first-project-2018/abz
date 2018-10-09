@@ -12,5 +12,10 @@
 */
 
 Route::get('/', function () {
+	\App\Department::create(
+		[
+			'name' => 'fd',
+		]
+	);
     return view('welcome');
 });

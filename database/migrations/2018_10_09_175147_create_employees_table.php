@@ -14,7 +14,7 @@ class CreateEmployeesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->increments('id');
@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('last_name');
             $table->unsignedInteger('position_id')->nullable();
             $table->date('data_reception')->nullable();
-            $table->integer('salary');
+            $table->integer('salary')->nullable();
             $table->timestamps();
 
             $table->foreign('position_id')->references('id')->on('positions')
@@ -37,8 +37,9 @@ class CreateEmployeesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('employees');
+	    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+	    Schema::dropIfExists('employees');
     }
 }
