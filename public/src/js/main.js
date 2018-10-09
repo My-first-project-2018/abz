@@ -20,7 +20,9 @@ $(document).ready(() => {
         closeDepartment = $('.close_department'),
         loginWindow = $('.login_window'),
         isOpened = false,
-        leftPos, topPos;
+        leftPos,
+        topPos,
+        index = 0;
 
     $('body').click((e) => {
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
@@ -80,6 +82,37 @@ $(document).ready(() => {
             });
             isOpened = false;
         },400);
+    });
+
+
+    let vipadashka = '<ul class="subordinate subordinate_second" data-hierarchy="3">\n' +
+                    '    <li class="subordinate__item">\n' +
+                    '        <p class="name">Petro Wkalik</p>\n' +
+                    '        <p class="position">Rab</p>\n' +
+                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+                    '    </li>\n' +
+                    '    <li class="subordinate__item">\n' +
+                    '        <p class="name">Petro Wkalik</p>\n' +
+                    '        <p class="position">Rab</p>\n' +
+                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+                    '    </li>\n' +
+                    '    <li class="subordinate__item">\n' +
+                    '        <p class="name">Petro Wkalik</p>\n' +
+                    '        <p class="position">Rab</p>\n' +
+                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+                    '    </li>\n' +
+                    '</ul>';
+
+    departmentContent.on('click','.subordinate__item', function () {
+        $('.subordinate__item').removeClass('subordinate__item_active');
+        $(this).addClass('subordinate__item_active');
+        let hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
+        $('.subordinate').each((i, item) => {
+            if($(item).attr('data-hierarchy') > hierarchy + 2) {
+                $(item).remove();
+            }
+        });
+        departmentContent.append(vipadashka);
     });
 
 });

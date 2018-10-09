@@ -205,7 +205,7 @@ h1.company:hover {
 }
 
 .departments__content {
-    /*display: none;*/
+    position: relative;
     flex-grow: 1;
     align-items: center;
     padding: 20px;
@@ -235,7 +235,8 @@ h1.company:hover {
     top: 50%;
     left: 100%;
     height: 1px;
-    width: 0px;
+    width: 28px;
+    transform: scaleX(0);
     background: rgba(255,255,255,.3);
 }
 .departments__content_active .director {
@@ -243,7 +244,7 @@ h1.company:hover {
     opacity: 1;
 }
 .departments__content_active .director:after {
-    width: 28px;
+    transform: scaleX(1);
     transition: 1s;
 }
 
@@ -263,15 +264,17 @@ h1.company:hover {
 
 
 .subordinate {
-    width: 0px;
+    position: relative;
+    width: 0;
+    margin-right: 30px;
     box-shadow: 0 0 5px 1px #ffffff;
-    max-height: 700px;
+    max-height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
     opacity: 0;
 }
-.departments__content_active .subordinate {
-    transition: 1s;
+.departments__content_active .subordinate_first {
+    transition: .6s;
     opacity: 1;
     transform: translateX(0);
     width: 200px;
@@ -293,11 +296,14 @@ h1.company:hover {
 
 
 .subordinate__item {
+    position: relative;
     background: #9829ab;
     padding: 10px;
     list-style-type: none;
-    position: relative;
     cursor: pointer;
+}
+.subordinate__item_active {
+    background: #ff0097 !important;
 }
 .subordinate__item:not(:last-child) {
     border-bottom: 1px solid #fff;
@@ -314,8 +320,21 @@ h1.company:hover {
 
 .show_subordinate img {
     position: absolute;
-    right: 5px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     width: 18px;
+    transition: .2s;
+}
+.subordinate__item_active img {
+    right: 2px !important;
+}
+
+
+
+.subordinate_second {
+    opacity: 1;
+    width: 200px;
+    /*align-self: flex-start;*/
+    position: relative;
 }
