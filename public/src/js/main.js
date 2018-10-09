@@ -13,17 +13,17 @@ $(document).ready(() => {
         });
     }
 
-    $('.login').on('click', () => {
-        openModal(verstka);
-    });
-
-
 //dich
 
     let departments = $('.departments__item');
     let closeDepartment = $('.close_department');
+    let loginWindow = $('.login_window');
     let isOpened = false;
     let leftPos, topPos;
+
+    $('.login').click(() => {
+        loginWindow.toggleClass('login_window_active');
+    });
 
     departments.on('click',function () {
         if(isOpened) {
