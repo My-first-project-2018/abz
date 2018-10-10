@@ -386,10 +386,9 @@ h1.company:hover, h1.company a:hover {
 .employees {
     max-height: 500px;
     flex-grow: 1;
-
     overflow-y: scroll;
     margin-right: 20px;
-    border-radius: 15px;
+    border-radius: 15px 0 0 15px;
     border: 3px solid #000;
     background: #1d1a1a;
 }
