@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * Class Employee
  *
+ * @property integer id
  * @package App
  */
 class Employee extends Model {
