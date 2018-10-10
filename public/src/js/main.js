@@ -20,7 +20,9 @@ $(document).ready(() => {
         closeDepartment = $('.close_department'),
         loginWindow = $('.login_window'),
         isOpened = false,
-        leftPos, topPos;
+        leftPos,
+        topPos,
+        index = 0;
 
     $('body').click((e) => {
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
@@ -51,14 +53,17 @@ $(document).ready(() => {
 
         setTimeout(() => {
             $(this).find('.close_department').addClass('close_department_active');
-            departmentContent.addClass('departments__content_active');
+            $(this).find('.departments__content').addClass('departments__content_active');
+            setTimeout(() => {
+                $(this).find('.departments__content').addClass('visible');
+            },10);
         },400);
 
     });
 
     closeDepartment.on('click', function () {
-        departmentContent.removeClass('departments__content_active');
         let departmentItem = $(this).parent();
+        departmentItem.find('.departments__content').removeClass('departments__content_active visible');
         $(this).removeClass('close_department_active');
         departmentItem
             .removeClass('departments__item_active')
@@ -80,6 +85,84 @@ $(document).ready(() => {
             });
             isOpened = false;
         },400);
+    });
+
+
+
+
+    //hierarchy
+
+
+    function getWorkersList (hierarchy) {
+        return `<ul class="subordinate" data-hierarchy="${hierarchy}">\n` +
+            '    <li class="subordinate__item">\n' +
+            '        <p class="name">Petro Shkalik</p>\n' +
+            '        <p class="position">Rab</p>\n' +
+            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+            '    </li>\n' +
+            '    <li class="subordinate__item">\n' +
+            '        <p class="name">Petro Shkalik</p>\n' +
+            '        <p class="position">Rab</p>\n' +
+            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+            '    </li>\n' +
+            '    <li class="subordinate__item">\n' +
+            '        <p class="name">Petro Shkalik</p>\n' +
+            '        <p class="position">Rab</p>\n' +
+            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+            '    </li>\n' +
+            '    <li class="subordinate__item">\n' +
+            '        <p class="name">Petro Shkalik</p>\n' +
+            '        <p class="position">Rab</p>\n' +
+            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+            '    </li>\n' +
+            '    <li class="subordinate__item">\n' +
+            '        <p class="name">Petro Shkalik</p>\n' +
+            '        <p class="position">Rab</p>\n' +
+            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+            '    </li>\n' +
+            '    <li class="subordinate__item">\n' +
+            '        <p class="name">Petro Shkalik</p>\n' +
+            '        <p class="position">Rab</p>\n' +
+            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+            '    </li>\n' +
+            '</ul>';
+    }
+
+    let vipadashka = '<ul class="subordinate" data-hierarchy="3">\n' +
+                    '    <li class="subordinate__item">\n' +
+                    '        <p class="name">Petro Shkalik</p>\n' +
+                    '        <p class="position">Rab</p>\n' +
+                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+                    '    </li>\n' +
+                    '    <li class="subordinate__item">\n' +
+                    '        <p class="name">Petro Shkalik</p>\n' +
+                    '        <p class="position">Rab</p>\n' +
+                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+                    '    </li>\n' +
+                    '    <li class="subordinate__item">\n' +
+                    '        <p class="name">Petro Shkalik</p>\n' +
+                    '        <p class="position">Rab</p>\n' +
+                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
+                    '    </li>\n' +
+                    '</ul>';
+
+    departmentContent.on('click','.subordinate__item', function () {
+        let hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
+
+        if(hierarchy == 5) return;
+
+        $(this).parent().find('.subordinate__item').removeClass('subordinate__item_active');
+        $(this).addClass('subordinate__item_active');
+
+        $('.subordinate').each((i, item) => {
+            if($(item).attr('data-hierarchy') > hierarchy + 2) {
+                $(item).remove();
+            }
+        });
+
+        let verstka = getWorkersList(+hierarchy + 1);
+
+        departmentContent.append(verstka);
     });
 
 });
