@@ -410,7 +410,6 @@ h1.company:hover, h1.company a:hover {
 .employees__item > div > p {
     color: #c4c4c4;
     text-align: center;
-    height: 50px;
     line-height: 40px;
 }
 .employees__item > div:not(:last-child) {
