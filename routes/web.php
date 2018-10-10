@@ -11,11 +11,18 @@
 |
 */
 
+use Illuminate\Database\Eloquent\Collection;
+
 Route::get('/', function () {
-	\App\Department::create(
-		[
-			'name' => 'fd',
-		]
-	);
+	$departments = \App\Department::all()->load('employees');
+	$departments->each(function ($department){
+		/** @var Collection $employees */
+		$employees = $department->employees;
+		/** @var \App\Employee $bossDepartment */
+		$bossDepartment = $employees->shift();
+		$subordinateEmployees = $employees->splice(0,random_int(100,500));
+		$bossDepartment->subordinate()->attach($subordinateEmployees);
+		dd($subordinateEmployees);
+	});
     return view('welcome');
 });

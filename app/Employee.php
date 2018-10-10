@@ -43,7 +43,7 @@ class Employee extends Model {
 	 */
 	public function subordinate (): BelongsToMany
 	{
-		return $this->belongsToMany(self::class, SubordinateEmployee::class, 'employee_id', 'subordinate_id' );
+		return $this->belongsToMany(self::class, 'subordinate_employees', 'employee_id', 'subordinate_id' );
 	}
 	
 	/**
