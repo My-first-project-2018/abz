@@ -1,17 +1,19 @@
 $(document).ready(() => {
 
 //modal window
-    let verstka = '<p class="modal_text"> Verstka, eptet\'</p>';
 
-    function openModal (content) {
-        let modal = '<div class="modal"><div class="modal__close">X</div></div>';
-        $('body').prepend(modal);
-        $('.modal').append(content);
+    let modal = $('.modal');
 
-        $('.modal__close').on('click', () => {
-            $('.modal').remove();
-        });
-    }
+    $('.addUser').on('click', (e) => {
+        e.preventDefault();
+        modal.css({'display':'flex'});
+    });
+
+
+    $('.modal__close').on('click', () => {
+        modal.css({'display':'none'});
+    });
+
 
 //dich
 
@@ -19,10 +21,14 @@ $(document).ready(() => {
         departmentContent = $('.departments__content'),
         closeDepartment = $('.close_department'),
         loginWindow = $('.login_window'),
+        timer,
+        draggable = false,
+        dragItem = null,
+        shiftY,
+        shiftX,
         isOpened = false,
         leftPos,
-        topPos,
-        index = 0;
+        topPos;
 
     $('body').click((e) => {
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
@@ -88,9 +94,117 @@ $(document).ready(() => {
     });
 
 
+    departmentContent.on('click','.subordinate__item', function () {
+        let hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
+
+        if(hierarchy == 5) return;
+
+        if(!draggable) {
+            $(this).parent().find('.subordinate__item').removeClass('subordinate__item_active');
+            $(this).addClass('subordinate__item_active');
+
+            $('.subordinate').each((i, item) => {
+                if($(item).attr('data-hierarchy') > hierarchy + 2) {
+                    $(item).remove();
+                }
+            });
+            let verstka = getWorkersList(+hierarchy + 1);
+
+            departmentContent.append(verstka);
+        }
+    });
 
 
-    //hierarchy
+    //drag'n'drop 
+
+    departmentContent.on('mousedown', '.subordinate__item', function (e) {
+        dragItem = $(this);
+        if (dragItem.hasClass('subordinate__item_active')) return;
+        shiftY = e.clientY - dragItem.offset().top;
+        shiftX = e.clientX - dragItem.offset().left;
+        timer = setTimeout(() => {
+            draggable = true;
+        },200);
+    });
+    departments.on('mouseup', (e) => {
+        clearTimeout(timer);
+        if(draggable) {
+            setTimeout(() => {
+                draggable = false;
+            },10);
+            let item = $(e.target).closest('.subordinate__item');
+            item.css({'display':'none'});
+            let director = $(document.elementFromPoint(e.clientX, e.clientY)).closest('.subordinate__item');
+            item.css({'display':'block'});
+            console.log(director);
+        }
+
+        return false;
+        
+    });
+
+
+
+    $(document).on('mousemove', (e) => {
+       if(draggable)  moveItem(e);
+    });
+
+    //upload file
+
+    $("input[type='file']").on('change', function () {
+
+
+        let file = this.files[0];
+
+        if(file.type.match(/image/)) {
+            $('.upload_image_container').html('');
+
+            $('.upload_image').addClass('upload_image__active');
+
+            let reader = new FileReader();
+
+            reader.readAsDataURL(file);
+
+            reader.onload = (function () {
+                setTimeout(() => {
+                    $('.upload_image').attr('src', reader.result);
+                },100)
+
+            })(file);
+
+        } else {
+            console.log('not image');
+            $('.upload_image').removeClass('upload_image__active').attr('src', '');
+            $('.upload_image_container').html('THIS IS NOT IMAGE');
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //hierarchy
+
+
+
+    });
+
+
+    function moveItem (e) {
+        dragItem.css({
+            'position':'absolute',
+            'left':`${e.clientX - shiftX}px`,
+            'top':`${e.clientY - shiftY}px`,
+            'z-index':'10'
+        })
+    }
 
 
     function getWorkersList (hierarchy) {
@@ -127,42 +241,9 @@ $(document).ready(() => {
             '    </li>\n' +
             '</ul>';
     }
-
-    let vipadashka = '<ul class="subordinate" data-hierarchy="3">\n' +
-                    '    <li class="subordinate__item">\n' +
-                    '        <p class="name">Petro Shkalik</p>\n' +
-                    '        <p class="position">Rab</p>\n' +
-                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-                    '    </li>\n' +
-                    '    <li class="subordinate__item">\n' +
-                    '        <p class="name">Petro Shkalik</p>\n' +
-                    '        <p class="position">Rab</p>\n' +
-                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-                    '    </li>\n' +
-                    '    <li class="subordinate__item">\n' +
-                    '        <p class="name">Petro Shkalik</p>\n' +
-                    '        <p class="position">Rab</p>\n' +
-                    '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-                    '    </li>\n' +
-                    '</ul>';
-
-    departmentContent.on('click','.subordinate__item', function () {
-        let hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
-
-        if(hierarchy == 5) return;
-
-        $(this).parent().find('.subordinate__item').removeClass('subordinate__item_active');
-        $(this).addClass('subordinate__item_active');
-
-        $('.subordinate').each((i, item) => {
-            if($(item).attr('data-hierarchy') > hierarchy + 2) {
-                $(item).remove();
-            }
-        });
-
-        let verstka = getWorkersList(+hierarchy + 1);
-
-        departmentContent.append(verstka);
-    });
+    
+    
 
 });
+
+
