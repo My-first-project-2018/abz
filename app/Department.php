@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * Class Department
  *
  * @package App
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $employees
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Position[] $positions
+ * @mixin \Eloquent
  */
 class Department extends Model {
 	

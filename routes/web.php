@@ -11,8 +11,12 @@
 |
 */
 
-use Illuminate\Database\Eloquent\Collection;
-
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => 'cors'], function (){
+	
+	Route::get('/',['as' => 'showDepartments', 'uses' => 'DepartmentController@showDepartments']);
+	
+	Route::get('department-employees/{department}',['as' => 'departmentEmployees', 'uses' => 'DepartmentController@showDepartmentEmployees']);
+	
+	Route::get('employee-subordinates/{employee}',['as' => 'employeeSubordinates', 'uses' => 'EmployeeController@showEmployeeSubordinates']);
+	
 });

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Department;
+use App\Employee;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -27,7 +29,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->bind('department',function ($slug){
+        	return Department::whereSlug($slug)->first();
+        });
+	
+	    $this->bind('employee',function ($slug){
+		    return Employee::whereHash($slug)->first();
+	    });
 
         parent::boot();
     }
