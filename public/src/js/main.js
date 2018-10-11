@@ -16,10 +16,8 @@ $(document).ready(() => {
 
 
 //dich
-
-    let departments = $('.departments__item'),
-        departmentContent = $('.departments__content'),
-        closeDepartment = $('.close_department'),
+    let
+        body = $('body'),
         loginWindow = $('.login_window'),
         timer,
         draggable = false,
@@ -28,9 +26,10 @@ $(document).ready(() => {
         shiftX,
         isOpened = false,
         leftPos,
-        topPos;
+        topPos,
+        hierarchy;
 
-    $('body').click((e) => {
+    body.click((e) => {
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
     });
 
@@ -38,10 +37,21 @@ $(document).ready(() => {
         loginWindow.slideToggle();
     });
 
-    departments.on('click',function () {
+    body.on('click', '.departments__item', function () {
         if(isOpened) {
             return;
         }
+        let url = $(this).attr('data-url');
+        console.log(url);
+
+        $.ajax({
+            url: url,
+            // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'GET',
+            success: (html) => {
+                $(this).append(html);
+            }
+        });
 
         leftPos = $(this).offset().left;
         topPos = $(this).offset().top;
@@ -49,7 +59,7 @@ $(document).ready(() => {
         $(this).css({'top':`${topPos - 20}px`});
         setTimeout(() => {
             $(this).addClass('departments__item_active');
-            departments.each((i, item) => {
+            $('.departments__item').each((i, item) => {
                 if (item !== this) {
                     $(item).addClass('departments__item_disabled');
                 }
@@ -67,7 +77,8 @@ $(document).ready(() => {
 
     });
 
-    closeDepartment.on('click', function () {
+    body.on('click', '.close_department',  function () {
+        $(this).siblings('.departments__content').remove();
         let departmentItem = $(this).parent();
         departmentItem.find('.departments__content').removeClass('departments__content_active visible');
         $(this).removeClass('close_department_active');
@@ -84,7 +95,7 @@ $(document).ready(() => {
                 'left':'auto',
                 'top':'auto'
             });
-            departments.each((i, item) => {
+            $('.departments__item').each((i, item) => {
                 if (item !== this) {
                     $(item).removeClass('departments__item_disabled');
                 }
@@ -94,8 +105,8 @@ $(document).ready(() => {
     });
 
 
-    departmentContent.on('click','.subordinate__item', function () {
-        let hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
+    body.on('click','.subordinate__item', function () {
+        hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
 
         if(hierarchy == 5) return;
 
@@ -108,16 +119,17 @@ $(document).ready(() => {
                     $(item).remove();
                 }
             });
-            let verstka = getWorkersList(+hierarchy + 1);
+            // let verstka = getWorkersList(+hierarchy + 1);
 
-            departmentContent.append(verstka);
+            console.log(123)
+            // $(this).closest('.departments__content').append(verstka);
         }
     });
 
 
     //drag'n'drop 
 
-    departmentContent.on('mousedown', '.subordinate__item', function (e) {
+    body.on('mousedown', '.subordinate__item', function (e) {
         dragItem = $(this);
         if (dragItem.hasClass('subordinate__item_active')) return;
         shiftY = e.clientY - dragItem.offset().top;
@@ -126,7 +138,9 @@ $(document).ready(() => {
             draggable = true;
         },200);
     });
-    departments.on('mouseup', (e) => {
+
+
+    body.on('mouseup', (e) => {
         clearTimeout(timer);
         if(draggable) {
             setTimeout(() => {
@@ -143,8 +157,6 @@ $(document).ready(() => {
         
     });
 
-
-
     $(document).on('mousemove', (e) => {
        if(draggable)  moveItem(e);
     });
@@ -152,7 +164,6 @@ $(document).ready(() => {
     //upload file
 
     $("input[type='file']").on('change', function () {
-
 
         let file = this.files[0];
 
@@ -173,19 +184,9 @@ $(document).ready(() => {
             })(file);
 
         } else {
-            console.log('not image');
             $('.upload_image').removeClass('upload_image__active').attr('src', '');
             $('.upload_image_container').html('THIS IS NOT IMAGE');
         }
-
-
-
-
-
-
-
-
-
 
 
 
