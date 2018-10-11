@@ -28,7 +28,7 @@ class SubordinateEmployeesTableSeeder extends Seeder {
 				
 				$employees = $department->employees;
 				$bossDepartment = $employees->shift();
-				$subordinateBoss = $employees->splice( 0, 20 );
+				$subordinateBoss = $employees->splice( 0, 600 );
 				
 				$this->writeToStrData( $bossDepartment,
 					$subordinateBoss->pluck( ['id'] )->toArray() );
@@ -51,9 +51,9 @@ class SubordinateEmployeesTableSeeder extends Seeder {
 	public function distributionEmployees (Collection $employees, Collection $bossDepartment): void
 	{
 		if($employees->isNotEmpty()){
-			$subordinate = $employees->splice(0,500);
+			$subordinate = $employees->splice(0,50);
 			
-			$subordinateEmployees = $subordinate->chunk(random_int(50,100));
+			$subordinateEmployees = $subordinate->chunk(5);
 			$subordinateEmployees->each(function ($item) use ($bossDepartment){
 				
 				$boss = $bossDepartment->random();

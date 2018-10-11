@@ -31,7 +31,7 @@ class DepartmentController extends Controller
 	public function showDepartments (): View
 	{
 	    $departments = $this->service->getDepartments();
-	   
+	  
 	    return  view('departments')->with(compact('departments'));
     }
 	
