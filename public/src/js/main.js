@@ -108,6 +108,25 @@ $(document).ready(() => {
     body.on('click','.subordinate__item', function () {
         hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
 
+        let url = $(this).attr('data-url');
+
+        $.ajax({
+            url: url,
+            // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'GET',
+            success: (html) => {
+                if($(html).html() === 'No records') return false;
+                // $(html)[0].attr(`data-hierarchy`, +hierarchy + 1);
+                // console.log($(html).first().closest('.subordinate').attr('data-hierarchy', +hierarchy + 1));
+                // console.log(html)
+                $(this).closest('.departments__content').append(html);
+                $('.departments__content').find('.subordinate:last-child').attr('data-hierarchy', +hierarchy + 1);
+
+            }
+        });
+        
+        
+        
         if(hierarchy == 5) return;
 
         if(!draggable) {
@@ -121,7 +140,6 @@ $(document).ready(() => {
             });
             // let verstka = getWorkersList(+hierarchy + 1);
 
-            console.log(123)
             // $(this).closest('.departments__content').append(verstka);
         }
     });
@@ -205,6 +223,10 @@ $(document).ready(() => {
             'top':`${e.clientY - shiftY}px`,
             'z-index':'10'
         })
+    }
+    
+    function ajax () {
+        
     }
 
 
