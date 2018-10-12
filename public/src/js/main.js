@@ -47,6 +47,8 @@ $(document).ready(() => {
     body.on('click','.subordinate__item', function () {
         //do not show subordinate when user drop item
         if(dragItem[0] === this && draggable) return;
+        
+        if($(this).find('.show_subordinate').length === 0) return;
 
         hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
 
@@ -67,7 +69,7 @@ $(document).ready(() => {
 
 
 
-    body.on('mouseup', (e) => {
+    body.on('mouseup', function (e) {
         dropDraggableItemAndFindDirector(e);
     });
 
@@ -100,6 +102,7 @@ $(document).ready(() => {
             type: 'GET',
             success: (html) => {
                 $(this).append(html);
+                $(this).find('.departments__content').addClass('visible');
             }
         });
         //set absolute position to beauty animate
@@ -120,7 +123,6 @@ $(document).ready(() => {
         //make visible department items
         setTimeout(() => {
             $(this).find('.close_department').addClass('close_department_active');
-            $(this).find('.departments__content').addClass('visible');
         },400);
     }
 
@@ -193,11 +195,46 @@ $(document).ready(() => {
             setTimeout(() => {
                 draggable = false;
             },10);
+
             let item = $(e.target).closest('.subordinate__item');
+            // hide to get item under
             item.css({'display':'none'});
             let director = $(document.elementFromPoint(e.clientX, e.clientY)).closest('.subordinate__item');
             item.css({'display':'block'});
-            console.log(director);
+
+            let url = $(director).attr('data-url');
+            //return item to start place if that dropped not on subordinate
+            if(url === undefined) {
+                setTimeout(()=> {
+                    $(item).css({
+                        'position':'relative',
+                        'left':0,
+                        'top':0
+                    });
+                    alert('Сотрудника можно переместить только на его будущего босса !!!');
+                },10);
+                return;
+            }
+            let newBossHash = getHashFromUrl(url);
+            url = $(dragItem).attr('data-url');
+            let employeeHash = getHashFromUrl(url);
+            url = $('.departments').attr('data-rewrite-boss-employee');
+            $.ajax({
+                url: url,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                type: 'POST',
+                data: {
+                    newBoss: newBossHash,
+                    employee: employeeHash,
+                },
+                success: () => {
+                    console.log(item)
+                }
+            });
+
+
         }
         return false;
     }
@@ -225,6 +262,11 @@ $(document).ready(() => {
             $('.upload_image').removeClass('upload_image__active').attr('src', '');
             $('.upload_image_container').html('THIS IS NOT IMAGE');
         }
+    }
+
+    function getHashFromUrl (url) {
+        url = url.split('/');
+        return url[url.length - 1];
     }
 
 });
