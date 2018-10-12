@@ -203,7 +203,6 @@ h1.company:hover, h1.company a:hover {
 
 .departments__item_active {
     position: absolute !important;
-    opacity: 1 !important;
     background: #151212 !important;
     width: 100%;
     margin: 0 auto;
@@ -244,15 +243,11 @@ h1.company:hover, h1.company a:hover {
 }
 
 .departments__content {
-    display: none;
+    display: flex;
     flex-grow: 1;
     align-items: center;
     padding: 20px;
     opacity: 0;
-}
-
-.departments__content_active {
-    display: flex !important;
 }
 
 .director {
