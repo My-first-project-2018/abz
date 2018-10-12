@@ -50,6 +50,7 @@ $(document).ready(() => {
             type: 'GET',
             success: (html) => {
                 $(this).append(html);
+                console.log($(html).find('.subordinate__item').length);
             }
         });
 
@@ -106,7 +107,10 @@ $(document).ready(() => {
 
 
     body.on('click','.subordinate__item', function () {
+
         hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
+
+        if(hierarchy == 5) return;
 
         let url = $(this).attr('data-url');
 
@@ -116,18 +120,11 @@ $(document).ready(() => {
             type: 'GET',
             success: (html) => {
                 if($(html).html() === 'No records') return false;
-                // $(html)[0].attr(`data-hierarchy`, +hierarchy + 1);
-                // console.log($(html).first().closest('.subordinate').attr('data-hierarchy', +hierarchy + 1));
-                // console.log(html)
                 $(this).closest('.departments__content').append(html);
                 $('.departments__content').find('.subordinate:last-child').attr('data-hierarchy', +hierarchy + 1);
 
             }
         });
-        
-        
-        
-        if(hierarchy == 5) return;
 
         if(!draggable) {
             $(this).parent().find('.subordinate__item').removeClass('subordinate__item_active');

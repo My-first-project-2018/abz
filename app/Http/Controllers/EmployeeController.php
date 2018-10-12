@@ -34,7 +34,6 @@ class EmployeeController extends Controller
 	{
 		/** @var \App\Employee $employee */
 		$employees = $this->service->getEmployeeSubordinates($employee);
-		
 		return view('employeeSubordinates')->with(compact('employees'));
 	}
 }

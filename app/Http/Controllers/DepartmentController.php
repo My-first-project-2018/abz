@@ -6,7 +6,6 @@ use App\Department;
 use App\Http\Services\DepartmentService;
 use Illuminate\View\View;
 
-
 /**
  * Class DepartmentController
  *
@@ -31,7 +30,7 @@ class DepartmentController extends Controller
 	public function showDepartments (): View
 	{
 	    $departments = $this->service->getDepartments();
-	  
+
 	    return  view('departments')->with(compact('departments'));
     }
 	
@@ -43,7 +42,7 @@ class DepartmentController extends Controller
 	public function showDepartmentEmployees (Department $department) : View
     {
 	    $employees = $this->service->getDepartmentEmployees($department);
-   
+	  
     	return view('departmentEmployees')->with(compact('employees'));
     }
     

@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Department;
+use App\Employee;
 use App\Http\Repositories\DepartmentRepository;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -31,10 +32,15 @@ class DepartmentService {
 	 */
 	public function getDepartments () : Collection
 	{
-		return $this->repository->all(); ;
+		return $this->repository->allWithCountEmployees();
 	}
 	
-	public function getDepartmentEmployees (Department $department)
+	/**
+	 * @param \App\Department $department
+	 *
+	 * @return \Illuminate\Database\Eloquent\Model|mixed|null|object|static
+	 */
+	public function getDepartmentEmployees (Department $department) : ?Employee
 	{
 		$departmentBoss = $department->employees()
 	                                 ->with(['subordinate.position','position'])

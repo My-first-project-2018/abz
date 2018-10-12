@@ -33,6 +33,6 @@ class EmployeeService {
 	 */
 	public function getEmployeeSubordinates (Employee $employee) : Collection
 	{
-		return $employee->subordinate->load('position');
+		return $employee->subordinate->load(['position','subordinate']);
 	}
 }

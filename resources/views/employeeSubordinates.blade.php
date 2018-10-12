@@ -4,7 +4,9 @@
                     <li class="subordinate__item" data-url="{{route('employeeSubordinates',['employee' => $subordinate->hash ])}}">
                         <p class="name">{{$subordinate->first_name.' '.$subordinate->last_name}}</p>
                         <p class="position">{{$subordinate->position->name}}</p>
-                        <div class="show_subordinate"><img src="{{asset('img/next.svg')}}" alt=""></div>
+                        @if($subordinate->subordinate->isNotEmpty())
+                             <div class="show_subordinate"><img src="{{asset('img/next.svg')}}" alt=""></div>
+                        @endif
                     </li>
                 @endforeach
         </ul>

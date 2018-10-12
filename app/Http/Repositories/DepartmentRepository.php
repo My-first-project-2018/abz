@@ -31,5 +31,13 @@ class DepartmentRepository extends BaseRepository {
 	{
 		return $this->model->all();
 	}
+	
+	/**
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+	 */
+	public function allWithCountEmployees () : Collection
+	{
+		return $this->model->withCount('employees')->get();
+	}
 
 }
