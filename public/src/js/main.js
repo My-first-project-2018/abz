@@ -1,8 +1,19 @@
 $(document).ready(() => {
+    let
+        body = $('body'),
+        modal = $('.modal'),
+        loginWindow = $('.login_window'),
+        timer,
+        draggable = false,
+        dragItem = null,
+        shiftY,
+        shiftX,
+        isOpened = false,
+        leftPos,
+        topPos,
+        hierarchy;
 
 //modal window
-
-    let modal = $('.modal');
 
     $('.addUser').on('click', (e) => {
         e.preventDefault();
@@ -16,48 +27,87 @@ $(document).ready(() => {
 
 
 //dich
-    let
-        body = $('body'),
-        loginWindow = $('.login_window'),
-        timer,
-        draggable = false,
-        dragItem = null,
-        shiftY,
-        shiftX,
-        isOpened = false,
-        leftPos,
-        topPos,
-        hierarchy;
+    
 
     body.click((e) => {
+        //close login block
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
     });
+    
 
     $('.login').click(() => {
         loginWindow.slideToggle();
     });
 
-    body.on('click', '.departments__item', function () {
+    body.on('click', '.departments__item', openDepartment);
+
+    body.on('click', '.close_department',  closeDepartmentItem);
+
+
+    body.on('click','.subordinate__item', function () {
+        //do not show subordinate when user drop item
+        if(dragItem[0] === this && draggable) return;
+
+        hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
+
+        if(hierarchy == 6) return;
+        
+        showSubordinate.call(this);
+        
+        if(!draggable) makeSubordinateActive.call(this);
+    });
+
+
+
+    //drag'n'drop 
+
+    body.on('mousedown', '.subordinate__item', function (e) {
+        makeSubordinateDraggable.call(this, e);
+    });
+
+
+
+    body.on('mouseup', (e) => {
+        dropDraggableItemAndFindDirector(e);
+    });
+
+    $(document).on('mousemove', (e) => {
+       if(draggable)  moveItem(e);
+    });
+
+    //upload file
+
+    $("input[type='file']").on('change', showUploadedImage);
+
+
+    function moveItem (e) {
+        dragItem.css({
+            'position':'absolute',
+            'left':`${e.clientX - shiftX}px`,
+            'top':`${e.clientY - shiftY}px`,
+            'z-index':'10'
+        })
+    }
+
+    function openDepartment () {
         if(isOpened) {
             return;
         }
         let url = $(this).attr('data-url');
-        console.log(url);
 
         $.ajax({
             url: url,
-            // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'GET',
             success: (html) => {
                 $(this).append(html);
-                console.log($(html).find('.subordinate__item').length);
             }
         });
-
+        //set absolute position to beauty animate
         leftPos = $(this).offset().left;
         topPos = $(this).offset().top;
         $(this).css({'left':`${leftPos - 20}px`});
         $(this).css({'top':`${topPos - 20}px`});
+        //disable all other items
         setTimeout(() => {
             $(this).addClass('departments__item_active');
             $('.departments__item').each((i, item) => {
@@ -67,18 +117,14 @@ $(document).ready(() => {
             });
             isOpened = true;
         },1);
-
+        //make visible department items
         setTimeout(() => {
             $(this).find('.close_department').addClass('close_department_active');
-            $(this).find('.departments__content').addClass('departments__content_active');
-            setTimeout(() => {
-                $(this).find('.departments__content').addClass('visible');
-            },10);
+            $(this).find('.departments__content').addClass('visible');
         },400);
+    }
 
-    });
-
-    body.on('click', '.close_department',  function () {
+    function closeDepartmentItem () {
         $(this).siblings('.departments__content').remove();
         let departmentItem = $(this).parent();
         departmentItem.find('.departments__content').removeClass('departments__content_active visible');
@@ -103,20 +149,13 @@ $(document).ready(() => {
             });
             isOpened = false;
         },400);
-    });
+    }
 
-
-    body.on('click','.subordinate__item', function () {
-
-        hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
-
-        if(hierarchy == 5) return;
-
+    function showSubordinate () {
         let url = $(this).attr('data-url');
 
         $.ajax({
             url: url,
-            // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'GET',
             success: (html) => {
                 if($(html).html() === 'No records') return false;
@@ -125,26 +164,20 @@ $(document).ready(() => {
 
             }
         });
+    }
 
-        if(!draggable) {
-            $(this).parent().find('.subordinate__item').removeClass('subordinate__item_active');
-            $(this).addClass('subordinate__item_active');
+    function makeSubordinateActive () {
+        $(this).parent().find('.subordinate__item').removeClass('subordinate__item_active');
+        $(this).addClass('subordinate__item_active');
 
-            $('.subordinate').each((i, item) => {
-                if($(item).attr('data-hierarchy') > hierarchy + 2) {
-                    $(item).remove();
-                }
-            });
-            // let verstka = getWorkersList(+hierarchy + 1);
+        $('.subordinate').each((i, item) => {
+            if($(item).attr('data-hierarchy') > hierarchy + 2) {
+                $(item).remove();
+            }
+        });
+    }
 
-            // $(this).closest('.departments__content').append(verstka);
-        }
-    });
-
-
-    //drag'n'drop 
-
-    body.on('mousedown', '.subordinate__item', function (e) {
+    function makeSubordinateDraggable (e) {
         dragItem = $(this);
         if (dragItem.hasClass('subordinate__item_active')) return;
         shiftY = e.clientY - dragItem.offset().top;
@@ -152,10 +185,9 @@ $(document).ready(() => {
         timer = setTimeout(() => {
             draggable = true;
         },200);
-    });
+    }
 
-
-    body.on('mouseup', (e) => {
+    function dropDraggableItemAndFindDirector (e) {
         clearTimeout(timer);
         if(draggable) {
             setTimeout(() => {
@@ -167,19 +199,10 @@ $(document).ready(() => {
             item.css({'display':'block'});
             console.log(director);
         }
-
         return false;
-        
-    });
-
-    $(document).on('mousemove', (e) => {
-       if(draggable)  moveItem(e);
-    });
-
-    //upload file
-
-    $("input[type='file']").on('change', function () {
-
+    }
+    
+    function showUploadedImage () {
         let file = this.files[0];
 
         if(file.type.match(/image/)) {
@@ -202,67 +225,7 @@ $(document).ready(() => {
             $('.upload_image').removeClass('upload_image__active').attr('src', '');
             $('.upload_image_container').html('THIS IS NOT IMAGE');
         }
-
-
-
-
-        //hierarchy
-
-
-
-    });
-
-
-    function moveItem (e) {
-        dragItem.css({
-            'position':'absolute',
-            'left':`${e.clientX - shiftX}px`,
-            'top':`${e.clientY - shiftY}px`,
-            'z-index':'10'
-        })
     }
-    
-    function ajax () {
-        
-    }
-
-
-    function getWorkersList (hierarchy) {
-        return `<ul class="subordinate" data-hierarchy="${hierarchy}">\n` +
-            '    <li class="subordinate__item">\n' +
-            '        <p class="name">Petro Shkalik</p>\n' +
-            '        <p class="position">Rab</p>\n' +
-            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-            '    </li>\n' +
-            '    <li class="subordinate__item">\n' +
-            '        <p class="name">Petro Shkalik</p>\n' +
-            '        <p class="position">Rab</p>\n' +
-            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-            '    </li>\n' +
-            '    <li class="subordinate__item">\n' +
-            '        <p class="name">Petro Shkalik</p>\n' +
-            '        <p class="position">Rab</p>\n' +
-            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-            '    </li>\n' +
-            '    <li class="subordinate__item">\n' +
-            '        <p class="name">Petro Shkalik</p>\n' +
-            '        <p class="position">Rab</p>\n' +
-            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-            '    </li>\n' +
-            '    <li class="subordinate__item">\n' +
-            '        <p class="name">Petro Shkalik</p>\n' +
-            '        <p class="position">Rab</p>\n' +
-            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-            '    </li>\n' +
-            '    <li class="subordinate__item">\n' +
-            '        <p class="name">Petro Shkalik</p>\n' +
-            '        <p class="position">Rab</p>\n' +
-            '        <div class="show_subordinate"><img src="img/next.svg" alt=""></div>\n' +
-            '    </li>\n' +
-            '</ul>';
-    }
-    
-    
 
 });
 
