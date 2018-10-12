@@ -50,7 +50,7 @@ $(document).ready(() => {
 
         hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
 
-        if(hierarchy == 5) return;
+        if(hierarchy == 6) return;
         
         showSubordinate.call(this);
         
