@@ -45,32 +45,19 @@ $(document).ready(() => {
 
 
     body.on('click','.subordinate__item', function () {
-        //do not open subordinate when i drop item
+        //do not show subordinate when user drop item
         if(dragItem[0] === this && draggable) return;
+
+        hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
+
+        if(hierarchy == 5) return;
         
         showSubordinate.call(this);
         
         if(!draggable) makeSubordinateActive.call(this);
     });
 
-    function showSubordinate () {
-        hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
 
-        if(hierarchy == 5) return;
-
-        let url = $(this).attr('data-url');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: (html) => {
-                if($(html).html() === 'No records') return false;
-                $(this).closest('.departments__content').append(html);
-                $('.departments__content').find('.subordinate:last-child').attr('data-hierarchy', +hierarchy + 1);
-
-            }
-        });
-    }
 
     //drag'n'drop 
 
@@ -164,6 +151,21 @@ $(document).ready(() => {
         },400);
     }
 
+    function showSubordinate () {
+        let url = $(this).attr('data-url');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: (html) => {
+                if($(html).html() === 'No records') return false;
+                $(this).closest('.departments__content').append(html);
+                $('.departments__content').find('.subordinate:last-child').attr('data-hierarchy', +hierarchy + 1);
+
+            }
+        });
+    }
+
     function makeSubordinateActive () {
         $(this).parent().find('.subordinate__item').removeClass('subordinate__item_active');
         $(this).addClass('subordinate__item_active');
@@ -224,8 +226,6 @@ $(document).ready(() => {
             $('.upload_image_container').html('THIS IS NOT IMAGE');
         }
     }
-
-    
 
 });
 
