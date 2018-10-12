@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Employee;
 use App\Http\Repositories\EmployeeRepository;
+use App\Http\Requests\RewriteBossEmployeeRequest;
 use Illuminate\Database\Eloquent\Collection;
 
 
@@ -34,5 +35,10 @@ class EmployeeService {
 	public function getEmployeeSubordinates (Employee $employee) : Collection
 	{
 		return $employee->subordinate->load(['position','subordinate']);
+	}
+	
+	public function rewriteBossEmployee (RewriteBossEmployeeRequest $request)
+	{
+	
 	}
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Http\Requests\RewriteBossEmployeeRequest;
 use App\Http\Services\EmployeeService;
 use Illuminate\View\View;
 
@@ -35,5 +36,10 @@ class EmployeeController extends Controller
 		/** @var \App\Employee $employee */
 		$employees = $this->service->getEmployeeSubordinates($employee);
 		return view('employeeSubordinates')->with(compact('employees'));
+	}
+	
+	public function rewriteBossEmployee (RewriteBossEmployeeRequest $request)
+	{
+		dd($request);
 	}
 }

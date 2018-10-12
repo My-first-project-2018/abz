@@ -19,4 +19,6 @@ Route::group(['middleware' => 'cors'], function (){
 	
 	Route::get('employee-subordinates/{employee}',['as' => 'employeeSubordinates', 'uses' => 'EmployeeController@showEmployeeSubordinates']);
 	
+	Route::post('rewrite-boss-employee/{employee?}/{employee?}',['as' => 'rewriteBossEmployee', 'uses' => 'EmployeeController@rewriteBossEmployee']);
+	
 });

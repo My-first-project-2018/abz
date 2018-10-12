@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="departments">
+    <div class="departments" data-rewrite-boss-employee="{{route('rewriteBossEmployee')}}">
         @foreach($departments as $department)
             <div class="departments__item"  data-url="{{route('departmentEmployees',['department' => $department->slug ])}}">
                 <p>{{$department->name}}</p>

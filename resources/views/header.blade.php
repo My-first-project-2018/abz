@@ -1,8 +1,11 @@
-<h1 class="company">Abz test</h1>
+<h1 class="company">Abz.agensy test</h1>
 <div class="buttons">
-    <button class="btn login">Login</button>
-    <button class="btn logout">Logout</button>
-    <button class="btn crud"><a href="crud.html">CRUD</a></button>
+    @guest
+        <button class="btn login">Login</button>
+    @else
+        <button class="btn logout">Logout</button>
+        <button class="btn crud"><a href="crud.html">CRUD</a></button>
+    @endguest
 </div>
 <form action="#" method="post" class="login_window">
     <input type="text" placeholder="Login">
