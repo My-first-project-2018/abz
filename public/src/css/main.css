@@ -401,7 +401,7 @@ h1.company:hover, h1.company a:hover {
 
 .employees {
     position: relative;
-    max-height: 600px;
+    max-height: 500px;
     flex-grow: 1;
     overflow-y: scroll;
     margin-right: 20px;

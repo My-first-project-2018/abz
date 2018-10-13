@@ -90,7 +90,10 @@ $(document).ready(() => {
                 } else {
                     if(searchFlag) {
                         // changeDepartment.call(department);
-                        $('.employees__item').css({'display':'flex'});
+                        $('.employees__item:visible').remove();
+                        setTimeout(() => {
+                            $('.employees__item').css({'display':'flex'});
+                        },100);
                     }
                 }
             },300);
