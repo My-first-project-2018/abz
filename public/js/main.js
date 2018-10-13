@@ -332,14 +332,13 @@ $(document).ready(() => {
 
     let depart = $('#department').val();
     let attr = $('.employees').attr('current_page');
-    let page = 1;
+    let page = 2;
     let maxPage = $('.employees').attr('last_page');
     $('.employees').on('scroll', function () {
 
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
             if(page > maxPage) return;
             let newAttr = attr + `/${depart}?page=${page}`;
-            console.log(depart)
             $.ajax({
                 url: newAttr,
                 headers: {
@@ -347,6 +346,7 @@ $(document).ready(() => {
                 },
                 method: "GET",
                 success: (result) => {
+                    $(this).append(result);
                     console.log(result)
                 }
             });
