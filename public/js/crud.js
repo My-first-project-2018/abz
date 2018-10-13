@@ -18,7 +18,7 @@ $(document).ready(() => {
         
         ajaxPost(sort, {sort: this.value, orderBy: order}, (result) => {
             $('.employees').remove();
-            $('.crud__content').append(content);
+            $('.crud__content').append(result);
             setTimeout(() => {
                 newEmployees = $('.employees');
                 addEmployeesScrollEvent(newEmployees);
