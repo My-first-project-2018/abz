@@ -317,10 +317,7 @@ $(document).ready(() => {
         }
     }
 
-    function getHashFromUrl (url) {
-        url = url.split('/');
-        return url[url.length - 1];
-    }
+
 
 
 
@@ -332,3 +329,7 @@ $(document).ready(() => {
 });
 
 
+function getHashFromUrl (url) {
+    url = url.split('/');
+    return url[url.length - 1];
+}

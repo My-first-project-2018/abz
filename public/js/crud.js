@@ -44,14 +44,16 @@ function addEmployeesScrollEvent (newEmployees) {
 
 
             let departmentVal = department.val();
+            let hash = getHashFromUrl(departmentVal);
+
 
 
             let attr = $(this).attr('current_page');
             let maxPage = $(this).attr('last_page');
-            console.log(departmentVal)
+            console.log(departmentVal);
             if(page > maxPage) return;
-            let newAttr = attr + `/${departmentVal}?page=${page}`;
-            console.log(newAttr)
+            let newAttr = attr + `/${hash}?page=${page}`;
+            // console.log(newAttr);
             $.ajax({
                 url: newAttr,
                 headers: {
