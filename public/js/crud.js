@@ -1,3 +1,4 @@
+
 $(document).ready(() => {
 
 
@@ -40,20 +41,12 @@ $(document).ready(() => {
 function addEmployeesScrollEvent (newEmployees) {
     newEmployees.on('scroll', function () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
-
-
-
             let departmentVal = department.val();
             let hash = getHashFromUrl(departmentVal);
-
-
-
             let attr = $(this).attr('current_page');
             let maxPage = $(this).attr('last_page');
-            console.log(departmentVal);
             if(page > maxPage) return;
             let newAttr = attr + `/${hash}?page=${page}`;
-            // console.log(newAttr);
             $.ajax({
                 url: newAttr,
                 headers: {
@@ -65,8 +58,6 @@ function addEmployeesScrollEvent (newEmployees) {
                     // console.log(result)
                 }
             });
-
-            $(this).attr('current_page', newAttr);
             page++;
         }
     })

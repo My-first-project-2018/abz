@@ -130,9 +130,9 @@ $(document).ready(() => {
             alert(errorMessage);
         } else {
             alert(result.error);
-            
+
         }
-        
+
     }
 
     function openDepartment () {
@@ -259,30 +259,52 @@ $(document).ready(() => {
             let employeeHash = getHashFromUrl(url);
             url = $('.departments').attr('data-rewrite-boss-employee');
 
-            $.ajax({
-                url: url,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                type: 'POST',
-                data: {
-                    newBoss: newBossHash,
-                    employee: employeeHash,
-                },
-                success: (result) => {
-                    if(result.success){
-                        $(item).remove();
-                        alert('good!');
-                        $(director).trigger('click');
-                    } else { //error
-                        placeItemBack($(item));
-                        showAjaxValidateError(result);
-                    }
+            // $.ajax({
+            //     url: url,
+            //     headers: {
+            //         'Content-Type': 'application/x-www-form-urlencoded'
+            //     },
+            //     type: 'POST',
+            //     data: {
+            //         newBoss: newBossHash,
+            //         employee: employeeHash,
+            //     },
+            //     success: (result) => {
+            //         if(result.success){
+            //             $(item).remove();
+            //             alert('good!');
+            //             $(director).trigger('click');
+            //         } else { //error
+            //             placeItemBack($(item));
+            //             showAjaxValidateError(result);
+            //         }
+            //     }
+            // });
+            ajaxPost(url, {newBoss: newBossHash, employee: employeeHash}, function (result) {
+                if(result.success){
+                    $(item).remove();
+                    alert('good!');
+                    $(director).trigger('click');
+                } else { //error
+                    placeItemBack($(item));
+                    showAjaxValidateError(result);
                 }
-            });
+            })
         }
     }
-    
+
+    function ajaxPost (url, data, success) {
+        $.ajax({
+            url: url,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            type: 'POST',
+            data: data,
+            success: success
+        });
+    }
+
     function placeItemBack (item) {
         item.css({
             'position':'relative',
@@ -316,15 +338,6 @@ $(document).ready(() => {
             $('.upload_image_container').html('THIS IS NOT IMAGE');
         }
     }
-
-
-
-
-
-
-
-    //crud
-
 
 });
 
