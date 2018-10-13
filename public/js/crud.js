@@ -3,8 +3,23 @@
 $(document).ready(() => {
 
     let department = $('#department'),
+        sortUrl = $('.order').attr('data-url'),
         page = 2,
         newEmployees = null;
+
+
+    $('#sort').on('change', function () {
+        let hash = getHashFromUrl(department.val());
+        let sort = `${sortUrl}/${hash}`;
+
+        let order = $('.order').find('input:checked').val();
+
+        console.log(this.value,'__', sort, '__', order)
+        
+        ajaxPost(sort, {sort: this.value, orderBy: order}, (result) => {
+           console.log(result) 
+        });
+    });
 
     addEmployeesScrollEvent($('.employees'));
 

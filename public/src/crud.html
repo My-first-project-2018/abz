@@ -46,12 +46,12 @@
             <label for="sort">Сортировать</label>
             <select id="sort" name="sort">
                 <option>Без сортировки</option>
-                <option>First Name</option>
-                <option>Last Name</option>
+                <option value="first_name">First Name</option>
+                <option value="last_name">Last Name</option>
                 <option>Salary</option>
                 <option>Position</option>
             </select>
-            <div class="order">
+            <div class="order" data-url="http://192.168.1.6:8080/orderBy-employees">
                 <label>po ubivaniu
                     <input name="orderBy" type="radio" value="desk" checked>
                 </label>
