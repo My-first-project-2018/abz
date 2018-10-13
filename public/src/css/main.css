@@ -413,6 +413,7 @@ h1.company:hover, h1.company a:hover {
     align-items: center;
     justify-content: space-between;
     height: 50px;
+    cursor: pointer;
 }
 .employees__item:not(:last-child) {
     border-bottom: 1px solid #842828;
