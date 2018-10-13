@@ -4,6 +4,7 @@ $(document).ready(() => {
 
     let department = $('#department'),
         sortUrl = $('.order').attr('data-url'),
+        searchFlag = false,
         page = 2,
         timer,
         newEmployees = null;
@@ -12,9 +13,7 @@ $(document).ready(() => {
 
     $('#sort').on('change', sortEmployees);
     
-    $('body').on('change', '.search__form', function () {
-       console.log(this)
-    });
+
 
     department.on('change', changeDepartment);
 
@@ -30,6 +29,9 @@ $(document).ready(() => {
 
         ajaxGet(url, (content) => {
             appendNewEmployee(content);
+            setTimeout(() => {
+                addInputChangeEvent($('.search__form').find('input[name=value]'))
+            },100)
         })
     }
 
@@ -74,15 +76,21 @@ $(document).ready(() => {
             clearTimeout(timer);
             timer = setTimeout(() => {
                 if($(this).val().length > 2) {
+                    searchFlag = true;
                     let url = $(this).closest('form').attr('action');
                     let field = $('select[name=field]').val();
                     let value = $(this).val();
 
                     ajaxPost(url, {field, value}, (result) => {
                         console.log(result);
-                        $('.employees__item').remove();
-                        $('employees').append(result);
+                        $('.employees__item').css({'display':'none'});
+                        $('.employees').append(result);
                     })
+                } else {
+                    if(searchFlag) {
+                        // changeDepartment.call(department);
+                        $('.employees__item').css({'display':'flex'});
+                    }
                 }
             },300);
         })
