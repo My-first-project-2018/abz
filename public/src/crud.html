@@ -23,7 +23,7 @@
             <label for="department">Отдел</label>
             <select id="department">
                 <option>department1</option>
-                <option>2</option>
+                <option value="http://192.168.1.6:8080/employees-department/department1">department1</option>
                 <option>3</option>
                 <option>4</option>
                 <option>5</option>
@@ -54,7 +54,7 @@
             <button class="btn addUser">Add User</button>
         </form>
     </aside>
-    <div class="employees" current_page="http://192.168.1.6:8080/employees-department" last_page="5">
+    <div class="employees" current_page="http://192.168.1.6:8080/next-page-employees" last_page="5">
         <form action="#" class="search__form">
             <p>Search employee:</p>
             <select name="search-employee">
@@ -493,5 +493,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="../js/main.js"></script>
+<script src="../js/crud.js"></script>
 </body>
 </html>
