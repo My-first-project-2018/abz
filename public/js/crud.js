@@ -5,12 +5,9 @@ $(document).ready(() => {
 
 
 
+
+
     let department = $('#department');
-
-
-    let departmentVal = department.val();
-
-
     let page = 2;
 
     let newEmployees = null;
@@ -43,6 +40,12 @@ $(document).ready(() => {
 function addEmployeesScrollEvent (newEmployees) {
     newEmployees.on('scroll', function () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
+
+
+
+            let departmentVal = department.val();
+
+
             let attr = $(this).attr('current_page');
             let maxPage = $(this).attr('last_page');
             console.log(departmentVal)
