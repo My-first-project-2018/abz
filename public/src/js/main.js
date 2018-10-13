@@ -41,7 +41,6 @@ $(document).ready(() => {
                     location.reload();
                     return;
                 }
-                console.log(answer.success);
                 showAjaxValidateError(answer);
             }
         })
@@ -131,6 +130,7 @@ $(document).ready(() => {
             alert(errorMessage);
         } else {
             alert(result.error);
+            
         }
         
     }
@@ -250,12 +250,7 @@ $(document).ready(() => {
             //return item to start place if that dropped not on subordinate
             if(url === undefined) {
                 setTimeout(()=> {
-                    $(item).css({
-                        'position':'relative',
-                        'left':0,
-                        'top':0
-                    });
-                    alert('Сотрудника можно переместить только на его будущего босса !!!');
+                    placeItemBack($(item));
                 },10);
                 return;
             }
@@ -271,7 +266,7 @@ $(document).ready(() => {
                 },
                 type: 'POST',
                 data: {
-                    newBoss: 123,
+                    newBoss: newBossHash,
                     employee: employeeHash,
                 },
                 success: (result) => {
@@ -280,11 +275,21 @@ $(document).ready(() => {
                         alert('good!');
                         $(director).trigger('click');
                     } else { //error
+                        placeItemBack($(item));
                         showAjaxValidateError(result);
                     }
                 }
             });
         }
+    }
+    
+    function placeItemBack (item) {
+        item.css({
+            'position':'relative',
+            'left':0,
+            'top':0
+        });
+        alert('Сотрудника можно переместить только на его будущего босса !!!');
     }
 
     function showUploadedImage () {
@@ -326,11 +331,25 @@ $(document).ready(() => {
 
 
 
-
+    let attr = $('.employees').attr('current_page');
+    let page = 1;
+    let maxPage = $('.employees').attr('last_page');
     $('.employees').on('scroll', function () {
 
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
-            console.log('yee')
+            if(page > maxPage) return;
+            let newAttr = attr + `?page=${page}`;
+            
+            $.ajax({
+                url: newAttr,
+                method: "GET",
+                success: (result) => {
+                    console.log(result)
+                }
+            });
+            
+            $(this).attr('current_page', newAttr);
+            page++;
         }
     })
 });
