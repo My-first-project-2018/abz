@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(() => {
     let
         body = $('body'),
@@ -15,15 +17,48 @@ $(document).ready(() => {
 
 //modal window
 
-    $('.addUser').on('click', (e) => {
+
+    function openModal (content) {
+        $('.modal').append(content);
+    }
+
+
+    body.on('submit', '.login_window', function (e) {
+        e.preventDefault();
+        let log = $(this).find('input[name=login]').val();
+        let pass = $(this).find('input[name=password]').val();
+        let url = $(this).attr('action');
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: {
+                login: log,
+                password: pass
+            },
+            success: (answer) => {
+                if(answer.success) {
+                    location.reload();
+                    return;
+                }
+                console.log(answer.success);
+                showAjaxValidateError(answer);
+            }
+        })
+    });
+
+
+    body.on('click', '.addUser', (e) => {
         e.preventDefault();
         modal.css({'display':'flex'});
     });
 
-
-    $('.modal__close').on('click', () => {
-        modal.css({'display':'none'});
+    body.on('click', '.modal__close', function(e) {
+        e.preventDefault();
+        $(this).closest('.modal').css({'display':'none'});
     });
+
+    
 
 
 //dich
@@ -35,7 +70,8 @@ $(document).ready(() => {
     });
     
 
-    $('.login').click(() => {
+    $('.login').click((e) => {
+        e.preventDefault();
         loginWindow.slideToggle();
     });
 
@@ -60,27 +96,22 @@ $(document).ready(() => {
     });
 
 
-
-    //drag'n'drop 
-
+    //drag'n'drop
     body.on('mousedown', '.subordinate__item', function (e) {
         makeSubordinateDraggable.call(this, e);
     });
 
-
-
     body.on('mouseup', function (e) {
-        dropDraggableItemAndFindDirector(e);
+        dropDraggableItemAndSendAjax(e);
     });
 
     $(document).on('mousemove', (e) => {
        if(draggable)  moveItem(e);
     });
 
+
     //upload file
-
-    $("input[type='file']").on('change', showUploadedImage);
-
+    body.on('change', "input[type='file']", showUploadedImage);
 
     function moveItem (e) {
         dragItem.css({
@@ -89,6 +120,19 @@ $(document).ready(() => {
             'top':`${e.clientY - shiftY}px`,
             'z-index':'10'
         })
+    }
+
+    function showAjaxValidateError (result) {
+        let errors = result.errors;
+        if(errors) {let errorMessage = '';
+            for (let err in errors) {
+                errorMessage += `${err} : ${errors[err]} \n`;
+            }
+            alert(errorMessage);
+        } else {
+            alert(result.error);
+        }
+        
     }
 
     function openDepartment () {
@@ -189,7 +233,7 @@ $(document).ready(() => {
         },200);
     }
 
-    function dropDraggableItemAndFindDirector (e) {
+    function dropDraggableItemAndSendAjax (e) {
         clearTimeout(timer);
         if(draggable) {
             setTimeout(() => {
@@ -219,6 +263,7 @@ $(document).ready(() => {
             url = $(dragItem).attr('data-url');
             let employeeHash = getHashFromUrl(url);
             url = $('.departments').attr('data-rewrite-boss-employee');
+
             $.ajax({
                 url: url,
                 headers: {
@@ -229,16 +274,19 @@ $(document).ready(() => {
                     newBoss: newBossHash,
                     employee: employeeHash,
                 },
-                success: () => {
-                    console.log(item)
+                success: (result) => {
+                    if(result.success){
+                        $(item).remove();
+                        alert('good!');
+                        $(director).trigger('click');
+                    } else { //error
+                        showAjaxValidateError(result);
+                    }
                 }
             });
-
-
         }
-        return false;
     }
-    
+
     function showUploadedImage () {
         let file = this.files[0];
 
@@ -269,6 +317,22 @@ $(document).ready(() => {
         return url[url.length - 1];
     }
 
+
+
+
+
+    //crud
+
+
+
+
+
+    $('.employees').on('scroll', function () {
+
+        if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
+            console.log('yee')
+        }
+    })
 });
 
 

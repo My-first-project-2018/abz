@@ -25,6 +25,21 @@
                 <button class="btn addUser">Add User</button>
             </form>
         </aside>
-        @include('employeesItem')
+        @if($employees->isNotEmpty())
+        <div class="employees" current_page="{{ route('employeesDepartment') }}" last_page="{{$employees->lastPage()}}">
+            <form action="#" class="search__form">
+                <p>Search employee:</p>
+                <select name="search-employee">
+                    <option>First Name</option>
+                    <option>Last Name</option>
+                    <option>Salary</option>
+                    <option>Employment date</option>
+                    <option>boss</option>
+                </select>
+                <input type="text">
+            </form>
+            @include('employeesItem')
+        </div>
+        @endif
     </div>
 @endsection

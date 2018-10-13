@@ -1,4 +1,4 @@
-<div class="employees">
+
     @if($employees->isNotEmpty())
         @foreach($employees as $employee)
             <div class="employees__item">
@@ -23,7 +23,7 @@
                     <span class="employee__block__label">Boss</span>
                     <p>{{$employee->boss->isNotEmpty() ? $employee->boss->first()->first_name . ' ' . $employee->boss->first()->last_name : ''}}</p>
                 </div>
+                <div class="remove__item">X</div>
             </div>
         @endforeach
     @endif
-</div>
