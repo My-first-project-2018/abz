@@ -33,20 +33,26 @@ class CrudEmployeesController extends Controller
 	
 	
 	/**
+	 * @param \App\Department|null $department
+	 *
 	 * @return \Illuminate\View\View
 	 */
-	public function showEmployees () : View
+	public function showEmployees (Department $department = null) : View
 	{
 		$departments = $this->departmentService->getAllDepartments();
 		
-		$currentDepartment  =  $departments->first();
+		$currentDepartment  = $department ?: $departments->first();
 		
 		/** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $employees */
 		$employees  = $this->departmentService->getEmployeesPaginate($currentDepartment);
 		
 		$employees->setPath(route('paginationEmployees',['department' => $currentDepartment->slug]));
 		
-		return \view('crudEmployees')->with(compact(['employees', 'departments', 'currentDepartment']));
+		if(!$department){
+			return \view('crudEmployees')->with(compact(['employees', 'departments', 'currentDepartment']));
+		}
+		
+		return \view('departmentSelected')->with(compact('employees'));
 	}
 	
 	/**

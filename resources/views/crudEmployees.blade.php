@@ -11,7 +11,7 @@
                 <label for="department">Отдел</label>
                 <select id="department">
                     @foreach($departments as $department)
-                        <option {{$currentDepartment === $department ? 'selected' : '' }} >{{$department->name}}</option>
+                        <option {{$currentDepartment === $department ? 'selected' : '' }} value="{{route('employeesDepartment', ['department' => $department->slug])}}" > {{$department->name}} </option>
                     @endforeach
                 </select>
                 <label for="sort">Сортировать</label>

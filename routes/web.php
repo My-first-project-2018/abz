@@ -28,7 +28,7 @@ Route::group(['middleware' => 'cors'], function (){
 //	Route::group(['middleware' => ['auth', 'cors']], function (){
 //	Route::group(['middleware' => 'auth'], function (){
 		
-		Route::get('employees-department', ['as' => 'employeesDepartment', 'uses' => 'CrudEmployeesController@showEmployees']);
+		Route::get('employees-department/{department?}', ['as' => 'employeesDepartment', 'uses' => 'CrudEmployeesController@showEmployees']);
 		
 		Route::get('next-page-employees/{department?}', ['as' => 'paginationEmployees', 'uses' => 'CrudEmployeesController@getPaginationEmployees']);
 		
