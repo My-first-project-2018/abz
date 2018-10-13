@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Department;
 use App\Http\Services\DepartmentService;
 use App\Http\Services\EmployeeService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 
@@ -48,9 +49,24 @@ class CrudEmployeesController extends Controller
 		
 		$employees->setPath(route('paginationEmployees',['department' => $currentDepartment->slug]));
 		
+		$fields = $this->employeesService->getColumnsList();
+		
 		if(!$department){
-			return \view('crudEmployees')->with(compact(['employees', 'departments', 'currentDepartment']));
+			return \view('crudEmployees')->with(compact(['employees', 'departments', 'currentDepartment', 'fields']));
 		}
+		
+		return \view('departmentSelected')->with(compact('employees'));
+	}
+	
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Department          $department
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function showOrderByEmployees (Request $request, Department $department): View
+	{
+		$employees = $this->departmentService->getOrderByEmployees($request,$department);
 		
 		return \view('departmentSelected')->with(compact('employees'));
 	}
@@ -65,6 +81,8 @@ class CrudEmployeesController extends Controller
 		/** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $employees */
 		$employees  = $this->departmentService->getEmployeesPaginate($department);
 		
-		return \view('employeesItem')->with(compact('employees'));
+		$fields = $this->employeesService->getColumnsList();
+		
+		return \view('employeesItem')->with(compact(['employees','fields']));
 	}
 }

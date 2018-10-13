@@ -32,5 +32,7 @@ Route::group(['middleware' => 'cors'], function (){
 		
 		Route::get('next-page-employees/{department?}', ['as' => 'paginationEmployees', 'uses' => 'CrudEmployeesController@getPaginationEmployees']);
 		
+		Route::post('orderBy-employees/{department?}', ['as' => 'orderByEmployees', 'uses' => 'CrudEmployeesController@showOrderByEmployees']);
+		
 //	});
 });

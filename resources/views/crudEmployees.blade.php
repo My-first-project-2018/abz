@@ -14,14 +14,24 @@
                         <option {{$currentDepartment === $department ? 'selected' : '' }} value="{{route('employeesDepartment', ['department' => $department->slug])}}" > {{$department->name}} </option>
                     @endforeach
                 </select>
+
                 <label for="sort">Сортировать</label>
                 <select id="sort">
-                    <option>Без сортировки</option>
-                    <option>First Name</option>
-                    <option>Last Name</option>
-                    <option>Salary</option>
-                    <option>Position</option>
+                    @if(isset($fields) && !empty($fields))
+                        @foreach($fields as $key=>$field)
+                            <option value="{{$key}}">{{$field}}</option>
+                        @endforeach
+                    @endif
                 </select>
+                <div class="order" data-url="{{route('orderByEmployees')}}">
+                    <label>po ubivaniu
+                        <input name="orderBy" type="radio" value="desk" checked>
+                    </label>
+                    <br>
+                    <label>po vozrostaniyu
+                        <input name="orderBy" type="radio" value="asc">
+                    </label>
+                </div>
                 <button class="btn addUser">Add User</button>
             </form>
         </aside>
@@ -30,11 +40,11 @@
             <form action="#" class="search__form">
                 <p>Search employee:</p>
                 <select name="search-employee">
-                    <option>First Name</option>
-                    <option>Last Name</option>
-                    <option>Salary</option>
-                    <option>Employment date</option>
-                    <option>boss</option>
+                    @if(isset($fields) && !empty($fields))
+                        @foreach($fields as $key=>$field)
+                            <option value="{{$key}}">{{$field}}</option>
+                        @endforeach
+                    @endif
                 </select>
                 <input type="text">
             </form>

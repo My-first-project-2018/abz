@@ -8,6 +8,7 @@ use App\Http\Repositories\DepartmentRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 
 /**
@@ -84,5 +85,22 @@ class DepartmentService {
 	public function getFirstDepartment (): Model
 	{
 		return $this->repository->getFirstModel();
+	}
+	
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Department          $department
+	 * @param int                      $countPage
+	 *
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 */
+	public function getOrderByEmployees (Request $request, Department $department, $countPage = 50): LengthAwarePaginator
+	{
+		$departmentEmployees = $department->employees()
+		                                  ->with(['position','boss'])
+										  ->orderBy($request->get('sort'), $request->get('orderBy'))
+		                                  ->paginate($countPage);
+		
+		return $departmentEmployees;
 	}
 }

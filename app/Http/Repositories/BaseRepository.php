@@ -49,4 +49,28 @@ abstract class BaseRepository {
 	{
 		return $this->model->first();
 	}
+	
+	
+	/**
+	 * @return array
+	 */
+	public function getColumnsList () : array
+	{
+		$notFields = ['id','created_at','updated_at','hash'];
+		
+		$fields = \Schema::getColumnListing($this->model->getTable());
+	
+		$newArrFields = [];
+		foreach ($fields as $field)
+		{
+			if(!\in_array( $field, $notFields, true ))
+			{
+				$newField = str_replace('_id','',$field);
+				
+				$newArrFields[$field] = ucfirst(str_replace('_',' ',$newField));
+			}
+		}
+		
+		return $newArrFields;
+	}
 }

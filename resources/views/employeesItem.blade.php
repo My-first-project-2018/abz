@@ -15,6 +15,10 @@
                     <span class="employee__block__label">Salary</span>
                     <p>{{$employee->salary}} $</p>
                 </div>
+                <div  class="salary">
+                    <span class="employee__block__label">Position</span>
+                    <p>{{$employee->position->name}} </p>
+                </div>
                 <div class="date">
                     <span class="employee__block__label">Employment date</span>
                     <p>{{$employee->data_reception}}</p>

@@ -7,7 +7,6 @@ use App\Http\Repositories\EmployeeRepository;
 use App\Http\Requests\RewriteBossEmployeeRequest;
 use Illuminate\Database\Eloquent\Collection;
 
-
 /**
  * Class EmployeeService
  *
@@ -56,4 +55,14 @@ class EmployeeService {
 		
 		return true;
 	}
+	
+	/**
+	 * @return array
+	 */
+	public function getColumnsList () : array
+	{
+		return $this->repository->getColumnsList();
+	}
+	
+
 }
