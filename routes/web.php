@@ -25,9 +25,12 @@ Route::group(['middleware' => 'cors'], function (){
 	
 	Route::get('/logout', ['as' => 'logout', 'uses'=>'Auth\LoginController@logout']);
 
-	Route::group(['middleware' => 'auth'], function (){
+//	Route::group(['middleware' => ['auth', 'cors']], function (){
+//	Route::group(['middleware' => 'auth'], function (){
 		
 		Route::get('employees-department', ['as' => 'employeesDepartment', 'uses' => 'CrudEmployeesController@showEmployees']);
 		
-	});
+		Route::get('next-page-employees/{department?}', ['as' => 'paginationEmployees', 'uses' => 'CrudEmployeesController@getPaginationEmployees']);
+		
+//	});
 });

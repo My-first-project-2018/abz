@@ -26,7 +26,7 @@
             </form>
         </aside>
         @if($employees->isNotEmpty())
-        <div class="employees" current_page="{{ route('employeesDepartment') }}" last_page="{{$employees->lastPage()}}">
+        <div class="employees" current_page="{{ route('paginationEmployees') }}" last_page="{{$employees->lastPage()}}">
             <form action="#" class="search__form">
                 <p>Search employee:</p>
                 <select name="search-employee">

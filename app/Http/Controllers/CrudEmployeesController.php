@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\Http\Services\DepartmentService;
 use App\Http\Services\EmployeeService;
 use Illuminate\View\View;
@@ -43,6 +44,17 @@ class CrudEmployeesController extends Controller
 		/** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $employees */
 		$employees  = $this->departmentService->getEmployeesPaginate($currentDepartment);
 		
+		$employees->setPath(route('paginationEmployees',['department' => $currentDepartment->slug]));
+		
 		return \view('crudEmployees')->with(compact(['employees', 'departments', 'currentDepartment']));
+	}
+	
+	public function getPaginationEmployees (Department $department)
+	{
+		dd($department);
+		/** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $employees */
+		$employees  = $this->departmentService->getEmployeesPaginate($department);
+		
+		dd($employees);
 	}
 }
