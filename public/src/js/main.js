@@ -331,11 +331,25 @@ $(document).ready(() => {
 
 
 
-
+    let attr = $('.employees').attr('current_page');
+    let page = 1;
+    let maxPage = $('.employees').attr('last_page');
     $('.employees').on('scroll', function () {
 
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
-            console.log('yee')
+            if(page > maxPage) return;
+            let newAttr = attr + `?page=${page}`;
+            
+            $.ajax({
+                url: newAttr,
+                method: "GET",
+                success: (result) => {
+                    console.log(result)
+                }
+            });
+            
+            $(this).attr('current_page', newAttr);
+            page++;
         }
     })
 });
