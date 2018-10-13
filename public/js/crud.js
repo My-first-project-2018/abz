@@ -17,7 +17,12 @@ $(document).ready(() => {
         console.log(this.value,'__', sort, '__', order)
         
         ajaxPost(sort, {sort: this.value, orderBy: order}, (result) => {
-           console.log(result) 
+            $('.employees').remove();
+            $('.crud__content').append(content);
+            setTimeout(() => {
+                newEmployees = $('.employees');
+                addEmployeesScrollEvent(newEmployees);
+            },10);
         });
     });
 
