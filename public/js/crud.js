@@ -72,19 +72,20 @@ $(document).ready(() => {
     }
 
     function addInputChangeEvent (input) {
-        $(input).on('keyup', function () {
+        $(input).on('input', function () {
             clearTimeout(timer);
             timer = setTimeout(() => {
                 if($(this).val().length > 2) {
+                    $('.employees__onload').addClass('employees__onload_active');
                     searchFlag = true;
                     let url = $(this).closest('form').attr('action');
                     let field = $('select[name=field]').val();
                     let value = $(this).val();
 
                     ajaxPost(url, {field, value}, (result) => {
-                        console.log(result);
                         $('.employees__item').css({'display':'none'});
                         $('.employees').append(result);
+                        $('.employees__onload').removeClass('employees__onload_active');
                     })
                 } else {
                     if(searchFlag) {
@@ -94,6 +95,7 @@ $(document).ready(() => {
                 }
             },300);
         })
+
     }
 
 
