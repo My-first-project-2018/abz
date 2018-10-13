@@ -37,8 +37,23 @@ class EmployeeService {
 		return $employee->subordinate->load(['position','subordinate']);
 	}
 	
-	public function rewriteBossEmployee (RewriteBossEmployeeRequest $request)
+	/**
+	 * @param \App\Http\Requests\RewriteBossEmployeeRequest $request
+	 *
+	 * @return bool
+	 */
+	public function rewriteBossEmployee (RewriteBossEmployeeRequest $request): bool
 	{
-	
+		/** @var Employee $newBoss */
+		$newBoss  = $this->repository->onlyHash($request->get('newBoss'));
+		
+		/** @var Employee $employee */
+		$employee = $this->repository->onlyHash($request->get('employee'));
+		
+		$employee->boss->first()->subordinate()->detach($employee);
+		
+		$newBoss->subordinate()->attach($employee);
+		
+		return true;
 	}
 }

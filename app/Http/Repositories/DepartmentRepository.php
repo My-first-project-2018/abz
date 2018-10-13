@@ -24,13 +24,6 @@ class DepartmentRepository extends BaseRepository {
 		$this->model = $department;
 	}
 	
-	/**
-	 * @return \Illuminate\Database\Eloquent\Collection|static[]
-	 */
-	public function all () : Collection
-	{
-		return $this->model->all();
-	}
 	
 	/**
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]

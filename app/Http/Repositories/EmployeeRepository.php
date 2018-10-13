@@ -21,4 +21,6 @@ class EmployeeRepository extends BaseRepository {
 	{
 		$this->model = $employee;
 	}
+	
+	
 }

@@ -5,7 +5,9 @@ namespace App\Http\Services;
 use App\Department;
 use App\Employee;
 use App\Http\Repositories\DepartmentRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 
 /**
@@ -36,11 +38,19 @@ class DepartmentService {
 	}
 	
 	/**
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+	 */
+	public function getAllDepartments () : Collection
+	{
+		return $this->repository->all();
+	}
+	
+	/**
 	 * @param \App\Department $department
 	 *
 	 * @return \Illuminate\Database\Eloquent\Model|mixed|null|object|static
 	 */
-	public function getDepartmentEmployees (Department $department) : ?Employee
+	public function getDepartmentBossAndSubordinate (Department $department) : ?Employee
 	{
 		$departmentBoss = $department->employees()
 	                                 ->with(['subordinate.position','position'])
@@ -50,5 +60,29 @@ class DepartmentService {
 		                                       ->whereRaw('subordinate_employees.subordinate_id = employees.id');})
 	                                 ->first();
 		return $departmentBoss;
+	}
+	
+	/**
+	 * @param \App\Department $department
+	 *
+	 * @param int             $countPage
+	 *
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 */
+	public function getEmployeesPaginate (Department $department, $countPage = 50): LengthAwarePaginator
+	{
+		$departmentEmployees = $department->employees()
+										  ->with(['position','boss'])
+			                              ->paginate($countPage);
+		
+		return $departmentEmployees;
+	}
+	
+	/**
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getFirstDepartment (): Model
+	{
+		return $this->repository->getFirstModel();
 	}
 }

@@ -3,12 +3,18 @@
     @guest
         <button class="btn login">Login</button>
     @else
-        <button class="btn logout">Logout</button>
-        <button class="btn crud"><a href="crud.html">CRUD</a></button>
+        <button class="btn logout"><a href="{{route('logout')}}">Logout</a></button>
+
+        @if(url()->current() === route('employeesDepartment'))
+            <button class="btn crud"><a href="{{route('showDepartments')}}">Home</a></button>
+        @else
+            <button class="btn crud"><a href="{{route('employeesDepartment')}}">CRUD</a></button>
+        @endif
     @endguest
 </div>
-<form action="#" method="post" class="login_window">
-    <input type="text" placeholder="Login">
-    <input type="password" placeholder="Pass">
+<form action="{{route('login')}}" method="post" class="login_window">
+     @csrf
+    <input type="text" name="login" placeholder="Login">
+    <input type="password" name="password" placeholder="Pass">
     <button type="submit" class="btn">Login</button>
 </form>

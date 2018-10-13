@@ -39,9 +39,9 @@ class DepartmentController extends Controller
 	 *
 	 * @return \Illuminate\View\View
 	 */
-	public function showDepartmentEmployees (Department $department) : View
+	public function showDepartmentBossAndSubordinate (Department $department) : View
     {
-	    $employees = $this->service->getDepartmentEmployees($department);
+	    $employees = $this->service->getDepartmentBossAndSubordinate($department);
 	  
     	return view('departmentEmployees')->with(compact('employees'));
     }

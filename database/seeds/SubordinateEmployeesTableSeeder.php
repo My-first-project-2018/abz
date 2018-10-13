@@ -21,7 +21,7 @@ class SubordinateEmployeesTableSeeder extends Seeder {
 	public function run (): void
 	{
 		$this->strData = 'id,employee_id,subordinate_id'."\n";
-		if(Storage::exists('csv/subordinate.csv')){
+		if(!Storage::exists('csv/subordinate.csv')){
 			
 			$departments = \App\Department::all()->load( 'employees' );
 			
