@@ -1,67 +1,49 @@
+"use strict";
 
 $(document).ready(() => {
 
-
-
-
-
-
-
-
-    let department = $('#department');
-    let page = 2;
-
-    let newEmployees = null;
+    let department = $('#department'),
+        page = 2,
+        newEmployees = null;
 
     addEmployeesScrollEvent($('.employees'));
 
+    department.on('change', changeDepartment);
 
 
-    department.on('change', function (e) {
-        // console.log(this.value)
-        let url = this.value;
-        console.log(url)
-        $.ajax({
-            url: url,
-            method: "GET",
-            success: (content) => {
-                $('.employees').remove();
-                $('.crud__content').append(content);
-                setTimeout(() => {
-                    newEmployees = $('.employees');
-                    addEmployeesScrollEvent(newEmployees);
-                },10);
+    $('body').on('click', '.employee__item', function () {
 
-            }
-        })
     });
 
 
+    function changeDepartment () {
+        let url = this.value;
 
-function addEmployeesScrollEvent (newEmployees) {
-    newEmployees.on('scroll', function () {
-        if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
-            let departmentVal = department.val();
-            let hash = getHashFromUrl(departmentVal);
-            let attr = $(this).attr('current_page');
-            let maxPage = $(this).attr('last_page');
-            if(page > maxPage) return;
-            let newAttr = attr + `/${hash}?page=${page}`;
-            $.ajax({
-                url: newAttr,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                method: "GET",
-                success: (result) => {
+        ajaxGet(url, (content) => {
+            $('.employees').remove();
+            $('.crud__content').append(content);
+            setTimeout(() => {
+                newEmployees = $('.employees');
+                addEmployeesScrollEvent(newEmployees);
+            },10);
+        })
+    }
+
+    function addEmployeesScrollEvent (newEmployees) {
+        newEmployees.on('scroll', function () {
+            if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
+                let hash = getHashFromUrl(department.val());
+                let attr = $(this).attr('current_page');
+                let maxPage = $(this).attr('last_page');
+                if(page > maxPage) return;
+                let newAttr = attr + `/${hash}?page=${page}`;
+                ajaxGet(newAttr, (result) => {
                     $(this).append(result);
-                    // console.log(result)
-                }
-            });
-            page++;
-        }
-    })
-}
+                });
+                page++;
+            }
+        })
+    }
 
 
 

@@ -14,55 +14,24 @@ $(document).ready(() => {
         leftPos,
         topPos,
         hierarchy;
-
-//modal window
-
-
+    
     function openModal (content) {
-        $('.modal').append(content);
+        $('.modal').append(content).css({'display':'flex'});
     }
-
-
+    
     body.on('submit', '.login_window', function (e) {
-        e.preventDefault();
-        let log = $(this).find('input[name=login]').val();
-        let pass = $(this).find('input[name=password]').val();
-        let url = $(this).attr('action');
-
-        $.ajax({
-            url: url,
-            method: 'POST',
-            data: {
-                login: log,
-                password: pass
-            },
-            success: (answer) => {
-                if(answer.success) {
-                    location.reload();
-                    return;
-                }
-                showAjaxValidateError(answer);
-            }
-        })
+        checkAuthentication.call(this, e)
     });
-
-
+    
     body.on('click', '.addUser', (e) => {
         e.preventDefault();
         modal.css({'display':'flex'});
     });
 
     body.on('click', '.modal__close', function(e) {
-        e.preventDefault();
         $(this).closest('.modal').css({'display':'none'});
     });
-
     
-
-
-//dich
-    
-
     body.click((e) => {
         //close login block
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
@@ -80,18 +49,16 @@ $(document).ready(() => {
 
 
     body.on('click','.subordinate__item', function () {
-        //do not show subordinate when user drop item
-        if(dragItem[0] === this && draggable) return;
-        
-        if($(this).find('.show_subordinate').length === 0) return;
+        //do not show subordinate when user drop item or this employee have no subordinates
+        if((dragItem[0] === this && draggable) || ($(this).find('.show_subordinate').length === 0)) return;
 
         hierarchy = $(this).parent('.subordinate').attr('data-hierarchy');
 
-        if(hierarchy == 6) return;
-        
+        if(hierarchy === "6") return;
+
         showSubordinate.call(this);
-        
-        if(!draggable) makeSubordinateActive.call(this);
+
+        makeSubordinateActive.call(this);
     });
 
 
@@ -101,7 +68,7 @@ $(document).ready(() => {
     });
 
     body.on('mouseup', function (e) {
-        dropDraggableItemAndSendAjax(e);
+        dropDraggableItem(e);
     });
 
     $(document).on('mousemove', (e) => {
@@ -118,6 +85,21 @@ $(document).ready(() => {
             'left':`${e.clientX - shiftX}px`,
             'top':`${e.clientY - shiftY}px`,
             'z-index':'10'
+        })
+    }
+
+    function checkAuthentication (e) {
+        e.preventDefault();
+        let log = $(this).find('input[name=login]').val();
+        let pass = $(this).find('input[name=password]').val();
+        let url = $(this).attr('action');
+
+        ajaxPost(url, {login: log, password: pass}, (answer) => {
+            if(answer.success) {
+                location.reload();
+                return;
+            }
+            showAjaxValidateError(answer);
         })
     }
 
@@ -141,13 +123,11 @@ $(document).ready(() => {
         }
         let url = $(this).attr('data-url');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: (html) => {
-                $(this).append(html);
+        ajaxGet(url, (html) => {
+            $(this).append(html);
+            setTimeout(() => {
                 $(this).find('.departments__content').addClass('visible');
-            }
+            },200)
         });
         //set absolute position to beauty animate
         leftPos = $(this).offset().left;
@@ -200,16 +180,12 @@ $(document).ready(() => {
     function showSubordinate () {
         let url = $(this).attr('data-url');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: (html) => {
-                if($(html).html() === 'No records') return false;
-                $(this).closest('.departments__content').append(html);
-                $('.departments__content').find('.subordinate:last-child').attr('data-hierarchy', +hierarchy + 1);
+        ajaxGet(url, (html) => {
+            if($(html).html() === 'No records') return false;
+            $(this).closest('.departments__content').append(html);
+            $('.departments__content').find('.subordinate:last-child').attr('data-hierarchy', +hierarchy + 1);
 
-            }
-        });
+        })
     }
 
     function makeSubordinateActive () {
@@ -233,76 +209,47 @@ $(document).ready(() => {
         },200);
     }
 
-    function dropDraggableItemAndSendAjax (e) {
+    function dropDraggableItem (e) {
         clearTimeout(timer);
         if(draggable) {
             setTimeout(() => {
                 draggable = false;
             },10);
 
-            let item = $(e.target).closest('.subordinate__item');
             // hide to get item under
-            item.css({'display':'none'});
+            dragItem.css({'display':'none'});
             let director = $(document.elementFromPoint(e.clientX, e.clientY)).closest('.subordinate__item');
-            item.css({'display':'block'});
-
-            let url = $(director).attr('data-url');
+            dragItem.css({'display':'block'});
             //return item to start place if that dropped not on subordinate
-            if(url === undefined) {
+            if(director.length === 0) {
                 setTimeout(()=> {
                     placeItemBack($(item));
                 },10);
                 return;
             }
-            let newBossHash = getHashFromUrl(url);
-            url = $(dragItem).attr('data-url');
-            let employeeHash = getHashFromUrl(url);
-            url = $('.departments').attr('data-rewrite-boss-employee');
 
-            // $.ajax({
-            //     url: url,
-            //     headers: {
-            //         'Content-Type': 'application/x-www-form-urlencoded'
-            //     },
-            //     type: 'POST',
-            //     data: {
-            //         newBoss: newBossHash,
-            //         employee: employeeHash,
-            //     },
-            //     success: (result) => {
-            //         if(result.success){
-            //             $(item).remove();
-            //             alert('good!');
-            //             $(director).trigger('click');
-            //         } else { //error
-            //             placeItemBack($(item));
-            //             showAjaxValidateError(result);
-            //         }
-            //     }
-            // });
-            ajaxPost(url, {newBoss: newBossHash, employee: employeeHash}, function (result) {
-                if(result.success){
-                    $(item).remove();
-                    alert('good!');
-                    $(director).trigger('click');
-                } else { //error
-                    placeItemBack($(item));
-                    showAjaxValidateError(result);
-                }
-            })
+            changeDirector(director, dragItem);
         }
     }
 
-    function ajaxPost (url, data, success) {
-        $.ajax({
-            url: url,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            type: 'POST',
-            data: data,
-            success: success
-        });
+    function changeDirector (newDirector, subordinate) {
+        let directorUrl = $(newDirector).attr('data-url');
+        let subordinateUrl = $(subordinate).attr('data-url');
+
+        let newBossHash = getHashFromUrl(directorUrl);
+        let employeeHash = getHashFromUrl(subordinateUrl);
+        let ajaxUrl = $('.departments').attr('data-rewrite-boss-employee');
+
+        ajaxPost(ajaxUrl, {newBoss: newBossHash, employee: employeeHash}, (result) => {
+            if(result.success){
+                $(dragItem).remove();
+                alert('good!');
+                $(newDirector).trigger('click');
+            } else { //error
+                placeItemBack($(item));
+                showAjaxValidateError(result);
+            }
+        })
     }
 
     function placeItemBack (item) {
@@ -341,8 +288,27 @@ $(document).ready(() => {
 
 });
 
-
 function getHashFromUrl (url) {
     url = url.split('/');
     return url[url.length - 1];
+}
+
+function ajaxPost (url, data, success) {
+    $.ajax({
+        url: url,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        type: 'POST',
+        data: data,
+        success: success
+    });
+}
+
+function ajaxGet (url, success) {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: success
+    });
 }
