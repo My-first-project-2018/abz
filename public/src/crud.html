@@ -64,16 +64,16 @@
         </form>
     </aside>
     <div class="employees" current_page="http://192.168.1.6:8080/next-page-employees" last_page="5">
-        <form action="#" class="search__form">
+        <form action="http://192.168.1.6:8080/search-employees" class="search__form">
             <p>Search employee:</p>
-            <select name="search-employee">
-                <option>First Name</option>
-                <option>Last Name</option>
+            <select name="field">
+                <option value="first_name">First Name</option>
+                <option value="last_name">Last Name</option>
                 <option>Salary</option>
                 <option>Employment date</option>
                 <option>boss</option>
             </select>
-            <input type="text">
+            <input type="search" name="value">
         </form>
         <div class="employees__item">
             <div class="photo"><img src="img/3.png" alt=""></div>
