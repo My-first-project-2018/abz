@@ -94,6 +94,7 @@ $(document).ready(() => {
                         setTimeout(() => {
                             $('.employees__item').css({'display':'flex'});
                         },100);
+                        searchFlag = false;
                     }
                 }
             },300);
