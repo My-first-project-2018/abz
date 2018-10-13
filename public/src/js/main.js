@@ -330,7 +330,7 @@ $(document).ready(() => {
 
 
 
-
+    let depart = $('#department').val();
     let attr = $('.employees').attr('current_page');
     let page = 1;
     let maxPage = $('.employees').attr('last_page');
@@ -338,10 +338,13 @@ $(document).ready(() => {
 
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
             if(page > maxPage) return;
-            let newAttr = attr + `?page=${page}`;
-            
+            let newAttr = attr + `/${depart}?page=${page}`;
+            console.log(depart)
             $.ajax({
                 url: newAttr,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: "GET",
                 success: (result) => {
                     console.log(result)
