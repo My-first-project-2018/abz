@@ -1,10 +1,16 @@
-<?php
+<?php declare( strict_types = 1 );
 
 namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
+/**
+ * Class Handler
+ *
+ * @package App\Exceptions
+ */
 class Handler extends ExceptionHandler
 {
     /**
@@ -46,6 +52,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+//        return parent::render($request, $exception);
+        if($exception instanceof ValidationException)
+        	return response()->json(['success' => false,'errors' => $exception->errors()]);
+        
+       dd($exception);
     }
 }

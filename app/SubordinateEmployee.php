@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class SubordinateEmployee
  *
  * @package App
+ * @mixin \Eloquent
  */
 class SubordinateEmployee extends Model
 {

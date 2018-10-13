@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class Position
  *
  * @package App
+ * @property-read \App\Department $department
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $employees
+ * @mixin \Eloquent
  */
 class Position extends Model
 {

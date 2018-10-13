@@ -1,6 +1,5 @@
 <?php declare( strict_types = 1 );
 
-use App\Department;
 use App\Employee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -13,6 +12,7 @@ class SubordinateEmployeesTableSeeder extends Seeder {
 	private $strData;
 	
 	private $id = 1;
+	
 	/**
 	 * Run the database seeds.
 	 *
@@ -22,18 +22,19 @@ class SubordinateEmployeesTableSeeder extends Seeder {
 	{
 		$this->strData = 'id,employee_id,subordinate_id'."\n";
 		if(!Storage::exists('csv/subordinate.csv')){
-			$departments = Department::all()->load( 'employees' );
+			
+			$departments = \App\Department::all()->load( 'employees' );
 			
 			$departments->each( function ($department) {
 				
 				$employees = $department->employees;
+				
 				$bossDepartment = $employees->shift();
-				$subordinateBoss = $employees->splice( 0, 20 );
+				$subordinates = $employees->splice(0,10);
+				$employees = $employees->shuffle();
+				$this->distributionToBoss($bossDepartment,$subordinates);
 				
-				$this->writeToStrData( $bossDepartment,
-					$subordinateBoss->pluck( ['id'] )->toArray() );
-				
-				$this->distributionEmployees( $employees, $subordinateBoss );
+				$this->distributionEmployees($employees,$subordinates);
 			} );
 			
 			Storage::put( 'csv/subordinate.csv', $this->strData );
@@ -43,40 +44,37 @@ class SubordinateEmployeesTableSeeder extends Seeder {
 	}
 	
 	/**
-	 * @param \Illuminate\Support\Collection $employees
-	 * @param \Illuminate\Support\Collection $bossDepartment
-	 *
-	 * @throws \Exception
+	 * @param \App\Employee                  $boss
+	 * @param \Illuminate\Support\Collection $subordinates
 	 */
-	public function distributionEmployees (Collection $employees, Collection $bossDepartment): void
+	public function distributionToBoss (Employee $boss,Collection $subordinates): void
 	{
-		if($employees->isNotEmpty()){
-			$subordinate = $employees->splice(0,500);
-			
-			$subordinateEmployees = $subordinate->chunk(random_int(50,100));
-			$subordinateEmployees->each(function ($item) use ($bossDepartment){
-				
-				$boss = $bossDepartment->random();
-				$this->writeToStrData($boss, $item->pluck(['id'])->toArray());
-			});
-			
-			$this->distributionEmployees($employees, $subordinate);
-		}
+		$subordinates->each(function ($subordinate) use($boss){
+			$this->strData .= $this->id++.','. $boss->id . ',' . $subordinate->id . "\n";
+		});
 	}
 	
 	/**
-	 * @param \App\Employee $boss
-	 * @param array         $data
+	 * @param \Illuminate\Support\Collection $employees
+	 * @param \Illuminate\Support\Collection $boss
+	 *
+	 * @throws \Exception
 	 */
-	public function writeToStrData (Employee $boss, array $data): void
+	public function distributionEmployees (Collection $employees, Collection $boss): void
 	{
-		$str = '';
-		foreach ($data as $item){
-			/** @var Employee $boss */
-			$str .= $this->id++.','. $boss->id . ',' . $item . "\n";
-		}
+		$randomCountSubordinates = random_int(4,8);
+		$subordinates = $employees->splice( 0, $randomCountSubordinates * $boss->count() );
 		
-		$this->strData .= $str;
+		$chunkSubordinates = $subordinates->chunk( $randomCountSubordinates );
+		
+		$boss->each( function ($bos) use ($chunkSubordinates) {
+			if($chunkSubordinates->isNotEmpty())
+			$this->distributionToBoss( $bos, $chunkSubordinates->shift());
+		} );
+		
+		if($employees->isNotEmpty())
+			$this->distributionEmployees( $employees, $subordinates );
+		
 	}
 	
 	/**

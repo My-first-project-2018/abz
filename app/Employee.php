@@ -13,6 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @property integer id
  * @package App
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $boss
+ * @property-read \App\Position $position
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $subordinate
+ * @property-read \App\User $user
+ * @mixin \Eloquent
  */
 class Employee extends Model {
 	
@@ -53,5 +58,14 @@ class Employee extends Model {
 	public function user (): HasOne
 	{
 		return $this->hasOne(User::class);
+	}
+	
+	
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function boss () : BelongsToMany
+	{
+		return $this->belongsToMany(self::class, 'subordinate_employees', 'subordinate_id', 'employee_id');
 	}
 }
