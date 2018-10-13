@@ -49,12 +49,16 @@ class CrudEmployeesController extends Controller
 		return \view('crudEmployees')->with(compact(['employees', 'departments', 'currentDepartment']));
 	}
 	
-	public function getPaginationEmployees (Department $department)
+	/**
+	 * @param \App\Department $department
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function getPaginationEmployees (Department $department): View
 	{
-		dd($department);
 		/** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $employees */
 		$employees  = $this->departmentService->getEmployeesPaginate($department);
 		
-		dd($employees);
+		return \view('employeesItem')->with(compact('employees'));
 	}
 }
