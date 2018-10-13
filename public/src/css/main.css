@@ -404,7 +404,7 @@ h1.company:hover, h1.company a:hover {
 }
 .employees__item > div {
     position: relative;
-    flex-grow: 1;
+    width: 18%;
     height: 40px;
 }
 .employees__item > div > p {
@@ -425,7 +425,7 @@ h1.company:hover, h1.company a:hover {
 }
 
 .photo {
-    flex-grow: .5 !important;
+    width: 5%!important;
 }
 .photo img {
     display: block;
@@ -440,7 +440,7 @@ h1.company:hover, h1.company a:hover {
     text-align: center;
     color: #fff;
     line-height: 40px;
-    flex-grow: .5 !important;
+    width: 5%!important;
     cursor: pointer;
     transition: .2s;
     user-select: none;
