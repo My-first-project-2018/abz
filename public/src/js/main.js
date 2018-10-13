@@ -70,7 +70,7 @@ $(document).ready(() => {
 
 
     body.on('mouseup', function (e) {
-        dropDraggableItemAndFindDirector(e);
+        dropDraggableItemAndSendAjax(e);
     });
 
     $(document).on('mousemove', (e) => {
@@ -189,7 +189,7 @@ $(document).ready(() => {
         },200);
     }
 
-    function dropDraggableItemAndFindDirector (e) {
+    function dropDraggableItemAndSendAjax (e) {
         clearTimeout(timer);
         if(draggable) {
             setTimeout(() => {
@@ -219,6 +219,7 @@ $(document).ready(() => {
             url = $(dragItem).attr('data-url');
             let employeeHash = getHashFromUrl(url);
             url = $('.departments').attr('data-rewrite-boss-employee');
+
             $.ajax({
                 url: url,
                 headers: {
@@ -229,14 +230,24 @@ $(document).ready(() => {
                     newBoss: newBossHash,
                     employee: employeeHash,
                 },
-                success: () => {
-                    console.log(item)
+                success: (result) => {
+                    if(result.success){
+                        $(item).remove();
+                        alert('good!');
+                        $(director).trigger('click');
+                    } else { //error
+                        let errors = result.errors;
+                        let errorMessage = '';
+                        for (let err in errors) {
+                            errorMessage += `${err} : ${errors[err]} \n`;
+                        }
+                        alert(errorMessage);
+                    }
                 }
             });
 
 
         }
-        return false;
     }
     
     function showUploadedImage () {

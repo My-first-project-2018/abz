@@ -99,10 +99,12 @@ header {
     transform: skew(-30deg);
 }
 
-.btn.crud {
+.btn.crud,
+.btn.logout {
     padding: 0;
 }
-.btn.crud a {
+.btn.crud a,
+.btn.logout a{
     display: block;
     position: relative;
     z-index: 10;
