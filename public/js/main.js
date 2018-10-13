@@ -329,32 +329,6 @@ $(document).ready(() => {
     //crud
 
 
-
-    let depart = $('#department').val();
-    let attr = $('.employees').attr('current_page');
-    let page = 2;
-    let maxPage = $('.employees').attr('last_page');
-    $('.employees').on('scroll', function () {
-
-        if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
-            if(page > maxPage) return;
-            let newAttr = attr + `/${depart}?page=${page}`;
-            $.ajax({
-                url: newAttr,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                method: "GET",
-                success: (result) => {
-                    $(this).append(result);
-                    console.log(result)
-                }
-            });
-            
-            $(this).attr('current_page', newAttr);
-            page++;
-        }
-    })
 });
 
 
