@@ -12,6 +12,7 @@ $(document).ready(() => {
             searched: false,
             href: null
         },
+        changeDepartmentFlag = false,
         page = 2,
         lastPage = 50,
         oldLastPage,
@@ -39,7 +40,9 @@ $(document).ready(() => {
 
             if(page > lastPage) return;
 
-            href = newHref + `?page=${page}`;
+            if(!changeDepartmentFlag) {
+                href = newHref + `?page=${page}`;
+            }
 
             if(sortObj.sorted) {
                 href = sortObj.href + `&page=${page}`;
@@ -87,6 +90,7 @@ $(document).ready(() => {
     function changeDepartment () {
         page = 2;
         href = this.value;
+        changeDepartmentFlag = true;
         searchObj.searched = false;
         loadDepartmentAjax(href);
     }
