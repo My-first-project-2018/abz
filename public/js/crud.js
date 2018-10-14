@@ -5,6 +5,10 @@ $(document).ready(() => {
     let department = $('#department'),
         sortUrl = $('.order').attr('data-url'),
         href = window.location.href,
+        sortObj = {
+            sorted: false,
+            href: null,
+        },
         searchFlag = false,
         page = 2,
         timer,
@@ -29,25 +33,36 @@ $(document).ready(() => {
         // let url = this.value;
         href = this.value;
 
-        ajaxGet(href, (content) => {
-            // appendNewEmployee(content);
-            $('.employees__item').remove();
-            $('.employees').append(content);
-            // setTimeout(() => {
-            //     addInputChangeEvent($('.search__form').find('input[name=value]'));
-            // },100)
-        })
+        pagination(href);
     }
 
+
+
     function sortEmployees () {
-        let hash = getHashFromUrl(department.val());
-        let url = `${sortUrl}/${hash}`;
-
+        // let hash = getHashFromUrl(department.val());
+        // let url = `${sortUrl}/${hash}`;
+        // console.log(url);
         let order = $('.order').find('input:checked').val();
+        let field = this.value;
 
-        ajaxPost(url, {sort: this.value, orderBy: order}, (result) => {
-            appendNewEmployee(result);
-        });
+        let newSortObj = {
+            href: $('.order').attr('data-url') + `?field=${field}&orderBy=${order}`,
+            sorted: true
+        };
+        
+        Object.assign(sortObj, newSortObj);
+
+        pagination(sortObj.href);
+
+
+
+
+
+
+        //
+        // ajaxPost(url, {sort: this.value, orderBy: order}, (result) => {
+        //     appendNewEmployee(result);
+        // });
     }
 
     function appendNewEmployee (employee) {
@@ -63,21 +78,28 @@ $(document).ready(() => {
         newEmployees.on('scroll', function () {
             if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
 
-
-                
                 let url = `${href}?page=${page}`;
                 console.log(url);
                 let maxPage = $(this).attr('last_page');
                 if(page > maxPage) return;
-                // let newAttr = attr + `/${hash}?page=${page}`;
 
+                if(sortObj.sorted) {
+                    href = sortObj.href + `&page=${page}`;
+                }
 
-                ajaxGet(url, (result) => {
-                    $(this).append(result);
-                });
+                pagination(href);
+
                 page++;
             }
         })
+    }
+
+    function pagination (href) {
+        ajaxGet(href, (result) => {
+            $('.employees__item').remove();
+            $('.employees').append(result);
+
+        });
     }
 
     function addInputChangeEvent (input) {
