@@ -33,11 +33,13 @@ $(document).ready(() => {
     function loadNewEmployeesItems () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
 
+            let newHref = location.href;
+
             setNewLasPage();
 
             if(page > lastPage) return;
 
-            href += `&page=${page}`;
+            href = newHref + `page=${page}`;
 
             if(sortObj.sorted) {
                 href = sortObj.href + `&page=${page}`;
