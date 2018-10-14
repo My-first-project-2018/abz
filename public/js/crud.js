@@ -52,7 +52,7 @@ $(document).ready(() => {
                 href = searchObj.href + `&page=${page}`;
             }
 
-            ajaxGet(href, (result) => {
+            ajaxGet(href + `?page=${page}`, (result) => {
                 $('.employees').append(result);
             });
 
@@ -92,6 +92,7 @@ $(document).ready(() => {
         href = this.value;
         changeDepartmentFlag = true;
         searchObj.searched = false;
+        $('.employees').scrollTop(0);
         loadDepartmentAjax(href);
     }
 
