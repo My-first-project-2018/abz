@@ -5,11 +5,16 @@ $(document).ready(() => {
         href = window.location.href,
         sortObj = {
             sorted: false,
-            href: null,
+            href: null
         },
         searchFlag = false,
+        searchObj = {
+            searched: false,
+            href: null
+        },
         page = 2,
         lastPage = 50,
+        oldLastPage,
         timer;
 
     $('.employees').on('scroll', loadNewEmployeesItems);
@@ -28,10 +33,18 @@ $(document).ready(() => {
     function loadNewEmployeesItems () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
 
+            setNewLasPage();
+
             if(page > lastPage) return;
+
+            href += `&page=${page}`;
 
             if(sortObj.sorted) {
                 href = sortObj.href + `&page=${page}`;
+            }
+
+            if(searchObj.searched) {
+                href = searchObj.href + `&page=${page}`;
             }
 
             ajaxGet(href, (result) => {
@@ -40,6 +53,12 @@ $(document).ready(() => {
 
             page++;
         }
+    }
+
+    function setNewLasPage () {
+        let lp = $('#lastPage');
+        lastPage = lp.val();
+        lp.remove();
     }
 
     function sortEmployees () {
@@ -54,20 +73,27 @@ $(document).ready(() => {
         
         Object.assign(sortObj, newSortObj);
 
-        $('.employees').scrollTop(0);
-        loadDepartment(sortObj.href);
 
+
+        $('.employees').scrollTop(0);
+
+        loadDepartmentAjax(sortObj.href);
+
+        page = 2;
     }
 
     function changeDepartment () {
+        loadDepartmentAjax(href);
+        page = 2;
         href = this.value;
-        loadDepartment(href);
+        searchObj.searched = false;
     }
 
-    function loadDepartment (href) {
+    function loadDepartmentAjax (href) {
         ajaxGet(href, (result) => {
             $('.employees__item').remove();
             $('.employees').append(result);
+            setNewLasPage();
         });
     }
 
@@ -75,27 +101,42 @@ $(document).ready(() => {
         clearTimeout(timer);
         timer = setTimeout(() => {
             if($(this).val().length > 2) {
+                page = 2;
                 $('.employees__onload').addClass('employees__onload_active');
                 searchFlag = true;
                 let url = $(this).closest('form').attr('action');
                 let field = $('select[name=field]').val();
                 let value = $(this).val();
 
-                ajaxPost(url, {field, value}, (result) => {
-                    $('.employees__item').css({'display':'none'});
-                    $('.employees').append(result);
-                    $('.employees__onload').removeClass('employees__onload_active');
-                })
-            } else {
-                if(searchFlag) {
-                    $('.employees__item:visible').remove();
-                    setTimeout(() => {
-                        $('.employees__item').css({'display':'flex'});
-                    },100);
-                    searchFlag = false;
-                }
-            }
+                let newSearchObj = {
+                    searched: true,
+                    href: url + `?field=${field}&value=${value}`
+                };
+                Object.assign(searchObj, newSearchObj);
+
+                ajaxPost(url, {field, value}, (result) => searchAjaxSuccess(result));
+
+            } else if (searchFlag) showOldEmployeesItems();
         },300);
+    }
+
+    function showOldEmployeesItems () {
+        $('.employees__item:visible').remove();
+        setTimeout(() => {
+            $('.employees__item').css({'display':'flex'});
+        },100);
+        searchFlag = false;
+        searchObj.searched = false;
+        lastPage = oldLastPage;
+        page = 2;
+    }
+
+    function searchAjaxSuccess (result) {
+        $('.employees__item').css({'display':'none'});
+        $('.employees').append(result);
+        $('.employees__onload').removeClass('employees__onload_active');
+        oldLastPage = lastPage;
+        setNewLasPage();
     }
 
 

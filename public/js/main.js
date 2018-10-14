@@ -28,7 +28,7 @@ $(document).ready(() => {
         modal.css({'display':'flex'});
     });
 
-    body.on('click', '.modal__close', function(e) {
+    body.on('click', '.modal__close', function() {
         $(this).closest('.modal').css({'display':'none'});
     });
     
