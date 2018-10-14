@@ -3,7 +3,7 @@
 $(document).ready(() => {
     let
         href = window.location.href,
-        newHref,
+        newHref = href,
         sortObj = {
             sorted: false,
             href: null
@@ -38,6 +38,8 @@ $(document).ready(() => {
             setNewLasPage();
 
             if(page > lastPage) return;
+
+            href = newHref + `?page=${page}`;
 
             if(changeDepartmentFlag) {
                 // let newHref = href;
