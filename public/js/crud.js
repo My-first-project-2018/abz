@@ -39,7 +39,7 @@ $(document).ready(() => {
 
             if(page > lastPage) return;
 
-            href = newHref + `page=${page}`;
+            href = newHref + `?page=${page}`;
 
             if(sortObj.sorted) {
                 href = sortObj.href + `&page=${page}`;
