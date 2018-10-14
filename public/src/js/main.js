@@ -15,13 +15,10 @@ $(document).ready(() => {
         topPos,
         hierarchy;
 
-//modal window
-
-
+    //modal window
     function openModal (content) {
         $('.modal').append(content);
     }
-
 
     body.on('submit', '.login_window', function (e) {
         e.preventDefault();
@@ -46,7 +43,6 @@ $(document).ready(() => {
         })
     });
 
-
     body.on('click', '.addUser', (e) => {
         e.preventDefault();
         modal.css({'display':'flex'});
@@ -57,17 +53,12 @@ $(document).ready(() => {
         $(this).closest('.modal').css({'display':'none'});
     });
 
-    
-
-
-//dich
-    
+    //dich
 
     body.click((e) => {
         //close login block
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
     });
-    
 
     $('.login').click((e) => {
         e.preventDefault();
@@ -77,7 +68,6 @@ $(document).ready(() => {
     body.on('click', '.departments__item', openDepartment);
 
     body.on('click', '.close_department',  closeDepartmentItem);
-
 
     body.on('click','.subordinate__item', function () {
         //do not show subordinate when user drop item
@@ -93,8 +83,6 @@ $(document).ready(() => {
         
         if(!draggable) makeSubordinateActive.call(this);
     });
-
-
     //drag'n'drop
     body.on('mousedown', '.subordinate__item', function (e) {
         makeSubordinateDraggable.call(this, e);
@@ -107,10 +95,9 @@ $(document).ready(() => {
     $(document).on('mousemove', (e) => {
        if(draggable)  moveItem(e);
     });
-
-
     //upload file
     body.on('change', "input[type='file']", showUploadedImage);
+
 
     function moveItem (e) {
         dragItem.css({
@@ -130,9 +117,7 @@ $(document).ready(() => {
             alert(errorMessage);
         } else {
             alert(result.error);
-            
         }
-        
     }
 
     function openDepartment () {
@@ -199,7 +184,6 @@ $(document).ready(() => {
 
     function showSubordinate () {
         let url = $(this).attr('data-url');
-
         $.ajax({
             url: url,
             type: 'GET',

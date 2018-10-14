@@ -36,7 +36,6 @@ $(document).ready(() => {
         //close login block
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
     });
-    
 
     $('.login').click((e) => {
         e.preventDefault();
@@ -61,7 +60,6 @@ $(document).ready(() => {
         makeSubordinateActive.call(this);
     });
 
-
     //drag'n'drop
     body.on('mousedown', '.subordinate__item', function (e) {
         makeSubordinateDraggable.call(this, e);
@@ -74,10 +72,9 @@ $(document).ready(() => {
     $(document).on('mousemove', (e) => {
        if(draggable)  moveItem(e);
     });
-
-
     //upload file
     body.on('change', "input[type='file']", showUploadedImage);
+
 
     function moveItem (e) {
         dragItem.css({
@@ -112,9 +109,7 @@ $(document).ready(() => {
             alert(errorMessage);
         } else {
             alert(result.error);
-
         }
-
     }
 
     function openDepartment () {
@@ -215,29 +210,28 @@ $(document).ready(() => {
             setTimeout(() => {
                 draggable = false;
             },10);
-
             // hide to get item under
             dragItem.css({'display':'none'});
+
             let director = $(document.elementFromPoint(e.clientX, e.clientY)).closest('.subordinate__item');
+
             dragItem.css({'display':'block'});
             //return item to start place if that dropped not on subordinate
             if(director.length === 0) {
                 setTimeout(()=> {
                     placeItemBack($(item));
                 },10);
-                return;
-            }
+            } else changeDirector(director, dragItem);
 
-            changeDirector(director, dragItem);
         }
     }
 
     function changeDirector (newDirector, subordinate) {
-        let directorUrl = $(newDirector).attr('data-url');
-        let subordinateUrl = $(subordinate).attr('data-url');
+        // let directorUrl = $(newDirector).attr('data-url');
+        // let subordinateUrl = $(subordinate).attr('data-url');
 
-        let newBossHash = getHashFromUrl(directorUrl);
-        let employeeHash = getHashFromUrl(subordinateUrl);
+        let newBossHash = getHashFromUrl($(newDirector).attr('data-url'));
+        let employeeHash = getHashFromUrl($(subordinate).attr('data-url'));
         let ajaxUrl = $('.departments').attr('data-rewrite-boss-employee');
 
         ajaxPost(ajaxUrl, {newBoss: newBossHash, employee: employeeHash}, (result) => {

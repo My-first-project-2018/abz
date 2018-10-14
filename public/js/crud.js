@@ -26,11 +26,12 @@ $(document).ready(() => {
 
     function changeDepartment () {
         let url = this.value;
+        console.log(window.location.href);
 
         ajaxGet(url, (content) => {
             appendNewEmployee(content);
             setTimeout(() => {
-                addInputChangeEvent($('.search__form').find('input[name=value]'))
+                addInputChangeEvent($('.search__form').find('input[name=value]'));
             },100)
         })
     }
@@ -58,12 +59,17 @@ $(document).ready(() => {
     function addEmployeesScrollEvent (newEmployees) {
         newEmployees.on('scroll', function () {
             if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
-                let hash = getHashFromUrl(department.val());
-                let attr = $(this).attr('current_page');
+
+
+                let hash = window.location.href;
+                let url = `${hash}?page=${page}`;
+                console.log(url);
                 let maxPage = $(this).attr('last_page');
                 if(page > maxPage) return;
-                let newAttr = attr + `/${hash}?page=${page}`;
-                ajaxGet(newAttr, (result) => {
+                // let newAttr = attr + `/${hash}?page=${page}`;
+
+
+                ajaxGet(url, (result) => {
                     $(this).append(result);
                 });
                 page++;
