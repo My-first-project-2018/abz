@@ -4,6 +4,7 @@ $(document).ready(() => {
 
     let department = $('#department'),
         sortUrl = $('.order').attr('data-url'),
+        href = window.location.href,
         searchFlag = false,
         page = 2,
         timer,
@@ -25,14 +26,16 @@ $(document).ready(() => {
 
 
     function changeDepartment () {
-        let url = this.value;
-        console.log(window.location.href);
+        // let url = this.value;
+        href = this.value;
 
-        ajaxGet(url, (content) => {
-            appendNewEmployee(content);
-            setTimeout(() => {
-                addInputChangeEvent($('.search__form').find('input[name=value]'));
-            },100)
+        ajaxGet(href, (content) => {
+            // appendNewEmployee(content);
+            $('.employees__item').remove();
+            $('.employees').append(content);
+            // setTimeout(() => {
+            //     addInputChangeEvent($('.search__form').find('input[name=value]'));
+            // },100)
         })
     }
 
@@ -61,8 +64,8 @@ $(document).ready(() => {
             if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
 
 
-                let hash = window.location.href;
-                let url = `${hash}?page=${page}`;
+                
+                let url = `${href}?page=${page}`;
                 console.log(url);
                 let maxPage = $(this).attr('last_page');
                 if(page > maxPage) return;
