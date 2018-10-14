@@ -85,10 +85,10 @@ $(document).ready(() => {
     }
 
     function changeDepartment () {
-        loadDepartmentAjax(href);
         page = 2;
         href = this.value;
         searchObj.searched = false;
+        loadDepartmentAjax(href);
     }
 
     function loadDepartmentAjax (href) {
