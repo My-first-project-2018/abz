@@ -33,15 +33,12 @@ $(document).ready(() => {
         // let url = this.value;
         href = this.value;
 
-        pagination(href);
+        loadDepartment(href);
     }
 
 
 
     function sortEmployees () {
-        // let hash = getHashFromUrl(department.val());
-        // let url = `${sortUrl}/${hash}`;
-        // console.log(url);
         let order = $('.order').find('input:checked').val();
         let field = this.value;
 
@@ -52,17 +49,8 @@ $(document).ready(() => {
         
         Object.assign(sortObj, newSortObj);
 
-        pagination(sortObj.href);
+        loadDepartment(sortObj.href);
 
-
-
-
-
-
-        //
-        // ajaxPost(url, {sort: this.value, orderBy: order}, (result) => {
-        //     appendNewEmployee(result);
-        // });
     }
 
     function appendNewEmployee (employee) {
@@ -87,18 +75,24 @@ $(document).ready(() => {
                     href = sortObj.href + `&page=${page}`;
                 }
 
-                pagination(href);
+                // pagination(href);
+                ajaxGet(href, (result) => {
+
+                    // $('.employees__item').remove();
+
+                    $('.employees').append(result);
+
+                });
 
                 page++;
             }
         })
     }
 
-    function pagination (href) {
+    function loadDepartment (href) {
         ajaxGet(href, (result) => {
             $('.employees__item').remove();
             $('.employees').append(result);
-
         });
     }
 
