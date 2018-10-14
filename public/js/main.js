@@ -15,9 +15,9 @@ $(document).ready(() => {
         topPos,
         hierarchy;
     
-    function openModal (content) {
-        $('.modal').append(content).css({'display':'flex'});
-    }
+    // function openModal (content) {
+    //     $('.modal').append(content).css({'display':'flex'});
+    // }
     
     body.on('submit', '.login_window', function (e) {
         checkAuthentication.call(this, e)
@@ -102,7 +102,9 @@ $(document).ready(() => {
 
     function showAjaxValidateError (result) {
         let errors = result.errors;
-        if(errors) {let errorMessage = '';
+        console.log(result.errors);
+        if(errors) {
+            let errorMessage = '';
             for (let err in errors) {
                 errorMessage += `${err} : ${errors[err]} \n`;
             }
@@ -227,9 +229,6 @@ $(document).ready(() => {
     }
 
     function changeDirector (newDirector, subordinate) {
-        // let directorUrl = $(newDirector).attr('data-url');
-        // let subordinateUrl = $(subordinate).attr('data-url');
-
         let newBossHash = getHashFromUrl($(newDirector).attr('data-url'));
         let employeeHash = getHashFromUrl($(subordinate).attr('data-url'));
         let ajaxUrl = $('.departments').attr('data-rewrite-boss-employee');
