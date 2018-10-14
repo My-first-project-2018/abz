@@ -3,6 +3,7 @@
 $(document).ready(() => {
     let
         href = window.location.href,
+        newHref,
         sortObj = {
             sorted: false,
             href: null
@@ -34,14 +35,13 @@ $(document).ready(() => {
     function loadNewEmployeesItems () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
 
-            let newHref = location.href;
-
             setNewLasPage();
 
             if(page > lastPage) return;
 
-            if(!changeDepartmentFlag) {
-                href = newHref + `?page=${page}`;
+            if(changeDepartmentFlag) {
+                // let newHref = href;
+                let href = newHref + `?page=${page}`;
             }
 
             if(sortObj.sorted) {
@@ -52,7 +52,7 @@ $(document).ready(() => {
                 href = searchObj.href + `&page=${page}`;
             }
 
-            ajaxGet(href + `?page=${page}`, (result) => {
+            ajaxGet(href, (result) => {
                 $('.employees').append(result);
             });
 
@@ -94,6 +94,7 @@ $(document).ready(() => {
         searchObj.searched = false;
         $('.employees').scrollTop(0);
         loadDepartmentAjax(href);
+        newHref = href;
     }
 
     function loadDepartmentAjax (href) {
