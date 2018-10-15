@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Http\Traits\SlugTrait;
+use App\Http\Traits\HashTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,18 +11,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class Position
  *
  * @package App
+ * @property-read \App\Department $department
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $employees
+ * @mixin \Eloquent
  */
 class Position extends Model
 {
-	use SlugTrait;
+	use HashTrait;
 	
 	protected $hidden = ['id', 'department_id'];
 	
 	protected $fillable = [
 		'name',
-		'slug',
+		'hash',
 		'department_id',
-		'parent_id',
 	];
 	
 	/**

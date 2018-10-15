@@ -21,6 +21,7 @@ class CreateEmployeesTable extends Migration
             $table->string('hash');
             $table->string('first_name');
             $table->string('last_name');
+	        $table->string('img');
             $table->unsignedInteger('position_id')->nullable();
             $table->date('data_reception')->nullable();
             $table->integer('salary')->nullable();

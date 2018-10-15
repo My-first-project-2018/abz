@@ -1,9 +1,16 @@
-<?php
+<?php declare( strict_types = 1 );
 
 namespace App\Providers;
 
+use App\Department;
+use App\Http\Repositories\DepartmentRepository;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class AppServiceProvider
+ *
+ * @package App\Providers
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,9 +18,13 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        //
+	    \DB::listen(function ($query) {
+//		     dump($query->sql);
+//		     $query->bindings;
+//		     $query->time;
+	    });
     }
 
     /**
@@ -21,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }

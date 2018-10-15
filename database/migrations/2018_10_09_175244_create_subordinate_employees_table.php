@@ -25,6 +25,10 @@ class CreateSubordinateEmployeesTable extends Migration
             $table->foreign('employee_id')->references('id')->on('employees')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+	
+	        $table->foreign('subordinate_id')->references('id')->on('employees')
+	              ->onUpdate('cascade')
+	              ->onDelete('cascade');
         });
     }
 

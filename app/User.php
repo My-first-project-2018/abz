@@ -11,6 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * Class User
  *
  * @package App
+ * @property-read \App\Employee $employee
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @mixin \Eloquent
  */
 class User extends Authenticatable {
 	

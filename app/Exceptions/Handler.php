@@ -1,10 +1,18 @@
-<?php
+<?php declare( strict_types = 1 );
 
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
+/**
+ * Class Handler
+ *
+ * @package App\Exceptions
+ */
 class Handler extends ExceptionHandler
 {
     /**
@@ -46,6 +54,26 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+	    if ($exception instanceof AuthenticationException)
+		    return $this->unauthenticated($request, $exception);
+
+        if($exception instanceof ValidationException)
+        	return response()->json(['success' => false,'errors' => $exception->errors()]);
+	
+//        return parent::render($request, $exception);
+       dd($exception);
     }
+	
+	
+	/**
+	 * @param \Illuminate\Http\Request                 $request
+	 * @param \Illuminate\Auth\AuthenticationException $exception
+	 *
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+	 */
+	public function unauthenticated ($request, AuthenticationException $exception)
+    {
+	    return redirect()->route('showDepartments');
+    }
+	
 }

@@ -1,7 +1,11 @@
-<?php
+<?php declare( strict_types = 1 );
 
+use App\User;
 use Illuminate\Database\Seeder;
 
+/**
+ * Class UsersTableSeeder
+ */
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -9,12 +13,8 @@ class UsersTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-	    \App\Department::create(
-		    [
-			    'name' => 'fd',
-		    ]
-	    );
+	    factory( User::class)->create();
     }
 }

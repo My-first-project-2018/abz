@@ -8,105 +8,25 @@
 </head>
 <body>
 <header>
-    <h1 class="company">Company Name</h1>
+    <h1 class="company">Abz test</h1>
     <div class="buttons">
         <button class="btn login">Login</button>
         <button class="btn logout">Logout</button>
         <button class="btn crud"><a href="crud.html">CRUD</a></button>
     </div>
-    <form action="#" method="post" class="login_window">
-        <input type="text" placeholder="Login">
-        <input type="password" placeholder="Pass">
-        <button type="submit" class="btn">Login</button>
+    <form action="http://192.168.1.6:8080/login" method="post" class="login_window">
+        <input type="text" name="login" placeholder="Login">
+        <input type="password" name="password" placeholder="Pass">
+        <button type="submit" class="btn check_login">Login</button>
     </form>
 </header>
 
-<div class="departments">
-    <div class="departments__item">
+<div class="departments" data-rewrite-boss-employee="http://192.168.1.6:8080/rewrite-boss-employee">
+    <div class="departments__item" data-url="http://192.168.1.6:8080/department-employees/department7">
         <p>Отдел</p>
         <p>Сотрудников: 124124</p>
         <div class="close_department"><img src="img/left-arrow.svg" alt=""></div>
 
-        <div class="departments__content">
-            <div class="director">
-                <p class="name">Vasya Alkashov</p>
-                <p class="position">Director</p>
-            </div>
-            <ul class="subordinate subordinate_first" data-hierarchy="2">
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-                <li class="subordinate__item subordinate__item_first">
-                    <p class="name">Olegka Peregar</p>
-                    <p class="position">Rab</p>
-                    <div class="show_subordinate"><img src="img/next.svg" alt=""></div>
-                </li>
-            </ul>
-
-
-        </div>
     </div>
 
     <div class="departments__item">
@@ -149,6 +69,6 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>
