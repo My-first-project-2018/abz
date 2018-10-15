@@ -13,6 +13,10 @@
         <label> Дата приема на работу
             <input type="text" name="data_reception" placeholder="new user employment date">
         </label>
+        <label> Начальник
+            <input type="search" name="boss" placeholder="new user boss">
+        </label>
+        <div class="search__boss"></div>
         <label> Должность
             <select name="position">
                 @foreach($positions as $position)
@@ -20,9 +24,7 @@
                 @endforeach
             </select>
         </label>
-        <label> Начальник
-            <input type="search" name="boss" placeholder="new user boss">
-        </label>
+
         <button type="submit"  class="btn">Добавить</button>
     </div>
     <div class="file__input">
