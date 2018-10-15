@@ -31,7 +31,7 @@ Route::group(['middleware' => 'cors'], function (){
 		
 		Route::get('orderBy-employees/{department}', ['as' => 'orderByEmployees', 'uses' => 'CrudEmployeesController@showOrderByEmployees']);
 		
-		Route::post('search-employees', ['as' => 'searchEmployees', 'uses' => 'CrudEmployeesController@searchEmployees']);
+		Route::get('search-employees', ['as' => 'searchEmployees', 'uses' => 'CrudEmployeesController@searchEmployees']);
 		
 		Route::match(['get', 'post'],'create-employee/{department}', ['as' => 'createEmployee', 'uses' => 'CrudEmployeesController@createEmployee']);
 		

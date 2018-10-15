@@ -3,6 +3,7 @@
 $(document).ready(() => {
     let
         href = window.location.href,
+        departmentHref = href,
         newHref = href,
         sortObj = {
             sorted: false,
@@ -54,7 +55,7 @@ $(document).ready(() => {
             //     href = searchObj.href + `&page=${page}`;
             // }
 
-            href = location.href + `?page=${page}`;
+            href = location.href.match(/\?/) ? location.href + `&page=${page}` : location.href + `?page=${page}`;
 
             ajaxGet(href, (result) => {
                 $('.employees').append(result);
@@ -74,10 +75,11 @@ $(document).ready(() => {
         let order = $('.order');
         let orderBy = order.find('input:checked').val();
         let field = this.value;
-
+        history.pushState('','',departmentHref);
+        console.log(location.href);
         let newStr = order.attr('data-url').split('/');
         newStr[newStr.length-1] = getHashFromUrl(window.location.href).replace(/\?+/, '');
-        console.log(newStr);
+
         newStr = newStr.join('/');
         // newHref = order.attr('data-url') + `?field=${field}&orderBy=${orderBy}`;
         href = window.location.href;
@@ -103,7 +105,7 @@ $(document).ready(() => {
     function changeDepartment () {
         page = 2;
         history.pushState('','', this.value);
-        href = window.location.href;
+        href =  departmentHref = window.location.href;
         changeDepartmentFlag = true;
         searchObj.searched = false;
         $('.employees').scrollTop(0);
@@ -130,13 +132,15 @@ $(document).ready(() => {
                 let field = $('select[name=field]').val();
                 let value = $(this).val();
 
-                let newSearchObj = {
-                    searched: true,
-                    href: url + `?field=${field}&value=${value}`
-                };
-                Object.assign(searchObj, newSearchObj);
+                history.pushState('', '', url + `?field=${field}&value=${value}`);
 
-                ajaxPost(url, {field, value}, (result) => searchAjaxSuccess(result));
+                // let newSearchObj = {
+                //     searched: true,
+                //     href: url + `?field=${field}&value=${value}`
+                // };
+                // Object.assign(searchObj, newSearchObj);
+
+                ajaxGet(window.location.href, (result) => searchAjaxSuccess(result));
 
             } else if (searchFlag) showOldEmployeesItems();
         },300);
