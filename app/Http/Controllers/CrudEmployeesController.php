@@ -102,7 +102,7 @@ class CrudEmployeesController extends Controller
 	{
 		$positions = $this->departmentService->getPositionsDepartment($department);
 		
-		return \view('modalForm')->with(compact('positions'));
+		return \view('modalForm')->with(compact(['positions','department']));
 	}
 	
 	/**

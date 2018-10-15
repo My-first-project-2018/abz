@@ -14,7 +14,7 @@
             <input type="text" name="data_reception" placeholder="new user employment date">
         </label>
         <label> Начальник
-            <input type="search" name="boss" placeholder="new user boss">
+            <input  type="search" name="boss" placeholder="new user boss" data-url="{{route('searchBoss',['department' => $department->hash])}}">
         </label>
         <div class="search__boss"></div>
         <label> Должность

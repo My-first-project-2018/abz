@@ -122,7 +122,7 @@ class DepartmentService {
 	 */
 	public function searchBoss (Request $request, Department $department) : Collection
 	{
-		$emplyees = $department->employees()->where($request->get('field'), 'like', $request->get('value').'%')->get();
+		$emplyees = $department->employees()->where('last_name', 'like', $request->get('value').'%')->get();
 	
 		return $emplyees;
 	}

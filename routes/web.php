@@ -42,6 +42,9 @@ Route::group(['middleware' => 'cors'], function (){
 			Route::post('/', ['as' => 'createEmployee', 'uses' => 'CrudEmployeesController@createEmployee']);
 			
 		});
-		
-//	});
+	
+		Route::get('search-boss/{department}', ['as' => 'searchBoss', 'uses' => 'CrudEmployeesController@searchBoss']);
+	
+	
+	//	});
 });
