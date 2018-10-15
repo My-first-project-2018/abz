@@ -41,8 +41,16 @@ $(document).ready(() => {
             
             
             ajaxGet(url, function (result) {
-                $('.search__boss').find('p').remove();
-                $('.search__boss').append(result);
+                // $('.search__boss').find('p').remove();
+                // $('.search__boss').append(result);
+
+                if(result.success){
+                    $('.search__boss').find('p').remove();
+                    $('.search__boss').append(result);
+                } else { //error
+                    showAjaxValidateError(result);
+                }
+
             });
 
 
@@ -54,7 +62,15 @@ $(document).ready(() => {
     
     modal.on('click', '.search__boss p', function () {
        $('#bossHash').val($(this).attr('data-hash'));
+       // $('.search__boss').val($(this).va)
+        $('.search__boss').removeClass('search__boss_active');
     });
+
+    modal.on('submit', function (e) {
+        e.preventDefault();
+
+    });
+
 
 
     $('#sort').on('change', sortEmployees);

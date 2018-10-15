@@ -88,20 +88,6 @@ $(document).ready(() => {
         })
     }
 
-    function showAjaxValidateError (result) {
-        let errors = result.errors;
-        console.log(result.errors);
-        if(errors) {
-            let errorMessage = '';
-            for (let err in errors) {
-                errorMessage += `${err} : ${errors[err]} \n`;
-            }
-            alert(errorMessage);
-        } else {
-            alert(result.error);
-        }
-    }
-
     function openDepartment () {
         if(isOpened) {
             return;
@@ -294,4 +280,18 @@ function ajaxGet (url, success) {
         success: success,
         // error: alert(error)
     });
+}
+
+function showAjaxValidateError (result) {
+    let errors = result.errors;
+    console.log(result.errors);
+    if(errors) {
+        let errorMessage = '';
+        for (let err in errors) {
+            errorMessage += `${err} : ${errors[err]} \n`;
+        }
+        alert(errorMessage);
+    } else {
+        alert(result.error);
+    }
 }
