@@ -116,7 +116,7 @@ class CrudEmployeesController extends Controller
 		
 		$employee = $this->employeesService->createEmployee( $request );
 		
-		return response()->json($employee->toArray());
+		return response()->json(['success' => true, 'data' => $employee->toArray()]);
 	}
 	
 	/**

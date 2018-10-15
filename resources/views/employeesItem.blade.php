@@ -3,7 +3,7 @@
     <p class="paginationPages" style="display: flex; justify-content:  flex-end ; margin-right: 50px; color: red">{{$employees->currentPage().'-'.$employees->lastPage()}} pages.</p>
     @foreach($employees as $employee)
         <div class="employees__item">
-            <div class="photo"><img src="{{--{{$employee->img}}--}}" alt="{{$employee->img}}"></div>
+            <div class="photo"><img src="{{$employee->img}}" alt="{{$employee->img}}"></div>
             <div class="firstName">
                 <span class="employee__block__label">First Name</span>
                 <p>{{$employee->first_name}}</p>
