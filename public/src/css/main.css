@@ -565,12 +565,12 @@ h1.company:hover, h1.company a:hover {
     border-width: 0 0 0 0;
     border-style: solid;
     border-color: #c1c1c1;
-    margin-top: -20px;
 }
 .search__boss_active {
     max-height: 150px;
     overflow-y: scroll;
     border-width: 0 0 1px 1px;
+    margin-top: -20px;
 }
 .search__boss p {
     color: #b9c335;
