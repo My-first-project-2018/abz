@@ -29,6 +29,23 @@ $(document).ready(() => {
 
     modal.on('input', 'input[type=search]', function() {
         if($(this).val().length > 2) {
+
+            let url = $(this).attr('data-url').split('/');
+            url[url.length - 1] = '';
+            url = url.join('/') + getHashFromUrl(departmentHref) + `?value=${$(this).val()}`;
+            // console.log(url)
+            // console.log(url.join('/') + getHashFromUrl(departmentHref));
+            // console.log(departmentHref)
+            // console.log($(this).val())
+
+            
+            
+            ajaxGet(url, function (result) {
+                $('.search__boss').find('p').remove();
+                $('.search__boss').append(result);
+            });
+
+
             $('.search__boss').addClass('search__boss_active');
         } else {
             $('.search__boss').removeClass('search__boss_active');
