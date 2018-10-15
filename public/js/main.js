@@ -195,7 +195,7 @@ $(document).ready(() => {
             //return item to start place if that dropped not on subordinate
             if(director.length === 0) {
                 setTimeout(()=> {
-                    placeItemBack($(item));
+                    placeItemBack($(dragItem));
                 },10);
             } else changeDirector(director, dragItem);
 
