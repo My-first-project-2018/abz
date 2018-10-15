@@ -71,7 +71,7 @@ $(document).ready(() => {
                 } else { //error
                     showAjaxValidateError(result);
                 }
-        })
+        }, false, false)
     });
 
 
