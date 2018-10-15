@@ -41,8 +41,8 @@ $(document).ready(() => {
             
             
             ajaxGet(url, function (result) {
-                // $('.search__boss').find('p').remove();
-                $('.search__boss').append(result).find('p').remove();
+                $('.search__boss').find('p').remove();
+                $('.search__boss').append(result);
 
             });
 
@@ -71,7 +71,7 @@ $(document).ready(() => {
                 } else { //error
                     showAjaxValidateError(result);
                 }
-        })
+        }, false, false)
     });
 
 
