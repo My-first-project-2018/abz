@@ -41,7 +41,7 @@
                 <select name="field">
                     @include('layouts.fields')
                 </select>
-                <input type="text" name="value" placeholder="more than 3 symbols">
+                <input type="search" name="value" placeholder="more than 3 symbols">
             </form>
             @include('employeesItem')
         </div>
