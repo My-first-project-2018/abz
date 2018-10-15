@@ -27,18 +27,16 @@ $(document).ready(() => {
             .find('form').remove();
     });
 
+    function changeDepartmentInUrl (url) {
+        let newUrl = url.split('/');
+        newUrl[newUrl.length - 1] = '';
+        return newUrl.join('/') + getHashFromUrl(departmentHref) + `?value=${$(this).val()}`;
+    }
+
     modal.on('input', 'input[type=search]', function() {
         if($(this).val().length > 2) {
 
-            let url = $(this).attr('data-url').split('/');
-            url[url.length - 1] = '';
-            url = url.join('/') + getHashFromUrl(departmentHref) + `?value=${$(this).val()}`;
-            // console.log(url)
-            // console.log(url.join('/') + getHashFromUrl(departmentHref));
-            // console.log(departmentHref)
-            // console.log($(this).val())
-
-            
+            let url = changeDepartmentInUrl.call(this, $(this).attr('data-url'));
             
             ajaxGet(url, function (result) {
                 $('.search__boss').find('p').remove();
@@ -90,7 +88,7 @@ $(document).ready(() => {
     function showAddUserForm (e) {
         e.preventDefault();
         modal.css({'display':'flex'});
-        let url = $(this).attr('href');
+        let url = changeDepartmentInUrl.call(this, $(this).attr('data-url'));
         ajaxGet(url, (result) => {
             $('.modal').append(result);
         })
