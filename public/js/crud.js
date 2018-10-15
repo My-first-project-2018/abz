@@ -41,15 +41,8 @@ $(document).ready(() => {
             
             
             ajaxGet(url, function (result) {
-                $('.search__boss').find('p').remove();
-                $('.search__boss').append(result);
-
-                // if(result.success){
-                //     $('.search__boss').find('p').remove();
-                //     $('.search__boss').append(result);
-                // } else { //error
-                //     showAjaxValidateError(result);
-                // }
+                // $('.search__boss').find('p').remove();
+                $('.search__boss').append(result).find('p').remove();
 
             });
 

@@ -263,13 +263,13 @@ function getHashFromUrl (url) {
 function ajaxPost (url, data, success) {
     $.ajax({
         url: url,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
         type: 'POST',
         data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
         success: success,
-        // error: alert(error)
+        error: (error) => alert(error)
     });
 }
 
@@ -277,8 +277,9 @@ function ajaxGet (url, success) {
     $.ajax({
         url: url,
         type: 'GET',
+        cache: false,
         success: success,
-        // error: alert(error)
+        error: (error) => alert(error)
     });
 }
 
