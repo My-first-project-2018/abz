@@ -19,9 +19,6 @@ $(document).ready(() => {
         oldLastPage,
         timer;
 
-    // location.hash = 'http://192.168.1.6:8080/employees-department/department1';
-
-
     $('.employees').on('scroll', loadNewEmployeesItems);
 
     $('#sort').on('change', sortEmployees);
@@ -41,23 +38,23 @@ $(document).ready(() => {
             setNewLasPage();
 
             // window.location.href = '1234#'
-            history.pushState('state1', 'changeState', 'vado/departmetn666');
 
-            if(page > lastPage) return;
 
-            if(changeDepartmentFlag) {
-                href = newHref + `?page=${page}`;
-            }
+            // if(page > lastPage) return;
+            //
+            // if(changeDepartmentFlag) {
+            //     href = newHref + `?page=${page}`;
+            // }
+            //
+            // if(sortObj.sorted) {
+            //     href = sortObj.href + `&page=${page}`;
+            // }
+            //
+            // if(searchObj.searched) {
+            //     href = searchObj.href + `&page=${page}`;
+            // }
 
-            if(sortObj.sorted) {
-                href = sortObj.href + `&page=${page}`;
-            }
-
-            if(searchObj.searched) {
-                href = searchObj.href + `&page=${page}`;
-            }
-
-            href = newHref + `?page=${page}`;
+            href = location.href;
 
             ajaxGet(href, (result) => {
                 $('.employees').append(result);
@@ -77,6 +74,10 @@ $(document).ready(() => {
         let order = $('.order');
         let orderBy = order.find('input:checked').val();
         let field = this.value;
+
+        // newHref = order.attr('data-url') + `?field=${field}&orderBy=${orderBy}`;
+
+        history.pushState('','', order.attr('data-url') + `?field=${field}&orderBy=${orderBy}`);
 
         let newSortObj = {
             href: order.attr('data-url') + `?field=${field}&orderBy=${orderBy}`,
