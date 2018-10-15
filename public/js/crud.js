@@ -69,7 +69,10 @@ $(document).ready(() => {
     modal.on('submit', 'form', function (e) {
         e.preventDefault();
         let url = $(this).attr('action');
-        ajaxGet(url, function (result) {
+
+        let data = new FormData(this);
+
+        ajaxPost(url, data, function (result) {
             if(result.success){
                     alert('good!')
                 } else { //error
