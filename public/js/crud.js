@@ -51,6 +51,10 @@ $(document).ready(() => {
             $('.search__boss').removeClass('search__boss_active');
         }
     });
+    
+    modal.on('click', '.search__boss p', function () {
+       $('#bossHash').val($(this).attr('data-hash'));
+    });
 
 
     $('#sort').on('change', sortEmployees);
