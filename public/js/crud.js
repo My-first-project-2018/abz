@@ -12,7 +12,22 @@ $(document).ready(() => {
         oldLastPage,
         timer;
 
+
+
     employees.on('scroll', loadNewEmployeesItems);
+
+    $('.crud__aside .btn').on('click', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        ajaxGet(url, (result) => {
+            $('.modal').append(result);
+        })
+    });
+
+    body.on('click', '.modal__close', function() {
+        $(this).closest('.modal').css({'display':'none'});
+        $('.modal').find('form').remove();
+    });
 
     $('#sort').on('change', sortEmployees);
 

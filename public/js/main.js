@@ -27,10 +27,6 @@ $(document).ready(() => {
         e.preventDefault();
         modal.css({'display':'flex'});
     });
-
-    body.on('click', '.modal__close', function() {
-        $(this).closest('.modal').css({'display':'none'});
-    });
     
     body.click((e) => {
         //close login block

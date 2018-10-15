@@ -60,7 +60,7 @@
                     <input name="orderBy" type="radio" value="asc">
                 </label>
             </div>
-            <button class="btn addUser">Add User</button>
+            <a href="http://192.168.1.6:8080/create-employee/department1" class="btn addUser">Add User</a>
         </form>
     </aside>
     <div class="employees" current_page="http://192.168.1.6:8080/next-page-employees" last_page="5">
@@ -486,6 +486,19 @@
             </label>
             <label> Начальник
                 <input type="text" placeholder="new user boss">
+            </label>
+            <div class="search__boss">
+                <p>Boss Ivanich</p>
+                <p>Boss Ivanich</p>
+                <p>Boss Ivanich</p>
+                <p>Boss Ivanich</p>
+            </div>
+            <label>Должность
+                <select name="position">
+                    <option value="position1">pos1</option>
+                    <option value="position2">pos2</option>
+                    <option value="position3">pos3</option>
+                </select>
             </label>
             <button type="submit" class="btn">Добавить</button>
         </div>
