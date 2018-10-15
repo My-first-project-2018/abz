@@ -53,6 +53,7 @@ $(document).ready(() => {
 
     modal.on('submit', 'form', function (e) {
         e.preventDefault();
+
         let url = $(this).attr('action');
 
         let data = new FormData(this);
