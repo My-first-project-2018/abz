@@ -282,7 +282,8 @@ function ajaxPost (url, data, success) {
         },
         type: 'POST',
         data: data,
-        success: success
+        success: success,
+        // error: alert(error)
     });
 }
 
@@ -290,6 +291,7 @@ function ajaxGet (url, success) {
     $.ajax({
         url: url,
         type: 'GET',
-        success: success
+        success: success,
+        // error: alert(error)
     });
 }
