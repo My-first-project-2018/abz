@@ -261,7 +261,7 @@ function getHashFromUrl (url) {
 }
 
 
-function ajaxPost (url, data, success, contentType = "application/x-www-form-urlencoded; charset = UTF-8", processData = "application/x-www-form-urlencoded") {
+function ajaxPost (url, data, success, contentType = "application/x-www-form-urlencoded", processData = "application/x-www-form-urlencoded") {
     $.ajax({
         url: url,
         type: 'POST',
