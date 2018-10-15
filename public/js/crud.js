@@ -19,6 +19,9 @@ $(document).ready(() => {
         oldLastPage,
         timer;
 
+    // location.hash = 'http://192.168.1.6:8080/employees-department/department1';
+
+
     $('.employees').on('scroll', loadNewEmployeesItems);
 
     $('#sort').on('change', sortEmployees);
@@ -37,13 +40,13 @@ $(document).ready(() => {
 
             setNewLasPage();
 
+            // window.location.href = '1234#'
+            history.pushState('state1', 'changeState', 'vado/departmetn666');
+
             if(page > lastPage) return;
 
-            href = newHref + `?page=${page}`;
-
             if(changeDepartmentFlag) {
-                // let newHref = href;
-                let href = newHref + `?page=${page}`;
+                href = newHref + `?page=${page}`;
             }
 
             if(sortObj.sorted) {
@@ -53,6 +56,8 @@ $(document).ready(() => {
             if(searchObj.searched) {
                 href = searchObj.href + `&page=${page}`;
             }
+
+            href = newHref + `?page=${page}`;
 
             ajaxGet(href, (result) => {
                 $('.employees').append(result);
