@@ -65,9 +65,10 @@ $(document).ready(() => {
 
         let data = new FormData(this);
 
-        ajaxPost(url, data, function (result) {
+        ajaxPost(url, data,  (result) => {
             if(result.success){
-                    alert('good!')
+                    alert('good!');
+                    this.reset();
                 } else { //error
                     showAjaxValidateError(result);
                 }
