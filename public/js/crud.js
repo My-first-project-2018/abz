@@ -3,6 +3,7 @@
 $(document).ready(() => {
     let
         employees = $('.employees'),
+        modal = $('.modal'),
         href = location.href,
         departmentHref = href,
         searchFlag = false,
@@ -16,18 +17,24 @@ $(document).ready(() => {
 
     employees.on('scroll', loadNewEmployeesItems);
 
-    $('.crud__aside .btn').on('click', function (e) {
-        e.preventDefault();
-        let url = $(this).attr('href');
-        ajaxGet(url, (result) => {
-            $('.modal').append(result);
-        })
+    $('.addUser').on('click', function (e) {
+        showAddUserForm(e);
     });
 
-    body.on('click', '.modal__close', function() {
-        $(this).closest('.modal').css({'display':'none'});
-        $('.modal').find('form').remove();
+    $('.modal__close').on('click', () => {
+        modal
+            .css({'display':'none'})
+            .find('form').remove();
     });
+
+    modal.on('input', 'input[type=search]', function() {
+        if($(this).val().length > 2) {
+            $('.search__boss').addClass('search__boss_active');
+        } else {
+            $('.search__boss').removeClass('search__boss_active');
+        }
+    });
+
 
     $('#sort').on('change', sortEmployees);
 
@@ -39,6 +46,14 @@ $(document).ready(() => {
         console.log(this);
     });
 
+    function showAddUserForm (e) {
+        e.preventDefault();
+        modal.css({'display':'flex'});
+        let url = $(this).attr('href');
+        ajaxGet(url, (result) => {
+            $('.modal').append(result);
+        })
+    }
 
     function loadNewEmployeesItems () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {

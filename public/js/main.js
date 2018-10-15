@@ -3,7 +3,6 @@
 $(document).ready(() => {
     let
         body = $('body'),
-        modal = $('.modal'),
         loginWindow = $('.login_window'),
         timer,
         draggable = false,
@@ -15,18 +14,11 @@ $(document).ready(() => {
         topPos,
         hierarchy;
     
-    // function openModal (content) {
-    //     $('.modal').append(content).css({'display':'flex'});
-    // }
-    
     body.on('submit', '.login_window', function (e) {
         checkAuthentication.call(this, e)
     });
     
-    body.on('click', '.addUser', (e) => {
-        e.preventDefault();
-        modal.css({'display':'flex'});
-    });
+
     
     body.click((e) => {
         //close login block
