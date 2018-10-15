@@ -18,7 +18,7 @@ $(document).ready(() => {
     employees.on('scroll', loadNewEmployeesItems);
 
     $('.addUser').on('click', function (e) {
-        showAddUserForm(e);
+        showAddUserForm.call(this, e);
     });
 
     $('.modal__close').on('click', () => {
