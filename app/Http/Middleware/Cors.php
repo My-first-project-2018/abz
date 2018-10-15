@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Department;
 use Closure;
 
 /**
@@ -20,6 +21,8 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
+	    \URL::defaults(['department' => Department::first()->slug]);
+	    
         return $next($request)->header('Access-Control-Allow-Origin', '*')
                               ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 

@@ -70,7 +70,7 @@ class DepartmentService {
 	 *
 	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
 	 */
-	public function getEmployeesPaginate (Department $department, $countPage = 50): LengthAwarePaginator
+	public function getEmployeesPaginate (Department $department, $countPage = 20): LengthAwarePaginator
 	{
 		$departmentEmployees = $department->employees()
 										  ->with(['position','boss'])
@@ -98,9 +98,19 @@ class DepartmentService {
 	{
 		$departmentEmployees = $department->employees()
 		                                  ->with(['position','boss'])
-										  ->orderBy($request->get('sort'), $request->get('orderBy'))
+										  ->orderBy($request->get('field'), $request->get('orderBy'))
 		                                  ->paginate($countPage);
 		
 		return $departmentEmployees;
+	}
+	
+	/**
+	 * @param \App\Department $department
+	 *
+	 * @return \App\Position[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function getPositionsDepartment (Department $department) : Collection
+	{
+		return $department->positions;
 	}
 }

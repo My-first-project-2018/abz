@@ -26,18 +26,18 @@ class EmployeesTableSeeder extends Seeder {
 		$faker = Factory::create( 'ru_RU' );
 		if(!Storage::exists('csv/employees.csv')){
 			$countPositions = Position::all()->count();
-			$this->strData = 'id,hash,first_name,last_name,position_id,data_reception,salary' . "\n";
+			$this->strData = 'id,hash,first_name,last_name,img,position_id,data_reception,salary' . "\n";
 			for ($i = 2; $i <= 50000; $i ++) {
 				
-				$dataReception =
-					Carbon::now()->subYear( random_int( 1, 5 ) )
-					      ->subMonth( random_int( 1, 12 ) )
-					      ->subDay( random_int( 1, 30 ) )->toDateString();
+				$dataReception = Carbon::now()->subYear(random_int( 1, 5 ))
+										      ->subMonth(random_int( 1, 12 ))
+										      ->subDay(random_int( 1, 30 ))
+										      ->toDateString();
 				
-				$this->strData .= $i . ',' . Uuid::uuid4()->toString() . ',"'
-				         . $faker->firstName . '"' . ',"' . $faker->lastName
-				         . '",' . random_int( 1, $countPositions ) . ','
-				         . $dataReception . ',' . random_int( 300, 1500 )
+				$this->strData .= $i . ',"' . Uuid::uuid4()->toString() . '","'
+				         . $faker->firstName . '","' . $faker->lastName. '","'
+				         . $faker->imageUrl(220,160).'","' . random_int( 1, $countPositions ) . '","'
+				         . $dataReception . '","' . random_int( 300, 1500 ) . '"'
 				         . "\n";
 				
 			}

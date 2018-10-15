@@ -42,7 +42,7 @@ class DepartmentController extends Controller
 	public function showDepartmentBossAndSubordinate (Department $department) : View
     {
 	    $employees = $this->service->getDepartmentBossAndSubordinate($department);
-	  
+	
     	return view('departmentEmployees')->with(compact('employees'));
     }
     

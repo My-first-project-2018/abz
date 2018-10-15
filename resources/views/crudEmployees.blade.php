@@ -10,22 +10,18 @@
             <form class="crud__form" action="#">
                 <label for="department">Отдел</label>
                 <select id="department">
-                    @foreach($departments as $department)
-                        <option {{$currentDepartment === $department ? 'selected' : '' }} value="{{route('employeesDepartment', ['department' => $department->slug])}}" > {{$department->name}} </option>
+                    @foreach($departments as $item)
+                        <option {{$department === $item ? 'selected' : '' }} value="{{route('employeesDepartment', ['department' => $item->slug])}}" > {{$item->name}} </option>
                     @endforeach
                 </select>
 
                 <label for="sort">Сортировать</label>
                 <select id="sort">
-                    @if(isset($fields) && !empty($fields))
-                        @foreach($fields as $key=>$field)
-                            <option value="{{$key}}">{{$field}}</option>
-                        @endforeach
-                    @endif
+                    @include('layouts.fields')
                 </select>
                 <div class="order" data-url="{{route('orderByEmployees')}}">
                     <label>po ubivaniu
-                        <input name="orderBy" type="radio" value="desk" checked>
+                        <input name="orderBy" type="radio" value="desc" checked>
                     </label>
                     <br>
                     <label>po vozrostaniyu
@@ -36,17 +32,16 @@
             </form>
         </aside>
         @if($employees->isNotEmpty())
-        <div class="employees" current_page="{{ route('paginationEmployees') }}" last_page="{{$employees->lastPage()}}">
-            <form action="#" class="search__form">
+        <div class="employees">
+            <div class="employees__onload">
+                <div class="load"></div>
+            </div>
+            <form action="{{route('searchEmployees')}}" class="search__form">
                 <p>Search employee:</p>
-                <select name="search-employee">
-                    @if(isset($fields) && !empty($fields))
-                        @foreach($fields as $key=>$field)
-                            <option value="{{$key}}">{{$field}}</option>
-                        @endforeach
-                    @endif
+                <select name="field">
+                    @include('layouts.fields')
                 </select>
-                <input type="text">
+                <input type="text" name="value" placeholder="more than 3 symbols">
             </form>
             @include('employeesItem')
         </div>

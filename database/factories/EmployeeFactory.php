@@ -8,5 +8,6 @@ $factory->define( Employee::class, function (Faker $faker) {
     return [
         'first_name' => $faker->name,
         'last_name' => $faker->lastName,
+        'img'       => $faker->imageUrl(),
     ];
 });

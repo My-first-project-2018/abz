@@ -25,7 +25,7 @@ class EmployeeController extends Controller
 	 */
 	public function __construct (EmployeeService $employeeService)
     {
-    	$this->service           = $employeeService;
+    	$this->service = $employeeService;
     }
 	
 	/**

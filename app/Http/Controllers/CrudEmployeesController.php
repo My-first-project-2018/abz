@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Services\DepartmentService;
 use App\Http\Services\EmployeeService;
 use Illuminate\Http\Request;
@@ -34,28 +35,23 @@ class CrudEmployeesController extends Controller
 	
 	
 	/**
-	 * @param \App\Department|null $department
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Department|null     $department
 	 *
 	 * @return \Illuminate\View\View
 	 */
-	public function showEmployees (Department $department = null) : View
+	public function showEmployees (Request $request, Department $department) : View
 	{
 		$departments = $this->departmentService->getAllDepartments();
 		
-		$currentDepartment  = $department ?: $departments->first();
-		
 		/** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $employees */
-		$employees  = $this->departmentService->getEmployeesPaginate($currentDepartment);
+		$employees  = $this->departmentService->getEmployeesPaginate($department);
 		
-		$employees->setPath(route('paginationEmployees',['department' => $currentDepartment->slug]));
-		
-		$fields = $this->employeesService->getColumnsList();
-		
-		if(!$department){
-			return \view('crudEmployees')->with(compact(['employees', 'departments', 'currentDepartment', 'fields']));
+		if(!$request->ajax()){
+			return \view('crudEmployees')->with(compact(['employees', 'departments', 'department']));
 		}
 		
-		return \view('departmentSelected')->with(compact('employees'));
+		return \view('employeesItem')->with(compact('employees'));
 	}
 	
 	/**
@@ -68,7 +64,7 @@ class CrudEmployeesController extends Controller
 	{
 		$employees = $this->departmentService->getOrderByEmployees($request,$department);
 		
-		return \view('departmentSelected')->with(compact('employees'));
+		return \view('employeesItem')->with(compact('employees'));
 	}
 	
 	/**
@@ -81,8 +77,36 @@ class CrudEmployeesController extends Controller
 		/** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $employees */
 		$employees  = $this->departmentService->getEmployeesPaginate($department);
 		
-		$fields = $this->employeesService->getColumnsList();
+		return \view('employeesItem')->with(compact(['employees']));
+	}
+	
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function searchEmployees(Request $request) : View
+	{
+		$employees = $this->employeesService->searchEmployees($request);
 		
-		return \view('employeesItem')->with(compact(['employees','fields']));
+		return \view('employeesItem')->with(compact(['employees']));
+	}
+	
+	/**
+	 * @param \App\Department $department
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function showEmployeeModalForm (Department $department) : View
+	{
+		$positions = $this->departmentService->getPositionsDepartment($department);
+		
+		return \view('modalEmployee')->with(compact('positions'));
+	}
+	
+	public function createEmployee (CreateEmployeeRequest $request)
+	{
+		$result = $this->employeesService->createEmployee($request);
+		dd($result);
 	}
 }

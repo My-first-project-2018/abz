@@ -54,7 +54,7 @@ $(document).ready(() => {
             //     href = searchObj.href + `&page=${page}`;
             // }
 
-            href = location.href;
+            href = location.href + `?page=${page}`;
 
             ajaxGet(href, (result) => {
                 $('.employees').append(result);
@@ -75,9 +75,14 @@ $(document).ready(() => {
         let orderBy = order.find('input:checked').val();
         let field = this.value;
 
+        let newStr = order.attr('data-url').split('/');
+        newStr[newStr.length-1] = getHashFromUrl(window.location.href).replace(/\?+/, '');
+        console.log(newStr);
+        newStr = newStr.join('/');
         // newHref = order.attr('data-url') + `?field=${field}&orderBy=${orderBy}`;
+        href = window.location.href;
 
-        history.pushState('','', order.attr('data-url') + `?field=${field}&orderBy=${orderBy}`);
+        history.pushState('','', newStr + `?field=${field}&orderBy=${orderBy}`);
 
         let newSortObj = {
             href: order.attr('data-url') + `?field=${field}&orderBy=${orderBy}`,
@@ -90,14 +95,15 @@ $(document).ready(() => {
 
         $('.employees').scrollTop(0);
 
-        loadDepartmentAjax(sortObj.href);
+        loadDepartmentAjax(window.location.href);
 
         page = 2;
     }
 
     function changeDepartment () {
         page = 2;
-        href = this.value;
+        history.pushState('','', this.value);
+        href = window.location.href;
         changeDepartmentFlag = true;
         searchObj.searched = false;
         $('.employees').scrollTop(0);

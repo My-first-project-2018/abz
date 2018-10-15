@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,27 +51,24 @@ abstract class BaseRepository {
 		return $this->model->first();
 	}
 	
+	/**
+	 * @param string $fields
+	 * @param string $value
+	 *
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function getByFieldsLike(string $fields, string $value) : Builder
+	{
+		return $this->model->where($fields, 'like', $value."%");
+	}
 	
 	/**
-	 * @return array
+	 * @param array $data
+	 *
+	 * @return \Illuminate\Database\Eloquent\Model
 	 */
-	public function getColumnsList () : array
+	public function create (array $data) : Model
 	{
-		$notFields = ['id','created_at','updated_at','hash'];
-		
-		$fields = \Schema::getColumnListing($this->model->getTable());
-	
-		$newArrFields = [];
-		foreach ($fields as $field)
-		{
-			if(!\in_array( $field, $notFields, true ))
-			{
-				$newField = str_replace('_id','',$field);
-				
-				$newArrFields[$field] = ucfirst(str_replace('_',' ',$newField));
-			}
-		}
-		
-		return $newArrFields;
+		return $this->model->create($data);
 	}
 }
