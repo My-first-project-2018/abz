@@ -41,15 +41,15 @@ $(document).ready(() => {
             
             
             ajaxGet(url, function (result) {
-                // $('.search__boss').find('p').remove();
-                // $('.search__boss').append(result);
+                $('.search__boss').find('p').remove();
+                $('.search__boss').append(result);
 
-                if(result.success){
-                    $('.search__boss').find('p').remove();
-                    $('.search__boss').append(result);
-                } else { //error
-                    showAjaxValidateError(result);
-                }
+                // if(result.success){
+                //     $('.search__boss').find('p').remove();
+                //     $('.search__boss').append(result);
+                // } else { //error
+                //     showAjaxValidateError(result);
+                // }
 
             });
 
@@ -66,9 +66,16 @@ $(document).ready(() => {
         $('.search__boss').removeClass('search__boss_active');
     });
 
-    modal.on('submit', function (e) {
+    modal.on('submit', 'form', function (e) {
         e.preventDefault();
-
+        let url = $(this).attr('action');
+        ajaxGet(url, function (result) {
+            if(result.success){
+                    alert('good!')
+                } else { //error
+                    showAjaxValidateError(result);
+                }
+        })
     });
 
 
