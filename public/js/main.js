@@ -266,8 +266,8 @@ function ajaxPost (url, data, success, contentType = true, processData = true) {
         type: 'POST',
         data: data,
         cache: false,
-        contentType: false,
-        processData: false,
+        contentType: contentType,
+        processData: processData,
         success: success,
         error: (error) => alert(error)
     });
