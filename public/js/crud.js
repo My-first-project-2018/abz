@@ -20,6 +20,8 @@ $(document).ready(() => {
         oldLastPage,
         timer;
 
+
+
     $('.employees').on('scroll', loadNewEmployeesItems);
 
     $('#sort').on('change', sortEmployees);
@@ -38,23 +40,6 @@ $(document).ready(() => {
 
             setNewLasPage();
 
-            // window.location.href = '1234#'
-
-
-            // if(page > lastPage) return;
-            //
-            // if(changeDepartmentFlag) {
-            //     href = newHref + `?page=${page}`;
-            // }
-            //
-            // if(sortObj.sorted) {
-            //     href = sortObj.href + `&page=${page}`;
-            // }
-            //
-            // if(searchObj.searched) {
-            //     href = searchObj.href + `&page=${page}`;
-            // }
-
             href = location.href.match(/\?/) ? location.href + `&page=${page}` : location.href + `?page=${page}`;
 
             ajaxGet(href, (result) => {
@@ -72,6 +57,8 @@ $(document).ready(() => {
     }
 
     function sortEmployees () {
+        clearPagination();
+
         let order = $('.order');
         let orderBy = order.find('input:checked').val();
         let field = this.value;
@@ -103,6 +90,7 @@ $(document).ready(() => {
     }
 
     function changeDepartment () {
+        clearPagination();
         page = 2;
         history.pushState('','', this.value);
         href =  departmentHref = window.location.href;
@@ -111,6 +99,10 @@ $(document).ready(() => {
         $('.employees').scrollTop(0);
         loadDepartmentAjax(href);
         newHref = href;
+    }
+
+    function clearPagination () {
+        $('.paginationPages').remove();
     }
 
     function loadDepartmentAjax (href) {
@@ -125,6 +117,9 @@ $(document).ready(() => {
         clearTimeout(timer);
         timer = setTimeout(() => {
             if($(this).val().length > 2) {
+                if($('.search__form').find('select').val() === null) return;
+
+                clearPagination();
                 page = 2;
                 $('.employees__onload').addClass('employees__onload_active');
                 searchFlag = true;
