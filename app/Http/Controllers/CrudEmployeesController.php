@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Exceptions\ErrorUploadImageException;
 use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Services\DepartmentService;
 use App\Http\Services\EmployeeService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -99,14 +101,30 @@ class CrudEmployeesController extends Controller
 	 */
 	public function showEmployeeModalForm (Department $department) : View
 	{
+//		dd(session()->all());
 		$positions = $this->departmentService->getPositionsDepartment($department);
 		
-		return \view('modalEmployee')->with(compact('positions'));
+		return \view('modalForm')->with(compact('positions'));
 	}
 	
-	public function createEmployee (CreateEmployeeRequest $request)
+	/**
+	 * @param \App\Http\Requests\CreateEmployeeRequest $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \App\Exceptions\ErrorUploadImageException
+	 */
+	public function createEmployee (CreateEmployeeRequest $request): JsonResponse
 	{
-		$result = $this->employeesService->createEmployee($request);
-		dd($result);
+		
+		$employee = $this->employeesService->createEmployee( $request );
+		
+		return response()->json($employee->toArray());
 	}
+	
+	public function searchBoss (Request $request, Department $department)
+	{
+		$employees = $this->departmentService->searchBoss($request, $department);
+		dd($employees);
+	}
+	
 }

@@ -28,7 +28,7 @@
                         <input name="orderBy" type="radio" value="asc">
                     </label>
                 </div>
-                <button class="btn addUser">Add User</button>
+                <a href="{{route('showEmployeeModalForm')}}" class="btn addUser">Add User</a>
             </form>
         </aside>
         @if($employees->isNotEmpty())
@@ -46,5 +46,8 @@
             @include('employeesItem')
         </div>
         @endif
+    </div>
+    <div class="modal">
+        <div class="modal__close">X</div>
     </div>
 @endsection

@@ -32,7 +32,8 @@ class Employee extends Model {
 		'position_id',
 		'hash',
 		'data_reception',
-		'salary'
+		'salary',
+		'img'
 	];
 	
 	/**

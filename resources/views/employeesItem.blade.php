@@ -1,6 +1,6 @@
 <input id="lastPage" type="hidden" value="{{$employees->lastPage()}}">
 @if($employees->isNotEmpty())
-    <p style="display: flex; justify-content:  flex-end ; margin-right: 50px; color: red">{{$employees->currentPage().'-'.$employees->lastPage()}} pages.</p>
+    <p class="paginationPages" style="display: flex; justify-content:  flex-end ; margin-right: 50px; color: red">{{$employees->currentPage().'-'.$employees->lastPage()}} pages.</p>
     @foreach($employees as $employee)
         <div class="employees__item">
             <div class="photo"><img src="{{--{{$employee->img}}--}}" alt="{{$employee->img}}"></div>

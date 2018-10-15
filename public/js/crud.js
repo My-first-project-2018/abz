@@ -24,7 +24,7 @@ $(document).ready(() => {
         })
     });
 
-    body.on('click', '.modal__close', function() {
+    $('body').on('click', '.modal__close', function() {
         $(this).closest('.modal').css({'display':'none'});
         $('.modal').find('form').remove();
     });

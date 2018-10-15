@@ -35,7 +35,8 @@ class CreateEmployeeRequest extends FormRequest
             'data_reception'  => 'required|date_format:Y-m-d',
             'boss'            => 'required|exists:employees,hash',
             'position'        => 'required|exists:positions,hash',
-            'img'             => 'image|mimes:jpeg,png'
+            'img'             => 'required|image|mimes:jpeg,png'
         ];
     }
+
 }

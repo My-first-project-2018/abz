@@ -113,4 +113,17 @@ class DepartmentService {
 	{
 		return $department->positions;
 	}
+	
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 * @param \App\Department          $department
+	 *
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public function searchBoss (Request $request, Department $department) : Collection
+	{
+		$emplyees = $department->employees()->where($request->get('field'), 'like', $request->get('value').'%')->get();
+	
+		return $emplyees;
+	}
 }
