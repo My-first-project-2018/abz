@@ -452,10 +452,15 @@ h1.company:hover, h1.company a:hover {
 }
 .employees__item {
     display: flex;
+    background: #1d1a1a;
     align-items: center;
     justify-content: space-between;
     height: 50px;
     cursor: pointer;
+    transition: .2s;
+}
+.employees__item:hover {
+    background: #323232;
 }
 .employees__item:not(:last-child) {
     border-bottom: 1px solid #842828;
