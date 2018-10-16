@@ -2,7 +2,7 @@
 @if($employees->isNotEmpty())
     <p class="paginationPages" style="display: flex; justify-content:  flex-end ; margin-right: 50px; color: red">{{$employees->currentPage().'-'.$employees->lastPage()}} pages.</p>
     @foreach($employees as $employee)
-        <div class="employees__item">
+        <div class="employees__item" data-url="{{route('showEditEmployeeModalForm',['employee' => $employee->hash ])}}">
             <div class="photo"><img src="{{--{{$employee->img}}--}}" alt="{{$employee->img}}"></div>
             <div class="firstName">
                 <span class="employee__block__label">First Name</span>

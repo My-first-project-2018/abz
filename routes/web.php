@@ -43,6 +43,14 @@ Route::group(['middleware' => 'cors'], function (){
 			
 		});
 	
+		Route::group(['prefix' => 'edit-employee/{employee}'],function (){
+			
+			Route::get('/', ['as' => 'showEditEmployeeModalForm', 'uses' => 'CrudEmployeesController@showEditEmployeeModalForm']);
+			
+			Route::post('/', ['as' => 'editEmployee', 'uses' => 'CrudEmployeesController@editEmployee']);
+			
+		});
+	
 		Route::get('search-boss/{department}', ['as' => 'searchBoss', 'uses' => 'CrudEmployeesController@searchBoss']);
 	
 	

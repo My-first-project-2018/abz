@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Employee;
 use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Services\DepartmentService;
 use App\Http\Services\EmployeeService;
@@ -105,6 +106,17 @@ class CrudEmployeesController extends Controller
 		return \view('modalForm')->with(compact(['positions','department']));
 	}
 	
+	public function showEditEmployeeModalForm (Employee $employee)
+	{
+		$department = $employee->department;
+		dd($department);
+		$positions = $this->departmentService->getPositionsDepartment($department);
+		
+		$employee = $employee->load('boss');
+		
+		return \view('modalForm')->with(compact(['positions','department', 'employee']));
+	}
+	
 	/**
 	 * @param \App\Http\Requests\CreateEmployeeRequest $request
 	 *
@@ -117,6 +129,11 @@ class CrudEmployeesController extends Controller
 		$employee = $this->employeesService->createEmployee( $request );
 		
 		return response()->json(['success' => true, 'data' => $employee->toArray()]);
+	}
+	
+	public function editEmployee ()
+	{
+	
 	}
 	
 	/**
