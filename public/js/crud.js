@@ -14,6 +14,7 @@ $(document).ready(() => {
         timer;
 
 
+
     employees.on('scroll', loadNewEmployeesItems);
 
     $('.addUser').on('click', function (e) {
@@ -35,18 +36,14 @@ $(document).ready(() => {
     });
 
     modal.on('click', '.search__boss p', function () {
-        chooseBoss.call(this)
+        chooseNewBoss.call(this)
     });
-
     //upload file
     modal.on('change', "input[type='file']", showUploadedImage);
 
     modal.on('submit', 'form', function (e) {
-        console.log(this)
-        if(!$(this).hasClass('employeeEdit')) {
-            e.preventDefault();
-            requestAddUserForm.call(this);
-        }
+        e.preventDefault();
+        requestAddUserForm.call(this);
     });
 
     $('#sort').on('change', sortEmployees);
@@ -78,7 +75,7 @@ $(document).ready(() => {
         }
     }
 
-    function chooseBoss() {
+    function chooseNewBoss() {
         $('#bossHash').val($(this).attr('data-hash'));
         modal.find('input[type=search]').val($(this).html());
         $('.search__boss').removeClass('search__boss_active');
@@ -123,6 +120,7 @@ $(document).ready(() => {
         ajaxPost(url, data, (result) => {
             if (result.success) {
                 alert('good!');
+                $('.modal').removeClass('modal_active').find('form').remove();
                 this.reset();
             } else { //error
                 showAjaxValidateError(result);
