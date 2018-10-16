@@ -71,7 +71,7 @@ $(document).ready(() => {
 
     function chooseBoss () {
         $('#bossHash').val($(this).attr('data-hash'));
-        modal.find('input[type=search]').val($(this).val());
+        modal.find('input[type=search]').val($(this).html());
         $('.search__boss').removeClass('search__boss_active');
     }
 
