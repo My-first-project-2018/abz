@@ -69,6 +69,12 @@ $(document).ready(() => {
         }
     }
 
+    function chooseBoss () {
+        $('#bossHash').val($(this).attr('data-hash'));
+        modal.find('input[type=search]').val($(this).val());
+        $('.search__boss').removeClass('search__boss_active');
+    }
+
     function showAddUserForm (e) {
         e.preventDefault();
         modal.css({'display':'flex'});
@@ -80,14 +86,8 @@ $(document).ready(() => {
         })
     }
 
-    function chooseBoss () {
-        $('#bossHash').val($(this).attr('data-hash'));
-        modal.find('input[type=search]').val($(this).val());
-        $('.search__boss').removeClass('search__boss_active');
-    }
-
     function findBosses () {
-        let url = changeDepartmentInUrl.call(this, $(this).attr('data-url'));
+        let url = $(this).attr('data-url') + `?value=${$(this).val()}`;
 
         ajaxGet(url, function (result) {
             $('.search__boss').find('p').remove();
@@ -97,6 +97,28 @@ $(document).ready(() => {
         $('.search__boss').addClass('search__boss_active');
     }
 
+    function changeDepartmentInUrl (url) {
+        let newUrl = url.split('/');
+        newUrl[newUrl.length - 1] = '';
+        return newUrl.join('/') + getHashFromUrl(departmentHref);
+    }
+
+    function requestAddUserForm () {
+
+        let url = $(this).attr('action');
+
+        let data = new FormData(this);
+
+        ajaxPost(url, data,  (result) => {
+            if(result.success){
+                alert('good!');
+                this.reset();
+            } else { //error
+                showAjaxValidateError(result);
+            }
+        }, false, false)
+    }
+    
     function sortEmployees () {
         clearPagination();
 
@@ -121,22 +143,6 @@ $(document).ready(() => {
         page = 2;
     }
 
-    function requestAddUserForm () {
-
-        let url = $(this).attr('action');
-
-        let data = new FormData(this);
-
-        ajaxPost(url, data,  (result) => {
-            if(result.success){
-                alert('good!');
-                this.reset();
-            } else { //error
-                showAjaxValidateError(result);
-            }
-        }, false, false)
-    }
-
     function changeDepartment () {
         clearPagination();
         page = 2;
@@ -145,18 +151,6 @@ $(document).ready(() => {
         changeDepartmentFlag = true;
         employees.scrollTop(0);
         loadDepartmentAjax(href);
-    }
-
-    function clearPagination () {
-        $('.paginationPages').remove();
-    }
-
-    function loadDepartmentAjax (href) {
-        ajaxGet(href, (result) => {
-            $('.employees__item').remove();
-            employees.append(result);
-            setNewLastPage();
-        });
     }
 
     function search () {
@@ -180,6 +174,20 @@ $(document).ready(() => {
         },300);
     }
 
+    function clearPagination () {
+        $('.paginationPages').remove();
+    }
+
+    function loadDepartmentAjax (href) {
+        ajaxGet(href, (result) => {
+            $('.employees__item').remove();
+            employees.append(result);
+            setNewLastPage();
+        });
+    }
+
+    
+
     function showOldEmployeesItems () {
         $('.employees__item:visible').remove();
         setTimeout(() => {
@@ -199,11 +207,7 @@ $(document).ready(() => {
         setNewLastPage();
     }
 
-    function changeDepartmentInUrl (url) {
-        let newUrl = url.split('/');
-        newUrl[newUrl.length - 1] = '';
-        return newUrl.join('/') + getHashFromUrl(departmentHref) + `?value=${$(this).val()}`;
-    }
+    
 
     function setNewLastPage () {
         let lp = $('#lastPage');

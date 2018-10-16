@@ -278,7 +278,6 @@ function ajaxGet (url, success) {
     $.ajax({
         url: url,
         type: 'GET',
-        cache: false,
         success: success,
         error: (error) => alert(error)
     });
