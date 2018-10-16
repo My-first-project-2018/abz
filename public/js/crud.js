@@ -42,8 +42,11 @@ $(document).ready(() => {
     modal.on('change', "input[type='file']", showUploadedImage);
 
     modal.on('submit', 'form', function (e) {
-        e.preventDefault();
-        requestAddUserForm.call(this);
+        console.log(this)
+        if(!$(this).hasClass('employeeEdit')) {
+            e.preventDefault();
+            requestAddUserForm.call(this);
+        }
     });
 
     $('#sort').on('change', sortEmployees);
