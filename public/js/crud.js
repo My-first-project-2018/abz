@@ -13,8 +13,6 @@ $(document).ready(() => {
         oldLastPage,
         timer;
 
-
-
     employees.on('scroll', loadNewEmployeesItems);
 
     $('.addUser').on('click', function (e) {
@@ -29,43 +27,19 @@ $(document).ready(() => {
 
     modal.on('input', 'input[type=search]', function() {
         if($(this).val().length > 2) {
-
-            let url = changeDepartmentInUrl.call(this, $(this).attr('data-url'));
-            
-            ajaxGet(url, function (result) {
-                $('.search__boss').find('p').remove();
-                $('.search__boss').append(result);
-
-            });
-
-
-            $('.search__boss').addClass('search__boss_active');
+            findBosses.call(this);
         } else {
             $('.search__boss').removeClass('search__boss_active');
         }
     });
     
     modal.on('click', '.search__boss p', function () {
-       $('#bossHash').val($(this).attr('data-hash'));
-       // $('.search__boss').val($(this).va)
-        $('.search__boss').removeClass('search__boss_active');
+        chooseBoss.call(this)
     });
 
     modal.on('submit', 'form', function (e) {
         e.preventDefault();
-
-        let url = $(this).attr('action');
-
-        let data = new FormData(this);
-
-        ajaxPost(url, data,  (result) => {
-            if(result.success){
-                    alert('good!');
-                    this.reset();
-                } else { //error
-                    showAjaxValidateError(result);
-                }
-        }, false, false)
+        requestAddUserForm.call(this);
     });
 
 
@@ -79,17 +53,6 @@ $(document).ready(() => {
     $('body').on('click', '.employees__item', function () {
         console.log(this);
     });
-
-    function showAddUserForm (e) {
-        e.preventDefault();
-        modal.css({'display':'flex'});
-
-        let url = changeDepartmentInUrl.call(this, $(this).attr('href'));
-
-        ajaxGet(url, (result) => {
-            $('.modal').append(result);
-        })
-    }
 
     function loadNewEmployeesItems () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
@@ -106,10 +69,32 @@ $(document).ready(() => {
         }
     }
 
-    function setNewLastPage () {
-        let lp = $('#lastPage');
-        lastPage = lp.val();
-        lp.remove();
+    function showAddUserForm (e) {
+        e.preventDefault();
+        modal.css({'display':'flex'});
+
+        let url = changeDepartmentInUrl.call(this, $(this).attr('href'));
+
+        ajaxGet(url, (result) => {
+            $('.modal').append(result);
+        })
+    }
+
+    function chooseBoss () {
+        $('#bossHash').val($(this).attr('data-hash'));
+        modal.find('input[type=search]').val($(this).val());
+        $('.search__boss').removeClass('search__boss_active');
+    }
+
+    function findBosses () {
+        let url = changeDepartmentInUrl.call(this, $(this).attr('data-url'));
+
+        ajaxGet(url, function (result) {
+            $('.search__boss').find('p').remove();
+            $('.search__boss').append(result);
+
+        });
+        $('.search__boss').addClass('search__boss_active');
     }
 
     function sortEmployees () {
@@ -134,6 +119,22 @@ $(document).ready(() => {
         loadDepartmentAjax(location.href);
 
         page = 2;
+    }
+
+    function requestAddUserForm () {
+
+        let url = $(this).attr('action');
+
+        let data = new FormData(this);
+
+        ajaxPost(url, data,  (result) => {
+            if(result.success){
+                alert('good!');
+                this.reset();
+            } else { //error
+                showAjaxValidateError(result);
+            }
+        }, false, false)
     }
 
     function changeDepartment () {
@@ -203,7 +204,14 @@ $(document).ready(() => {
         newUrl[newUrl.length - 1] = '';
         return newUrl.join('/') + getHashFromUrl(departmentHref) + `?value=${$(this).val()}`;
     }
-    
+
+    function setNewLastPage () {
+        let lp = $('#lastPage');
+        lastPage = lp.val();
+        lp.remove();
+    }
+
+
 
 
 });
