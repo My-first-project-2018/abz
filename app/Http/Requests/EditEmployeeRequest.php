@@ -36,7 +36,7 @@ class EditEmployeeRequest extends FormRequest
 	        'boss'            => 'required|exists:employees,hash',
 	        'position'        => 'required|exists:positions,hash',
 	        'img'             => 'image|mimes:jpeg,png',
-	        'old'             => 'required_without:img|string'
+	        'old'             => 'string'
         ];
     }
 }

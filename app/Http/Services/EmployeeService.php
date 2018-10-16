@@ -142,8 +142,9 @@ class EmployeeService {
 	{
 		$data     = $request->only(['first_name', 'last_name', 'data_reception', 'salary']);
 		
-		$data['img'] = $request->has('old') ? $this->imageService->reload($request) : $this->imageService->upload($request);
-		
+		if($request->hasFile('img'))
+			$data['img'] = $request->has('old') ? $this->imageService->reload($request) : $this->imageService->upload($request);
+			
 		$data['position_id'] = $this->positionModal->whereHash($request->get('position'))->first()->id;
 		
 		return $data;

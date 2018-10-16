@@ -38,9 +38,6 @@
         <div class="file__upload">
             <label>
                 <input type="file"  name="img">
-                @if(isset($employee))
-                    <input id="oldSrc" type="hidden"  name="old">
-                @endif
                 <span>Выбрать фото</span>
             </label>
         </div>
