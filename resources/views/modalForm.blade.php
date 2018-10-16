@@ -2,8 +2,8 @@
 
         <form action="{{route('createEmployee',['department' => $department->slug])}}" method="post" enctype="multipart/form-data">
 @else
-                <form action="{{route('editEmployee',['employee' => $employee->hash])}}" method="post" enctype="multipart/form-data">
-                    @endif
+        <form class="eployeeEdit" action="{{route('editEmployee',['employee' => $employee->hash])}}" method="post" enctype="multipart/form-data">
+@endif
     <div class="user__info">
         <label> Имя
             <input type="text" name="first_name" value="{{$employee->first_name ?? ''}}" placeholder="new user first name">
