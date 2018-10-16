@@ -25,7 +25,7 @@ Route::group(['middleware' => 'cors'], function (){
 	
 	Route::get('/logout', ['as' => 'logout', 'uses'=>'Auth\LoginController@logout']);
 
-//	Route::group(['middleware' => ['auth', 'cors']], function (){
+	Route::group(['middleware' => ['auth', 'cors']], function (){
 		
 		Route::get('employees-department/{department}', ['as' => 'employeesDepartment', 'uses' => 'CrudEmployeesController@showEmployees']);
 		
@@ -54,5 +54,5 @@ Route::group(['middleware' => 'cors'], function (){
 		Route::get('search-boss/{department}', ['as' => 'searchBoss', 'uses' => 'CrudEmployeesController@searchBoss']);
 	
 	
-	//	});
+		});
 });
