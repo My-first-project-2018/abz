@@ -21,7 +21,7 @@ $(document).ready(() => {
 
     $('.modal__close').on('click', () => {
         modal
-            .css({'display':'none'})
+            .removeClass('modal_active')
             .find('form').remove();
     });
 
@@ -51,8 +51,18 @@ $(document).ready(() => {
     $('input[type=search]').on('input', search);
 
     $('body').on('click', '.employees__item', function () {
-        console.log(this);
+        refactorEmployeeItem.call(this);
     });
+
+    function refactorEmployeeItem () {
+        modal.addClass('modal_active');
+
+        let url = $(this).attr('data-url');
+
+        ajaxGet(url, function (result) {
+            modal.append(result).addClass('modal_active');
+        })
+    }
 
     function loadNewEmployeesItems () {
         if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
@@ -77,7 +87,8 @@ $(document).ready(() => {
 
     function showAddUserForm (e) {
         e.preventDefault();
-        modal.css({'display':'flex'});
+        // modal.css({'display':'flex'});
+        modal.addClass('modal_active');
 
         let url = changeDepartmentInUrl.call(this, $(this).attr('href'));
 
