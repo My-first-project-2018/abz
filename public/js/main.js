@@ -60,8 +60,6 @@ $(document).ready(() => {
     $(document).on('mousemove', (e) => {
        if(draggable)  moveItem(e);
     });
-    //upload file
-    body.on('change', "input[type='file']", showUploadedImage);
 
 
     function moveItem (e) {
@@ -228,30 +226,7 @@ $(document).ready(() => {
         alert('Сотрудника можно переместить только на его будущего босса !!!');
     }
 
-    function showUploadedImage () {
-        let file = this.files[0];
 
-        if(file.type.match(/image/)) {
-            $('.upload_image_container').html('');
-
-            $('.upload_image').addClass('upload_image__active');
-
-            let reader = new FileReader();
-
-            reader.readAsDataURL(file);
-
-            reader.onload = (function () {
-                setTimeout(() => {
-                    $('.upload_image').attr('src', reader.result);
-                },100)
-
-            })(file);
-
-        } else {
-            $('.upload_image').removeClass('upload_image__active').attr('src', '');
-            $('.upload_image_container').html('THIS IS NOT IMAGE');
-        }
-    }
 
 });
 
