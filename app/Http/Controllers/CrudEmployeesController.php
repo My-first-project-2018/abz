@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Department;
 use App\Employee;
 use App\Http\Requests\CreateEmployeeRequest;
+use App\Http\Requests\EditEmployeeRequest;
 use App\Http\Services\DepartmentService;
 use App\Http\Services\EmployeeService;
 use Illuminate\Http\JsonResponse;
@@ -136,9 +137,18 @@ class CrudEmployeesController extends Controller
 		return response()->json(['success' => true, 'data' => $employee->toArray()]);
 	}
 	
-	public function editEmployee ()
+	/**
+	 * @param \App\Http\Requests\EditEmployeeRequest $request
+	 * @param \App\Employee                          $employee
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \App\Exceptions\ErrorUploadImageException
+	 */
+	public function editEmployee (EditEmployeeRequest $request, Employee $employee) : JsonResponse
 	{
-	
+		$result = $this->employeesService->editEmployee($request, $employee);
+		
+		return response()->json(['success' => true, 'data' => $result]);
 	}
 	
 	/**

@@ -28,17 +28,50 @@ class LoadImageService {
 	 */
 	public function upload (Request $request): string
 	{
-		if($request->hasFile('img') && $request->file('img')->isValid())
-		{
-			$imageName = str_random(8) . '.' . $request->file('img')->getClientOriginalExtension();
+		$this->checkImage($request);
 	
-			$result = $request->file('img')->storeAs('',$imageName,'uploads');
-			
-			if($result)
-				return $this->storage->url($imageName);
-			
+		$imageName = str_random(8) . '.' . $request->file('img')->getClientOriginalExtension();
+
+		$result = $request->file('img')->storeAs('',$imageName,'uploads');
+		
+		return $this->storage->url($imageName);
+	}
+	
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @return string
+	 * @throws \App\Exceptions\ErrorUploadImageException
+	 */
+	public function reload (Request $request): string
+	{
+		$this->checkImage($request);
+		
+		$oldSrcImage = $request->get('old');
+		
+		preg_match('%employees\/([^\/]+)%', $oldSrcImage, $matches);
+		
+		$image = array_last($matches);
+		
+		if($this->storage->has($image))
+		{
+			$this->storage->delete($image);
 		}
+		
+		return $this->upload($request);
+	}
+	
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 *
+	 * @throws \App\Exceptions\ErrorUploadImageException
+	 */
+	private function checkImage (Request $request): void
+	{
+		if($request->hasFile('img') && $request->file('img')->isValid())
+		return;
 		
 		throw new ErrorUploadImageException('error upload image employee.');
 	}
+	
 }

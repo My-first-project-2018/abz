@@ -2,10 +2,10 @@
 
 namespace App\Http\Services;
 
-use App\Department;
 use App\Employee;
 use App\Http\Repositories\EmployeeRepository;
 use App\Http\Requests\CreateEmployeeRequest;
+use App\Http\Requests\EditEmployeeRequest;
 use App\Http\Requests\RewriteBossEmployeeRequest;
 use App\Position;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -105,6 +105,34 @@ class EmployeeService {
 	}
 	
 	/**
+	 * @param \App\Http\Requests\EditEmployeeRequest $request
+	 * @param \App\Employee                          $employee
+	 *
+	 * @return bool
+	 * @throws \App\Exceptions\ErrorUploadImageException
+	 */
+	public function editEmployee (EditEmployeeRequest $request, Employee $employee) : bool
+	{
+		$data = $this->getDataRequest($request);
+		
+		$hashBoss = $request->get('boss');
+		/** @var Employee $oldBoss */
+		$oldBoss = $employee->boss->first();
+		
+		if( $hashBoss !==  $oldBoss->hash)
+		{
+			$employee->boss()->detach();
+			
+			/** @var Employee $boss */
+			$boss     = $this->repository->onlyHash($request->get('boss'));
+			
+			$boss->subordinate()->attach($employee);
+		}
+		
+		return $employee->update($data);
+	}
+	
+	/**
 	 * @param \Illuminate\Http\Request $request
 	 *
 	 * @return array
@@ -113,7 +141,9 @@ class EmployeeService {
 	private function getDataRequest(Request $request): array
 	{
 		$data     = $request->only(['first_name', 'last_name', 'data_reception', 'salary']);
-		$data['img'] = $this->imageService->upload($request);
+		
+		$data['img'] = $request->has('old') ? $this->imageService->reload($request) : $this->imageService->upload($request);
+		
 		$data['position_id'] = $this->positionModal->whereHash($request->get('position'))->first()->id;
 		
 		return $data;

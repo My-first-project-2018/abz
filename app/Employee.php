@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property integer                                                       id
  * @package App
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $boss
+ * @property-read string                                                   hash
  * @property-read \App\Position                                            $position
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $subordinate
  * @property-read \App\User                                                $user
