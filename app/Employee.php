@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read \App\Position                                            $position
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Employee[] $subordinate
  * @property-read \App\User                                                $user
- * @property-read \Illuminate\Database\Eloquent\Relations\HasManyThrough   department
  * @mixin \Eloquent
  */
 class Employee extends Model {
@@ -72,11 +71,4 @@ class Employee extends Model {
 		return $this->belongsToMany(self::class, 'subordinate_employees', 'subordinate_id', 'employee_id');
 	}
 	
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
-	 */
-	public function department (): HasManyThrough
-	{
-		return $this->hasManyThrough(Department::class,Position::class);
-	}
 }

@@ -37,11 +37,12 @@
     <div class="file__input">
         <div class="file__upload">
             <label>
-                <input type="file" name="img">
+                <input type="file"  name="img">
+                <input type="hidden"  name="old">
                 <span>Выбрать фото</span>
             </label>
         </div>
-        <img class="upload_image" src="" alt="">
+        <img class="upload_image" src="{{$employee->img ?? ''}}" alt="">
         <div class="upload_image_container"></div>
     </div>
 </form>

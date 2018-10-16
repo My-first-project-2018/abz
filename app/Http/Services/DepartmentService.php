@@ -126,4 +126,14 @@ class DepartmentService {
 	
 		return $emplyees;
 	}
+	
+	/**
+	 * @param \App\Employee $employee
+	 *
+	 * @return \App\Department
+	 */
+	public function getDepartmentFromEmployee(Employee $employee): Department
+	{
+		return $employee->load('position.department')->position->department;
+	}
 }

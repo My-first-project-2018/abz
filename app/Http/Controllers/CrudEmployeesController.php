@@ -106,10 +106,15 @@ class CrudEmployeesController extends Controller
 		return \view('modalForm')->with(compact(['positions','department']));
 	}
 	
-	public function showEditEmployeeModalForm (Employee $employee)
+	/**
+	 * @param \App\Employee $employee
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function showEditEmployeeModalForm (Employee $employee) : View
 	{
-		$department = $employee->department;
-		dd($department);
+		$department = $this->departmentService->getDepartmentFromEmployee($employee);
+		
 		$positions = $this->departmentService->getPositionsDepartment($department);
 		
 		$employee = $employee->load('boss');
