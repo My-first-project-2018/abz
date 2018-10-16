@@ -47,7 +47,7 @@ Route::group(['middleware' => 'cors'], function (){
 			
 			Route::get('/', ['as' => 'showEditEmployeeModalForm', 'uses' => 'CrudEmployeesController@showEditEmployeeModalForm']);
 			
-			Route::post('/{department}', ['as' => 'editEmployee', 'uses' => 'CrudEmployeesController@editEmployee']);
+			Route::post('/', ['as' => 'editEmployee', 'uses' => 'CrudEmployeesController@editEmployee']);
 			
 		});
 	

@@ -9,7 +9,6 @@ use App\Http\Requests\EditEmployeeRequest;
 use App\Http\Services\DepartmentService;
 use App\Http\Services\EmployeeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -121,7 +120,7 @@ class CrudEmployeesController extends Controller
 		
 		$employee = $employee->load('boss');
 		
-		return \view('modalForm')->with(compact(['positions','department', 'employee']));
+		return \view('modalForm')->with(compact(['positions', 'department', 'employee']));
 	}
 	
 	/**
@@ -142,16 +141,14 @@ class CrudEmployeesController extends Controller
 	 * @param \App\Http\Requests\EditEmployeeRequest $request
 	 * @param \App\Employee                          $employee
 	 *
-	 * @param \App\Department                        $department
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return \Illuminate\Http\JsonResponse
 	 * @throws \App\Exceptions\ErrorUploadImageException
 	 */
-	public function editEmployee (EditEmployeeRequest $request, Employee $employee, Department $department) : RedirectResponse
+	public function editEmployee (EditEmployeeRequest $request, Employee $employee) : JsonResponse
 	{
 		$result = $this->employeesService->editEmployee($request, $employee);
 		
-		return redirect()->route('employeesDepartment',['department' => $department->slug]);
+		return response()->json(['success' => true, 'data' => $result]);
 	}
 	
 	/**
