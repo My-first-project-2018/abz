@@ -14,7 +14,13 @@ $(document).ready(() => {
         timer;
 
 
-
+    $(document).on('keydown', (e) => {
+        //redirect on start page on update
+        if((e.keyCode === 166 || e.which === 116) || (e.ctrlKey && e.which === 82 || e.keyCode === 82)) {
+            location.href = departmentHref;
+        }
+    })
+    
     employees.on('scroll', loadNewEmployeesItems);
 
     $('.addUser').on('click', function (e) {
@@ -143,9 +149,10 @@ $(document).ready(() => {
 
             reader.onload = (function () {
                 setTimeout(() => {
-                    let oldSrc = `<input type="hidden" name="old" value="${image.attr('src')}">`;
-
-                    $('.file__upload').append(oldSrc);
+                    if($('.modal form').hasClass('employeeEdit')) {
+                        let oldSrc = `<input type="hidden" name="old" value="${image.attr('src')}">`;
+                        $('.file__upload').append(oldSrc);
+                    }
 
                     image.attr('src', reader.result);
                 }, 100)

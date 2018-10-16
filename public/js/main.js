@@ -13,21 +13,21 @@ $(document).ready(() => {
         leftPos,
         topPos,
         hierarchy;
-    
+
+
+    $('.login').on('click', (e) => {
+        e.preventDefault();
+        loginWindow.slideToggle();
+    });
+
     body.on('submit', '.login_window', function (e) {
         checkAuthentication.call(this, e)
     });
-    
 
-    
-    body.click((e) => {
+
+    body.on('click', (e) => {
         //close login block
         if(!$(e.target).closest('.login').length && !$(e.target).closest('.login_window').length) loginWindow.slideUp();
-    });
-
-    $('.login').click((e) => {
-        e.preventDefault();
-        loginWindow.slideToggle();
     });
 
     body.on('click', '.departments__item', openDepartment);
