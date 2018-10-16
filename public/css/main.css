@@ -567,10 +567,10 @@ h1.company:hover, h1.company a:hover {
     border-color: #c1c1c1;
 }
 .search__boss_active {
-    max-height: 150px;
+    max-height: 100px;
     overflow-y: scroll;
     border-width: 0 0 1px 1px;
-    margin-top: -20px;
+    /*margin-top: -20px;*/
 }
 .search__boss p {
     color: #b9c335;
