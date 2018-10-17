@@ -17,11 +17,20 @@
         <label> Дата приема на работу
             <input type="text" name="data_reception" value="{{$employee->data_reception ?? ''}}" placeholder="new user employment date">
         </label>
-        <label> Начальник
-            <input  type="search"  placeholder="search boss from last name" value="{{isset($employee) ? $employee->boss->first()->last_name . ' ' . $employee->boss->first()->first_name : ''}}"  data-url="{{route('searchBoss',['department' => $department->slug])}}">
-            <input id="bossHash" value="{{$employee->hash ?? ''}}"   type="hidden" name="boss" placeholder="new user boss">
-        </label>
-        <div class="search__boss"></div>
+        @if(isset($employee) && $employee->boss->isNotEmpty())
+            <label> Начальник
+                <input  type="search"  placeholder="search boss from last name" value="{{isset($employee) ? $employee->boss->first()->first_name. ' ' . $employee->boss->first()->last_name  : ''}}"  data-url="{{route('searchBoss',['department' => $department->slug])}}">
+                <input id="bossHash" value="{{$employee->boss->first()->hash ?? ''}}"   type="hidden" name="boss" placeholder="new user boss">
+            </label>
+            <div class="search__boss"></div>
+        @elseif(!isset($employee))
+            <label> Начальник
+                <input  type="search"  placeholder="search boss from last name"   data-url="{{route('searchBoss',['department' => $department->slug])}}">
+                <input id="bossHash" type="hidden" name="boss" placeholder="new user boss">
+            </label>
+            <div class="search__boss"></div>
+        @endif
+
         <label> Должность
             <select name="position">
                 @foreach($positions as $position)
