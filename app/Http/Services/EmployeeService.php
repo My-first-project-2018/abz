@@ -158,17 +158,45 @@ class EmployeeService {
 	 */
 	public function removeEmployee (Employee $employee): bool
 	{
-		$employee = $employee->load(['subordinate', '$employee']);
+		$result = $this->rewriteToBossSubordinate($employee) ? $employee->delete() : false;
 		
-		if($employee->subordinate->isNotEmpty())
+		!$result ?: $this->imageService->removeEmployeeImage($employee->img);
+		
+		return  $result;
+	}
+	
+	/**
+	 * @param \App\Employee $employee
+	 *
+	 * @return bool
+	 */
+	private function rewriteToBossSubordinate (Employee $employee): bool
+	{
+		$employee = $employee->load(['subordinate', 'boss']);
+		
+		if($this->checkBoss($employee) && $employee->subordinate->isNotEmpty())
 		{
 			/** @var Employee $bossSubordinate */
 			$bossSubordinate = $employee->boss->first();
+			
 			$removedEmployeeSubordinates = $employee->subordinate;
 			
 			$bossSubordinate->subordinate()->attach($removedEmployeeSubordinates);
+			
+			return true;
 		}
-		return $employee->delete();
+		
+		return false;
+	}
+	
+	/**
+	 * @param \App\Employee $employee
+	 *
+	 * @return bool
+	 */
+	private function checkBoss (Employee $employee): bool
+	{
+		return $employee->boss->isNotEmpty();
 	}
 	
 	

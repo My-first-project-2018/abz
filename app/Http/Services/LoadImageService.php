@@ -46,19 +46,24 @@ class LoadImageService {
 	public function reload (Request $request): string
 	{
 		$this->checkImage($request);
+
+		$image = $this->searchOldImgInStorage($request->get('old'));
 		
-		$oldSrcImage = $request->get('old');
-		
+		$this->removeImage($image) ?: $this->trowException();
+
+		return $this->upload($request);
+	}
+	
+	/**
+	 * @param string $oldSrcImage
+	 *
+	 * @return string
+	 */
+	private function searchOldImgInStorage (string $oldSrcImage) : string
+	{
 		preg_match('%employees\/([^\/]+)%', $oldSrcImage, $matches);
 		
-		$image = array_last($matches);
-		
-		if($this->storage->has($image))
-		{
-			$this->storage->delete($image);
-		}
-		
-		return $this->upload($request);
+		return array_last($matches);
 	}
 	
 	/**
@@ -71,7 +76,37 @@ class LoadImageService {
 		if($request->hasFile('img') && $request->file('img')->isValid())
 		return;
 		
+		$this->trowException();
+	}
+	
+	/**
+	 * @throws \App\Exceptions\ErrorUploadImageException
+	 */
+	private function trowException (): void
+	{
 		throw new ErrorUploadImageException('error upload image employee.');
+	}
+	
+	/**
+	 * @param string $image
+	 *
+	 * @return bool
+	 */
+	private function removeImage (string $image): bool
+	{
+		return $this->storage->has($image) ? $this->storage->delete($image) : false;
+	}
+	
+	/**
+	 * @param string $imageSrc
+	 *
+	 * @return bool
+	 */
+	public function removeEmployeeImage (string $imageSrc): bool
+	{
+		$image = $this->searchOldImgInStorage($imageSrc);
+		
+		return $this->removeImage($image);
 	}
 	
 }

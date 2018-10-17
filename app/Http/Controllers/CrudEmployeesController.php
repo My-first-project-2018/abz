@@ -174,7 +174,7 @@ class CrudEmployeesController extends Controller
 	{
 		$result = $this->employeesService->removeEmployee($employee);
 		
-		return response()->json(['success' => true, 'data' => $result]);
+		return response()->json(['success' => $result, 'data' => $result]);
 	}
 	
 }
