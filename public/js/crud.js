@@ -269,7 +269,6 @@ $(document).ready(() => {
 
     function removeEmployee(e) {
         let url = $(e.target).closest('.remove__item').attr('data-url');
-
         $.ajax({
             url: url,
             type: "DELETE",
@@ -283,9 +282,8 @@ $(document).ready(() => {
                 } else {
                     alert('Это босс отдела, не трожь, он сожрет тебя');
                 }
-        }
+            }
         })
-
     }
 
     function refactorEmployeeItem() {

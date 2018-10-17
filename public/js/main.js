@@ -196,7 +196,6 @@ $(document).ready(() => {
                     placeItemBack($(dragItem));
                 },10);
             } else changeDirector(director, dragItem);
-
         }
     }
 
@@ -225,9 +224,6 @@ $(document).ready(() => {
         });
         alert('Сотрудника можно переместить только на его будущего босса !!!');
     }
-
-
-
 });
 
 function getHashFromUrl (url) {
