@@ -119,7 +119,7 @@ class EmployeeService {
 		/** @var Employee $oldBoss */
 		$oldBoss = $employee->boss->first();
 		
-		if( $hashBoss !==  $oldBoss->hash)
+		if( $hashBoss !=  $oldBoss->hash)
 		{
 			$employee->boss()->detach();
 			

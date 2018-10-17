@@ -33,7 +33,7 @@ class EditEmployeeRequest extends FormRequest
 	        'first_name'      => 'required|string',
 	        'salary'          => 'required|int',
 	        'data_reception'  => 'required|date_format:Y-m-d',
-	        'boss'            => 'required|exists:employees,hash',
+	        'boss'            => 'exists:employees,hash',
 	        'position'        => 'required|exists:positions,hash',
 	        'img'             => 'image|mimes:jpeg,png',
 	        'old'             => 'string'

@@ -364,7 +364,7 @@ h1.company:hover, h1.company a:hover {
 
 .crud__content {
     display: flex;
-    height: 90vh;
+    height: 80vh;
 }
 
 .crud__aside {
