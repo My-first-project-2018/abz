@@ -77,7 +77,7 @@ $(document).ready(() => {
         let pass = $(this).find('input[name=password]').val();
         let url = $(this).attr('action');
 
-        ajaxPost(url, {login: log, password: pass}, (answer) => {
+        $.post(url, {login: log, password: pass}, (answer) => {
             if(answer.success) {
                 location.reload();
                 return;
@@ -92,7 +92,7 @@ $(document).ready(() => {
         }
         let url = $(this).attr('data-url');
 
-        ajaxGet(url, (html) => {
+        $.get(url, (html) => {
             $(this).append(html);
             setTimeout(() => {
                 $(this).find('.departments__content').addClass('visible');
@@ -149,7 +149,7 @@ $(document).ready(() => {
     function showSubordinate () {
         let url = $(this).attr('data-url');
 
-        ajaxGet(url, (html) => {
+        $.get(url, (html) => {
             if($(html).html() === 'No records') return false;
             $(this).closest('.departments__content').append(html);
             $('.departments__content').find('.subordinate:last-child').attr('data-hierarchy', +hierarchy + 1);
@@ -205,7 +205,7 @@ $(document).ready(() => {
         let employeeHash = getHashFromUrl($(subordinate).attr('data-url'));
         let ajaxUrl = $('.departments').attr('data-rewrite-boss-employee');
 
-        ajaxPost(ajaxUrl, {newBoss: newBossHash, employee: employeeHash}, (result) => {
+        $.post(ajaxUrl, {newBoss: newBossHash, employee: employeeHash}, (result) => {
             if(result.success){
                 $(dragItem).remove();
                 alert('good!');
@@ -233,29 +233,6 @@ $(document).ready(() => {
 function getHashFromUrl (url) {
     url = url.split('/');
     return url[url.length - 1];
-}
-
-
-function ajaxPost (url, data, success, contentType = "application/x-www-form-urlencoded", processData = "application/x-www-form-urlencoded") {
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        cache: false,
-        contentType: contentType,
-        processData: processData,
-        success: success,
-        error: (error) => alert(error)
-    });
-}
-
-function ajaxGet (url, success) {
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: success,
-        error: (error) => alert(error)
-    });
 }
 
 function showAjaxValidateError (result) {

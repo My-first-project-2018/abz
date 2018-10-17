@@ -73,7 +73,8 @@ $(document).ready(() => {
 
             href = location.href.match(/\?/) ? location.href + `&page=${page}` : location.href + `?page=${page}`;
 
-            ajaxGet(href, (result) => {
+
+            $.get(href, (result) => {
                 employees.append(result);
             });
 
@@ -94,7 +95,7 @@ $(document).ready(() => {
 
         let url = changeDepartmentInUrl.call(this, $(this).attr('href'));
 
-        ajaxGet(url, (result) => {
+        $.get(url, (result) => {
             $('.modal').append(result);
         })
     }
@@ -102,7 +103,7 @@ $(document).ready(() => {
     function findBosses() {
         let url = $(this).attr('data-url') + `?value=${$(this).val()}`;
 
-        ajaxGet(url, function (result) {
+        $.get(url, function (result) {
             let sb = $('.search__boss');
             sb.find('p').remove();
             sb.append(result);
@@ -123,15 +124,23 @@ $(document).ready(() => {
 
         let data = new FormData(this);
 
-        ajaxPost(url, data, (result) => {
-            if (result.success) {
-                alert('good!');
-                $('.modal').removeClass('modal_active').find('form').remove();
-                this.reset();
-            } else { //error
-                showAjaxValidateError(result);
-            }
-        }, false, false)
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            cache: false,
+            contentType:false,
+            processData: false,
+            success: (result) => {
+                if (result.success) {
+                    alert('good!');
+                    $('.modal').removeClass('modal_active').find('form').remove();
+                    this.reset();
+                } else { //error
+                    showAjaxValidateError(result);
+                    }
+                }
+        })
     }
 
     function showUploadedImage() {
@@ -214,7 +223,7 @@ $(document).ready(() => {
 
                 history.pushState('', '', url + `?field=${field}&value=${value}`);
 
-                ajaxGet(location.href, (result) => searchAjaxSuccess(result));
+                $.get(location.href, (result) => searchAjaxSuccess(result));
 
             } else if (searchFlag) showOldEmployeesItems();//if we use search before
         }, 300);
@@ -225,7 +234,7 @@ $(document).ready(() => {
     }
 
     function loadDepartmentAjax(href) {
-        ajaxGet(href, (result) => {
+        $.get(href, (result) => {
             $('.employees__item').remove();
             employees.append(result);
             setNewLastPage();
@@ -266,6 +275,14 @@ $(document).ready(() => {
             type: "DELETE",
             success: (result) => {
                 console.log(result);
+                let {success} = result;
+                if(success) {
+                    alert('good!');
+                    console.log($(e.target).closest('.employees__item').addClass('employees__item_removed'))
+                    // location.reload()
+                } else {
+                    alert('Это босс отдела, не трожь, он сожрет тебя');
+                }
         }
         })
 
@@ -276,7 +293,7 @@ $(document).ready(() => {
 
         let url = $(this).attr('data-url');
 
-        ajaxGet(url, function (result) {
+        $.get(url, function (result) {
             modal.append(result).addClass('modal_active');
         })
     }
