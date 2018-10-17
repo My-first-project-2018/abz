@@ -16,10 +16,10 @@ $(document).ready(() => {
 
     $(document).on('keydown', (e) => {
         //redirect on start page on update
-        if((e.keyCode === 166 || e.which === 116) || (e.ctrlKey && e.which === 82 || e.keyCode === 82)) {
+        if((e.keyCode === 166 || e.which === 116) || (e.ctrlKey && (e.which === 82 || e.keyCode === 82))) {
             location.href = departmentHref;
         }
-    })
+    });
     
     employees.on('scroll', loadNewEmployeesItems);
 
@@ -259,7 +259,16 @@ $(document).ready(() => {
 
 
     function removeEmployee(e) {
-        console.log(e.target.closest('.employees__item'))
+        let url = $(e.target).closest('.remove__item').attr('data-url');
+
+        $.ajax({
+            url: url,
+            type: "DELETE",
+            success: (result) => {
+                console.log(result);
+        }
+        })
+
     }
 
     function refactorEmployeeItem() {

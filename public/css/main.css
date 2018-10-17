@@ -458,6 +458,7 @@ h1.company:hover, h1.company a:hover {
     height: 50px;
     cursor: pointer;
     transition: .2s;
+    overflow: hidden;
 }
 .employees__item:hover {
     background: #323232;
@@ -510,6 +511,7 @@ h1.company:hover, h1.company a:hover {
 }
 .remove__item:hover {
     color: red;
+    background: #000;
 }
 
 .search__form {
