@@ -21,24 +21,22 @@ class SubordinateEmployeesTableSeeder extends Seeder {
 	public function run (): void
 	{
 		$this->strData = 'id,employee_id,subordinate_id'."\n";
-		if(!Storage::exists('csv/subordinate.csv')){
+		
+		$departments = \App\Department::all()->load( 'employees' );
+		
+		$departments->each( function ($department) {
 			
-			$departments = \App\Department::all()->load( 'employees' );
+			$employees = $department->employees;
 			
-			$departments->each( function ($department) {
-				
-				$employees = $department->employees;
-				
-				$bossDepartment = $employees->shift();
-				$subordinates = $employees->splice(0,10);
-				$employees = $employees->shuffle();
-				$this->distributionToBoss($bossDepartment,$subordinates);
-				
-				$this->distributionEmployees($employees,$subordinates);
-			} );
+			$bossDepartment = $employees->shift();
+			$subordinates = $employees->splice(0,10);
+			$employees = $employees->shuffle();
+			$this->distributionToBoss($bossDepartment,$subordinates);
 			
-			Storage::put( 'csv/subordinate.csv', $this->strData );
-		}
+			$this->distributionEmployees($employees,$subordinates);
+		} );
+		
+		Storage::put( 'csv/subordinate.csv', $this->strData );
 		
 		$this->writeToDB();
 	}

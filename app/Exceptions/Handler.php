@@ -33,13 +33,15 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
-
-    /**
-     * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
-     */
+	
+	/**
+	 * Report or log an exception.
+	 *
+	 * @param  \Exception $exception
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
     public function report(Exception $exception)
     {
         parent::report($exception);
@@ -57,11 +59,23 @@ class Handler extends ExceptionHandler
 	    if ($exception instanceof AuthenticationException)
 		    return $this->unauthenticated($request, $exception);
 
+    	if($this->isHttpException($exception))
+	    {
+	    	switch ($exception->getCode())
+		    {
+			    case 404 :
+			    	return redirect()->route('404');
+			    	break;
+			    case 500;
+			        return redirect()->route('500');
+			        break;
+		    }
+	    }
+
         if($exception instanceof ValidationException)
         	return response()->json(['success' => false,'errors' => $exception->errors()]);
-	
-//        return parent::render($request, $exception);
-       dd($exception);
+
+        return parent::render($request, $exception);
     }
 	
 	
