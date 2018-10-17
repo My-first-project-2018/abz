@@ -52,6 +52,8 @@ Route::group(['middleware' => 'cors'], function (){
 		});
 	
 		Route::get('search-boss/{department}', ['as' => 'searchBoss', 'uses' => 'CrudEmployeesController@searchBoss']);
+		
+		Route::delete('remove-employee/{employee}', ['as' => 'removeEmployee', 'uses' => 'CrudEmployeesController@removeEmployee']);
 	
 	
 		});

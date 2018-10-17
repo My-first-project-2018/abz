@@ -150,5 +150,26 @@ class EmployeeService {
 		return $data;
 	}
 	
+	/**
+	 * @param \App\Employee $employee
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function removeEmployee (Employee $employee): bool
+	{
+		$employee = $employee->load(['subordinate', '$employee']);
+		
+		if($employee->subordinate->isNotEmpty())
+		{
+			/** @var Employee $bossSubordinate */
+			$bossSubordinate = $employee->boss->first();
+			$removedEmployeeSubordinates = $employee->subordinate;
+			
+			$bossSubordinate->subordinate()->attach($removedEmployeeSubordinates);
+		}
+		return $employee->delete();
+	}
+	
 	
 }

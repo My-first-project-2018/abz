@@ -164,4 +164,17 @@ class CrudEmployeesController extends Controller
 		return \view('searchBoss')->with(compact('employees'));
 	}
 	
+	/**
+	 * @param \App\Employee $employee
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 * @throws \Exception
+	 */
+	public function removeEmployee (Employee $employee): JsonResponse
+	{
+		$result = $this->employeesService->removeEmployee($employee);
+		
+		return response()->json(['success' => true, 'data' => $result]);
+	}
+	
 }
