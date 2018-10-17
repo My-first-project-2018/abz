@@ -67,8 +67,7 @@ $(document).ready(() => {
     });
 
     function loadNewEmployeesItems() {
-        if ((this.scrollHeight - $(this).height()) === $(this).scrollTop()) {
-
+        if ((this.scrollHeight - parseInt($(this).height())) <= $(this).scrollTop() + 10) {
             setNewLastPage();
 
             href = location.href.match(/\?/) ? location.href + `&page=${page}` : location.href + `?page=${page}`;

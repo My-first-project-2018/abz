@@ -364,6 +364,7 @@ h1.company:hover, h1.company a:hover {
 
 .crud__content {
     display: flex;
+    height: 90vh;
 }
 
 .crud__aside {
@@ -412,7 +413,7 @@ h1.company:hover, h1.company a:hover {
 
 .employees {
     position: relative;
-    max-height: 500px;
+    max-height: 100%;
     flex-grow: 1;
     overflow-y: scroll;
     margin-right: 20px;
