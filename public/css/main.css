@@ -331,7 +331,7 @@ h1.company:hover, h1.company a:hover {
 .subordinate__item p {
     font-size: .8em;
     color: #fff;
-    letter-spacing: 1.3px;
+    letter-spacing: 1px;
     white-space: nowrap;
 }
 .subordinate__item p.position {
