@@ -18,7 +18,7 @@
             <input type="text" name="data_reception" value="{{$employee->data_reception ?? ''}}" placeholder="new user employment date">
         </label>
         <label> Начальник
-            <input  type="search"  placeholder="new user boss" value="{{isset($employee) ? $employee->boss->first()->last_name . ' ' . $employee->boss->first()->first_name : ''}}"  data-url="{{route('searchBoss',['department' => $department->slug])}}">
+            <input  type="search"  placeholder="search boss from last name" value="{{isset($employee) ? $employee->boss->first()->last_name . ' ' . $employee->boss->first()->first_name : ''}}"  data-url="{{route('searchBoss',['department' => $department->slug])}}">
             <input id="bossHash" value="{{$employee->hash ?? ''}}"   type="hidden" name="boss" placeholder="new user boss">
         </label>
         <div class="search__boss"></div>

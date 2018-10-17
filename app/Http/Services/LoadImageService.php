@@ -49,7 +49,7 @@ class LoadImageService {
 
 		$image = $this->searchOldImgInStorage($request->get('old'));
 		
-		$this->removeImage($image) ?: $this->trowException();
+		$image === '' ?: $this->removeImage($image);
 
 		return $this->upload($request);
 	}
@@ -62,8 +62,8 @@ class LoadImageService {
 	private function searchOldImgInStorage (string $oldSrcImage) : string
 	{
 		preg_match('%employees\/([^\/]+)%', $oldSrcImage, $matches);
-		
-		return array_last($matches);
+	
+		return empty($matches) ? '' : array_last($matches);
 	}
 	
 	/**

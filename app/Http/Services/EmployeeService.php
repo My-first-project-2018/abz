@@ -174,14 +174,16 @@ class EmployeeService {
 	{
 		$employee = $employee->load(['subordinate', 'boss']);
 		
-		if($this->checkBoss($employee) && $employee->subordinate->isNotEmpty())
+		if($this->checkBoss($employee) )
 		{
-			/** @var Employee $bossSubordinate */
-			$bossSubordinate = $employee->boss->first();
-			
-			$removedEmployeeSubordinates = $employee->subordinate;
-			
-			$bossSubordinate->subordinate()->attach($removedEmployeeSubordinates);
+			if($employee->subordinate->isNotEmpty()){
+				/** @var Employee $bossSubordinate */
+				$bossSubordinate = $employee->boss->first();
+				
+				$removedEmployeeSubordinates = $employee->subordinate;
+				
+				$bossSubordinate->subordinate()->attach( $removedEmployeeSubordinates );
+			}
 			
 			return true;
 		}
