@@ -28,7 +28,7 @@
                 <span class="employee__block__label">Boss</span>
                 <p>{{$employee->boss->isNotEmpty() ? $employee->boss->first()->first_name . ' ' . $employee->boss->first()->last_name : ''}}</p>
             </div>
-            <div class="remove__item" data-url="{{route('removeEmployee',['employee' => $employee])}}">X</div>
+            <div class="remove__item" data-url="{{route('removeEmployee',['employee' => $employee->hash])}}">X</div>
         </div>
     @endforeach
 @endif
