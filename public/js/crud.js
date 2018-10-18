@@ -272,11 +272,9 @@ $(document).ready(() => {
             url: url,
             type: "DELETE",
             success: (result) => {
-                console.log(result);
                 let {success} = result;
                 if(success) {
                     alert('good!');
-                    console.log($(e.target).closest('.employees__item').addClass('employees__item_removed'))
                     // location.reload()
                 } else {
                     alert('Это босс отдела, не трожь, он сожрет тебя');
