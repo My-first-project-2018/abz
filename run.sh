@@ -2,8 +2,17 @@
 
 nameFolder="${PWD##*/}"
 
+if [ ! -f ./.env ]; then
+    cp "./.env.example" "./.env"
+fi
+
 echo "run docker"
 docker-compose -p $nameFolder up --build -d &&
+
+docker run --rm --interactive --tty \
+    --volume $PWD:/app \
+    composer install
+
 
 echo "storage chmod 777"
 docker exec ${nameFolder}_web_1 chmod 777 -R storage/ &&
